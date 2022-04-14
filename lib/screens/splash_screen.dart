@@ -15,9 +15,10 @@ class SplashPage extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.red),
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(color: Colors.white),
         child: Center(
-            child: Image.asset(kPathLogoDrawerHeader, fit: BoxFit.cover)),
+            child: Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover)),
       ),
     );
   }

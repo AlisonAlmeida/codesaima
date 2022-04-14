@@ -6,9 +6,11 @@ class CentralButton extends StatelessWidget {
   final String title;
 
   final VoidCallback onTap;
+  final String img;
   const CentralButton({
     Key? key,
     required this.title,
+    required this.img,
     required this.onTap,
   }) : super(key: key);
 
@@ -17,25 +19,16 @@ class CentralButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-                width: 2.0,
-              ),
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Icon(Icons.person),
-                height: 40,
-                width: 40,
-              ),
-              Text(title),
-            ],
-          )),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+              width: 2.0,
+            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10)),
+        child: Image.asset(img, fit: BoxFit.contain),
+      ),
     );
   }
 }

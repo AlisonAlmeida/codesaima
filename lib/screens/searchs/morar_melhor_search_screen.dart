@@ -3,10 +3,16 @@
 import 'package:flutter/material.dart';
 
 class MorarMelhorSearchScreen extends StatelessWidget {
-  const MorarMelhorSearchScreen({Key? key, String? id}) : super(key: key);
+  MorarMelhorSearchScreen({Key? key}) : super(key: key);
+  final String name = 'Morar Melhor';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(name),
+        backgroundColor: Colors.orange,
+      ),
+    );
   }
 }

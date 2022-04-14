@@ -2,6 +2,7 @@
 
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
+import 'package:codesaima/screens/searchs/morar_melhor_search_screen.dart';
 import 'package:codesaima/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -49,12 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
               padding: EdgeInsets.only(right: 20), child: Icon(Icons.person))
         ],
-        title: Row(
-          children: [
-            Image.asset(kPathLogoDrawerHeader, fit: BoxFit.cover, height: 30),
-            Text(kAppName)
-          ],
-        ),
+        title: Image.asset(kPathMainLogoCodesaimaBranca,
+            fit: BoxFit.cover, height: 30),
       ),
       body: Center(
         child: GridView.count(
@@ -63,9 +60,24 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisCount: 2,
           mainAxisSpacing: 16,
           children: [
-            CentralButton(title: 'Governo de Roraima', onTap: () {}),
-            CentralButton(title: 'Aqui Tem Dono', onTap: () {}),
-            CentralButton(title: 'Morar Melhor', onTap: () {})
+            CentralButton(
+                title: 'Governo de Roraima',
+                img: kPathLogoGovRoraimaPreta,
+                onTap: () {}),
+            CentralButton(
+                title: 'Aqui Tem Dono',
+                img: kPathLogoAquiTemDono,
+                onTap: () {}),
+            CentralButton(
+                title: 'Morar Melhor',
+                img: kPathLogoMorarMelhor,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MorarMelhorSearchScreen(),
+                      ));
+                })
           ],
         ),
       ),
