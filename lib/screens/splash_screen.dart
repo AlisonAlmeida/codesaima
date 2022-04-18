@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 1)).then((value) =>
+    Future.delayed(Duration(seconds: 0)).then((value) =>
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
