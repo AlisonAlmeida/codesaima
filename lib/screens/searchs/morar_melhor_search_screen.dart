@@ -1,15 +1,24 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/core/cep_model.dart';
+import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
+import 'package:codesaima/core/person_model.dart';
+
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class MorarMelhorSearchScreen extends StatelessWidget {
-  MorarMelhorSearchScreen({Key? key}) : super(key: key);
+class MorarMelhorSearchScreen extends StatefulWidget {
+  const MorarMelhorSearchScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MorarMelhorSearchScreen> createState() =>
+      _MorarMelhorSearchScreen2State();
+}
+
+class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -20,29 +29,33 @@ class MorarMelhorSearchScreen extends StatelessWidget {
   final _telefoneController = TextEditingController();
   final _ufController = TextEditingController();
   final _cidadeController = TextEditingController();
+  bool? _facebookSocialMedia = false;
+  bool? _instagramSocialMedia = false;
+  bool? _youtubeSocialMedia = false;
+  bool? _whatsappSocialMedia = false;
+
+  void getCep() async {
+    EasyLoading.show();
+    FocusManager.instance.primaryFocus?.unfocus(); //dismiss Keyboard
+    AddressModel cepModel = AddressModel();
+    NetworkHelper networkHelper =
+        NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
+
+    try {
+      cepModel = await networkHelper.getData();
+      _bairroController.text = cepModel.bairro;
+      _ruaController.text = cepModel.logradouro;
+      _ufController.text = cepModel.uf;
+      _cidadeController.text = cepModel.localidade;
+    } catch (e) {
+      var snackBar = SnackBar(content: Text('Erro'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    EasyLoading.dismiss();
+  }
 
   @override
   Widget build(BuildContext context) {
-    void getCep() async {
-      EasyLoading.show();
-      FocusManager.instance.primaryFocus?.unfocus(); //dismiss Keyboard
-      CepModel cepModel = CepModel();
-      NetworkHelper networkHelper = NetworkHelper(
-          'https://viacep.com.br/ws/${_cepController.text}/json/');
-
-      try {
-        cepModel = await networkHelper.getData();
-        _bairroController.text = cepModel.bairro;
-        _ruaController.text = cepModel.logradouro;
-        _ufController.text = cepModel.uf;
-        _cidadeController.text = cepModel.localidade;
-      } catch (e) {
-        var snackBar = SnackBar(content: Text('Erro'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-      EasyLoading.dismiss();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Pesquisa Morar Melhor'),
@@ -224,9 +237,70 @@ class MorarMelhorSearchScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                Divider(),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration:
+                      BoxDecoration(border: Border.all(color: Colors.black)),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CheckboxListTile(
+                                title: Text('Facebook'),
+                                value: _facebookSocialMedia,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _facebookSocialMedia = value;
+                                  });
+                                }),
+                          ),
+                          Expanded(
+                            child: CheckboxListTile(
+                                title: Text('Instagram'),
+                                value: _instagramSocialMedia,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _instagramSocialMedia = value;
+                                  });
+                                }),
+                          ),
+                          Expanded(
+                            child: CheckboxListTile(
+                                title: Text('Whatsapp'),
+                                value: _whatsappSocialMedia,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _whatsappSocialMedia = value;
+                                  });
+                                }),
+                          ),
+                          Expanded(
+                            child: CheckboxListTile(
+                                title: Text('Youtube'),
+                                value: _youtubeSocialMedia,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _youtubeSocialMedia = value;
+                                  });
+                                }),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(),
               ],
             ),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Column(
+          children: [Icon(Icons.save), Text('Salvar')],
         ),
       ),
     );

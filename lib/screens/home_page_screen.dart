@@ -4,6 +4,7 @@ import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/searchs/morar_melhor_search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -14,6 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void dispose() {
+    Hive.box('person').close();
+    super.dispose();
+  }
+
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -29,8 +36,17 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 20), child: Icon(Icons.person))
+          GestureDetector(
+            onTap: () async {
+              var box = await Hive.openBox('testBox');
+
+              box.put('name', 'David');
+
+              print('Name: ${box.get('name')}');
+            },
+            child: Padding(
+                padding: EdgeInsets.only(right: 20), child: Icon(Icons.person)),
+          )
         ],
         title:
             Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover, height: 30),

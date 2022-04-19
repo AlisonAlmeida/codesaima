@@ -1,15 +1,12 @@
-// To parse this JSON data, do
-//
-//     final cepModel = cepModelFromJson(jsonString);
-
 import 'dart:convert';
 
-CepModel cepModelFromJson(String str) => CepModel.fromJson(json.decode(str));
+AddressModel cepModelFromJson(String str) =>
+    AddressModel.fromJson(json.decode(str));
 
-String cepModelToJson(CepModel data) => json.encode(data.toJson());
+String cepModelToJson(AddressModel data) => json.encode(data.toJson());
 
-class CepModel {
-  CepModel({
+class AddressModel {
+  AddressModel({
     this.cep = '',
     this.logradouro = '',
     this.complemento = '',
@@ -33,7 +30,7 @@ class CepModel {
   String ddd;
   String siafi;
 
-  factory CepModel.fromJson(Map<String, dynamic> json) => CepModel(
+  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
         cep: json["cep"],
         logradouro: json["logradouro"],
         complemento: json["complemento"],

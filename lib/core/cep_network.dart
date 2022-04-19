@@ -1,4 +1,4 @@
-import 'package:codesaima/core/cep_model.dart';
+import 'package:codesaima/core/address_model.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkHelper {
@@ -8,7 +8,7 @@ class NetworkHelper {
 
   Future getData() async {
     http.Response response = await http.get(Uri.parse(url));
-    CepModel cepModel = CepModel();
+    AddressModel cepModel = AddressModel();
 
     if (response.statusCode == 200) {
       cepModel = cepModelFromJson(response.body);
