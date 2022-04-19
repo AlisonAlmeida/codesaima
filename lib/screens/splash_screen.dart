@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/main.dart';
+
+import 'package:codesaima/screens/home_page_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
@@ -11,7 +12,7 @@ class SplashPage extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => MyHomePage(title: kAppName))));
+                builder: (context) => HomePage(title: kAppName))));
 
     return Scaffold(
       body: Container(

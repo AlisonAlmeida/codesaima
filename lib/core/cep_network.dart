@@ -8,15 +8,14 @@ class NetworkHelper {
 
   Future getData() async {
     http.Response response = await http.get(Uri.parse(url));
+    CepModel cepModel = CepModel();
 
     if (response.statusCode == 200) {
-      CepModel cepModel = CepModel();
-
       cepModel = cepModelFromJson(response.body);
 
       return cepModel;
     } else {
-      print(response.statusCode);
+      return response.body;
     }
   }
 }
