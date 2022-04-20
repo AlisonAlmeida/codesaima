@@ -7,7 +7,6 @@ part 'person_model.g.dart';
 @HiveType(typeId: 0)
 class Person {
   Person({
-    this.id,
     required this.name,
     required this.phone,
     required this.socialNetworks,
@@ -15,22 +14,18 @@ class Person {
   });
 
   @HiveField(0)
-  int? id;
-
-  @HiveField(1)
   String name;
 
-  @HiveField(2)
+  @HiveField(1)
   String phone;
 
-  @HiveField(3)
+  @HiveField(2)
   List<String> socialNetworks;
 
-  @HiveField(4)
+  @HiveField(3)
   Address address;
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
-      id: json['id'],
       name: json['name'],
       phone: json['phone'],
       socialNetworks: json['socialNetworks'],
@@ -38,7 +33,6 @@ class Person {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'phone': phone,
       'socialNetworks': socialNetworks,

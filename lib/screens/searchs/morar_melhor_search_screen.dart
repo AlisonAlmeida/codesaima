@@ -2,6 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/address_model.dart';
+import 'package:codesaima/core/boxes.dart';
 import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/core/person_model.dart';
 
@@ -35,6 +36,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   bool _youtubeSocialMedia = false;
   bool _whatsappSocialMedia = false;
   List<String> socialMedia = [];
+  List<Person> listOfpeople = [];
 
   void getCep() async {
     EasyLoading.show();
@@ -42,7 +44,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
     Address cepModel = Address();
     NetworkHelper networkHelper =
         NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
-
     try {
       cepModel = await networkHelper.getData();
       _bairroController.text = cepModel.bairro;
@@ -54,6 +55,12 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     EasyLoading.dismiss();
+  }
+
+  addPerson(Person person) {
+    listOfpeople.add(person);
+    final box = Boxes.getPeople();
+    box.add(person);
   }
 
   @override
@@ -177,33 +184,47 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                   ),
                 ),
                 Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.cancel),
+                          label: Text('Cancelar')),
+                    ),
+                    Spacer(),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.green),
+                          onPressed: () {
+                            final address = Address(
+                              cep: _cepController.text,
+                              uf: _ufController.text,
+                              localidade: _cidadeController.text,
+                              logradouro: _ruaController.text,
+                              bairro: _bairroController.text,
+                              numero: _numeroController.text,
+                              complemento: _complementoController.text,
+                            );
+
+                            final person = Person(
+                                address: address,
+                                name: _nameController.text,
+                                phone: _telefoneController.text,
+                                socialNetworks: socialMedia);
+
+                            addPerson(person);
+                          },
+                          icon: Icon(Icons.save),
+                          label: Text('Salvar')),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Row(
-          children: [Icon(Icons.save), Text('Salvar')],
-        ),
-        onPressed: () {
-          final address = Address(
-            cep: _cepController.text,
-            uf: _ufController.text,
-            localidade: _cidadeController.text,
-            logradouro: _ruaController.text,
-            bairro: _bairroController.text,
-            numero: _numeroController.text,
-            complemento: _complementoController.text,
-          );
-
-          final person = Person(
-              address: address,
-              name: _nameController.text,
-              phone: _telefoneController.text,
-              socialNetworks: socialMedia);
-          print(person.toMap());
-        },
       ),
     );
   }

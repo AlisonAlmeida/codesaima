@@ -1,9 +1,13 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+part 'address_model.g.dart';
+
 Address cepModelFromJson(String str) => Address.fromJson(json.decode(str));
 
 String cepModelToJson(Address data) => json.encode(data.toJson());
 
+@HiveType(typeId: 1)
 class Address {
   Address({
     this.cep = '',
@@ -18,17 +22,27 @@ class Address {
     this.siafi = '',
     this.numero = '',
   });
-
+  @HiveField(0)
   String cep;
+  @HiveField(1)
   String logradouro;
+  @HiveField(2)
   String complemento;
+  @HiveField(3)
   String bairro;
+  @HiveField(4)
   String localidade;
+  @HiveField(5)
   String uf;
+  @HiveField(6)
   String ibge;
+  @HiveField(7)
   String gia;
+  @HiveField(8)
   String ddd;
+  @HiveField(9)
   String siafi;
+  @HiveField(10)
   String numero;
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
