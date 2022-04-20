@@ -8,7 +8,7 @@ class NetworkHelper {
 
   Future getData() async {
     http.Response response = await http.get(Uri.parse(url));
-    AddressModel cepModel = AddressModel();
+    Address cepModel = Address();
 
     if (response.statusCode == 200) {
       cepModel = cepModelFromJson(response.body);

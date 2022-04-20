@@ -19,9 +19,9 @@ class PersonAdapter extends TypeAdapter<Person> {
     return Person(
       id: fields[0] as int?,
       name: fields[1] as String,
-      phone: fields[2] as int,
+      phone: fields[2] as String,
       socialNetworks: (fields[3] as List).cast<String>(),
-      addressModel: fields[4] as AddressModel,
+      address: fields[4] as Address,
     );
   }
 
@@ -38,7 +38,7 @@ class PersonAdapter extends TypeAdapter<Person> {
       ..writeByte(3)
       ..write(obj.socialNetworks)
       ..writeByte(4)
-      ..write(obj.addressModel);
+      ..write(obj.address);
   }
 
   @override

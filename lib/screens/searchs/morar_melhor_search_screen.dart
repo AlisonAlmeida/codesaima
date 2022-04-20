@@ -29,15 +29,17 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   final _telefoneController = TextEditingController();
   final _ufController = TextEditingController();
   final _cidadeController = TextEditingController();
-  bool? _facebookSocialMedia = false;
-  bool? _instagramSocialMedia = false;
-  bool? _youtubeSocialMedia = false;
-  bool? _whatsappSocialMedia = false;
+  final _complementoController = TextEditingController();
+  bool _facebookSocialMedia = false;
+  bool _instagramSocialMedia = false;
+  bool _youtubeSocialMedia = false;
+  bool _whatsappSocialMedia = false;
+  List<String> socialMedia = [];
 
   void getCep() async {
     EasyLoading.show();
     FocusManager.instance.primaryFocus?.unfocus(); //dismiss Keyboard
-    AddressModel cepModel = AddressModel();
+    Address cepModel = Address();
     NetworkHelper networkHelper =
         NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
 
@@ -70,37 +72,9 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
             child: Column(
               children: [
                 Divider(),
-                TextField(
-                  textCapitalization: TextCapitalization.characters,
-                  textInputAction: TextInputAction.next,
-                  controller: _nameController,
-                  keyboardType: TextInputType.name,
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                      labelText: 'Nome',
-                      hintText: 'Nome Completo',
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Icon(Icons.person),
-                      )),
-                ),
+                CompletNameWidget(nameController: _nameController),
                 Divider(),
-                TextField(
-                  textInputAction: TextInputAction.next,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    TextInputMask(mask: '(99)9 9999-9999')
-                  ],
-                  keyboardType: TextInputType.phone,
-                  controller: _telefoneController,
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                    labelText: 'Telefone',
-                    hintText: '(95)98765-4321',
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(Icons.phone),
-                    ),
-                  ),
-                ),
+                PhoneWidget(telefoneController: _telefoneController),
                 Divider(),
                 Container(
                   padding: EdgeInsets.all(10),
@@ -157,83 +131,24 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                       Divider(),
                       Row(
                         children: [
-                          Expanded(
-                            flex: 5,
-                            child: TextField(
-                              textCapitalization: TextCapitalization.characters,
-                              textInputAction: TextInputAction.next,
-                              controller: _ufController,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: null,
-                              decoration:
-                                  kTextFieldDecorationMorarMelhor.copyWith(
-                                labelText: 'UF',
-                                hintText: 'UF',
-                              ),
-                            ),
-                          ),
+                          UfWidget(ufController: _ufController),
                           Spacer(),
-                          Expanded(
-                            flex: 25,
-                            child: TextField(
-                              textCapitalization: TextCapitalization.characters,
-                              textInputAction: TextInputAction.next,
-                              controller: _cidadeController,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: null,
-                              decoration:
-                                  kTextFieldDecorationMorarMelhor.copyWith(
-                                labelText: 'Cidade',
-                                hintText: 'Cidade',
-                              ),
-                            ),
-                          ),
+                          CityWidget(cidadeController: _cidadeController),
                         ],
                       ),
                       Divider(),
-                      TextField(
-                        textCapitalization: TextCapitalization.characters,
-                        textInputAction: TextInputAction.next,
-                        controller: _ruaController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                          labelText: 'Rua',
-                          hintText: 'Rua, avenida,',
-                        ),
-                      ),
+                      StreetWidget(ruaController: _ruaController),
                       Divider(),
                       Row(
                         children: [
-                          Expanded(
-                            flex: 7,
-                            child: TextField(
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                                textInputAction: TextInputAction.next,
-                                controller: _bairroController,
-                                decoration:
-                                    kTextFieldDecorationMorarMelhor.copyWith(
-                                  labelText: 'Bairro',
-                                  hintText: 'Bairro',
-                                )),
-                          ),
+                          BairroWidget(bairroController: _bairroController),
                           Spacer(),
-                          Expanded(
-                            flex: 6,
-                            child: TextField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              controller: _numeroController,
-                              keyboardType: TextInputType.number,
-                              decoration:
-                                  kTextFieldDecorationMorarMelhor.copyWith(
-                                      labelText: 'Número', hintText: 'Número'),
-                            ),
-                          ),
+                          NumberWidget(numeroController: _numeroController),
                         ],
                       ),
+                      Divider(),
+                      ComplementWidget(
+                          complementoController: _complementoController),
                     ],
                   ),
                 ),
@@ -246,48 +161,18 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                     children: [
                       Row(
                         children: [
-                          Expanded(
-                            child: CheckboxListTile(
-                                title: Text('Facebook'),
-                                value: _facebookSocialMedia,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _facebookSocialMedia = value;
-                                  });
-                                }),
+                          Icon(
+                            Icons.schema_rounded,
+                            color: Colors.blueGrey[300],
                           ),
-                          Expanded(
-                            child: CheckboxListTile(
-                                title: Text('Instagram'),
-                                value: _instagramSocialMedia,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _instagramSocialMedia = value;
-                                  });
-                                }),
-                          ),
-                          Expanded(
-                            child: CheckboxListTile(
-                                title: Text('Whatsapp'),
-                                value: _whatsappSocialMedia,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _whatsappSocialMedia = value;
-                                  });
-                                }),
-                          ),
-                          Expanded(
-                            child: CheckboxListTile(
-                                title: Text('Youtube'),
-                                value: _youtubeSocialMedia,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _youtubeSocialMedia = value;
-                                  });
-                                }),
+                          Text(
+                            'Redes Sociais:',
+                            style: TextStyle(color: Colors.blueGrey[300]),
                           ),
                         ],
                       ),
+                      Divider(),
+                      Row(children: checkBoxSocialNetworkMorarMelhor()),
                     ],
                   ),
                 ),
@@ -297,12 +182,312 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Column(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Row(
           children: [Icon(Icons.save), Text('Salvar')],
         ),
+        onPressed: () {
+          final address = Address(
+            cep: _cepController.text,
+            uf: _ufController.text,
+            localidade: _cidadeController.text,
+            logradouro: _ruaController.text,
+            bairro: _bairroController.text,
+            numero: _numeroController.text,
+            complemento: _complementoController.text,
+          );
+
+          final person = Person(
+              address: address,
+              name: _nameController.text,
+              phone: _telefoneController.text,
+              socialNetworks: socialMedia);
+          print(person.toMap());
+        },
       ),
+    );
+  }
+
+  List<Widget> checkBoxSocialNetworkMorarMelhor() {
+    return [
+      Expanded(
+        child: CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            activeColor: Colors.orange,
+            title: Text('Facebook'),
+            value: _facebookSocialMedia,
+            onChanged: (value) {
+              setState(() {
+                _facebookSocialMedia = value!;
+                if (_facebookSocialMedia) {
+                  socialMedia.add('Facebook');
+                } else {
+                  socialMedia.remove('Facebook');
+                }
+              });
+            }),
+      ),
+      Expanded(
+        child: CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            activeColor: Colors.orange,
+            title: Text('Instagram'),
+            value: _instagramSocialMedia,
+            onChanged: (value) {
+              setState(() {
+                _instagramSocialMedia = value!;
+                if (_instagramSocialMedia) {
+                  socialMedia.add('Instagram');
+                } else {
+                  socialMedia.remove('Instagram');
+                }
+              });
+            }),
+      ),
+      Expanded(
+        child: CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            activeColor: Colors.orange,
+            title: Text('Whatsapp'),
+            value: _whatsappSocialMedia,
+            onChanged: (value) {
+              setState(() {
+                _whatsappSocialMedia = value!;
+                if (_whatsappSocialMedia) {
+                  socialMedia.add('Whatsapp');
+                } else {
+                  socialMedia.remove('Whatsapp');
+                }
+              });
+            }),
+      ),
+      Expanded(
+        child: CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            activeColor: Colors.orange,
+            title: Text('Youtube'),
+            value: _youtubeSocialMedia,
+            onChanged: (value) {
+              setState(() {
+                _youtubeSocialMedia = value!;
+                if (_youtubeSocialMedia) {
+                  socialMedia.add('Youtube');
+                } else {
+                  socialMedia.remove('Youtube');
+                }
+              });
+            }),
+      ),
+    ];
+  }
+}
+
+class ComplementWidget extends StatelessWidget {
+  const ComplementWidget({
+    Key? key,
+    required TextEditingController complementoController,
+  })  : _complementoController = complementoController,
+        super(key: key);
+
+  final TextEditingController _complementoController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+        textCapitalization: TextCapitalization.characters,
+        textInputAction: TextInputAction.next,
+        controller: _complementoController,
+        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+          labelText: 'Complemento',
+          hintText: 'Complemento',
+        ));
+  }
+}
+
+class NumberWidget extends StatelessWidget {
+  const NumberWidget({
+    Key? key,
+    required TextEditingController numeroController,
+  })  : _numeroController = numeroController,
+        super(key: key);
+
+  final TextEditingController _numeroController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 6,
+      child: TextField(
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        controller: _numeroController,
+        keyboardType: TextInputType.number,
+        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+            labelText: 'Número', hintText: 'Número'),
+      ),
+    );
+  }
+}
+
+class BairroWidget extends StatelessWidget {
+  const BairroWidget({
+    Key? key,
+    required TextEditingController bairroController,
+  })  : _bairroController = bairroController,
+        super(key: key);
+
+  final TextEditingController _bairroController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 7,
+      child: TextField(
+          textCapitalization: TextCapitalization.characters,
+          textInputAction: TextInputAction.next,
+          controller: _bairroController,
+          decoration: kTextFieldDecorationMorarMelhor.copyWith(
+            labelText: 'Bairro',
+            hintText: 'Bairro',
+          )),
+    );
+  }
+}
+
+class StreetWidget extends StatelessWidget {
+  const StreetWidget({
+    Key? key,
+    required TextEditingController ruaController,
+  })  : _ruaController = ruaController,
+        super(key: key);
+
+  final TextEditingController _ruaController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      textCapitalization: TextCapitalization.characters,
+      textInputAction: TextInputAction.next,
+      controller: _ruaController,
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+        labelText: 'Rua',
+        hintText: 'Rua, avenida,',
+      ),
+    );
+  }
+}
+
+class CityWidget extends StatelessWidget {
+  const CityWidget({
+    Key? key,
+    required TextEditingController cidadeController,
+  })  : _cidadeController = cidadeController,
+        super(key: key);
+
+  final TextEditingController _cidadeController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 25,
+      child: TextField(
+        textCapitalization: TextCapitalization.characters,
+        textInputAction: TextInputAction.next,
+        controller: _cidadeController,
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+          labelText: 'Cidade',
+          hintText: 'Cidade',
+        ),
+      ),
+    );
+  }
+}
+
+class UfWidget extends StatelessWidget {
+  const UfWidget({
+    Key? key,
+    required TextEditingController ufController,
+  })  : _ufController = ufController,
+        super(key: key);
+
+  final TextEditingController _ufController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 5,
+      child: TextField(
+        textCapitalization: TextCapitalization.characters,
+        textInputAction: TextInputAction.next,
+        controller: _ufController,
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+          labelText: 'UF',
+          hintText: 'UF',
+        ),
+      ),
+    );
+  }
+}
+
+class PhoneWidget extends StatelessWidget {
+  const PhoneWidget({
+    Key? key,
+    required TextEditingController telefoneController,
+  })  : _telefoneController = telefoneController,
+        super(key: key);
+
+  final TextEditingController _telefoneController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      textInputAction: TextInputAction.next,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        TextInputMask(mask: '(99)9 9999-9999')
+      ],
+      keyboardType: TextInputType.phone,
+      controller: _telefoneController,
+      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+        labelText: 'Telefone',
+        hintText: '(95)98765-4321',
+        prefixIcon: Padding(
+          padding: EdgeInsets.all(5),
+          child: Icon(Icons.phone),
+        ),
+      ),
+    );
+  }
+}
+
+class CompletNameWidget extends StatelessWidget {
+  const CompletNameWidget({
+    Key? key,
+    required TextEditingController nameController,
+  })  : _nameController = nameController,
+        super(key: key);
+
+  final TextEditingController _nameController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      textCapitalization: TextCapitalization.characters,
+      textInputAction: TextInputAction.next,
+      controller: _nameController,
+      keyboardType: TextInputType.name,
+      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+          labelText: 'Nome',
+          hintText: 'Nome Completo',
+          prefixIcon: Padding(
+            padding: EdgeInsets.all(5),
+            child: Icon(Icons.person),
+          )),
     );
   }
 }

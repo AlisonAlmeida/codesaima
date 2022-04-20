@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-AddressModel cepModelFromJson(String str) =>
-    AddressModel.fromJson(json.decode(str));
+Address cepModelFromJson(String str) => Address.fromJson(json.decode(str));
 
-String cepModelToJson(AddressModel data) => json.encode(data.toJson());
+String cepModelToJson(Address data) => json.encode(data.toJson());
 
-class AddressModel {
-  AddressModel({
+class Address {
+  Address({
     this.cep = '',
     this.logradouro = '',
     this.complemento = '',
@@ -17,6 +16,7 @@ class AddressModel {
     this.gia = '',
     this.ddd = '',
     this.siafi = '',
+    this.numero = '',
   });
 
   String cep;
@@ -29,8 +29,9 @@ class AddressModel {
   String gia;
   String ddd;
   String siafi;
+  String numero;
 
-  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
         cep: json["cep"],
         logradouro: json["logradouro"],
         complemento: json["complemento"],
@@ -55,4 +56,9 @@ class AddressModel {
         "ddd": ddd,
         "siafi": siafi,
       };
+
+  @override
+  String toString() {
+    return 'CEP: $cep, Logradouro: $logradouro, Complemento: $complemento, Bairro: $bairro, Localidade: $localidade, UF: $uf, IBGE: $ibge, GIA: $gia, DDD: $ddd, SIAFI: $siafi, Número: $numero';
+  }
 }

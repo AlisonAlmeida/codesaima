@@ -11,7 +11,7 @@ class Person {
     required this.name,
     required this.phone,
     required this.socialNetworks,
-    required this.addressModel,
+    required this.address,
   });
 
   @HiveField(0)
@@ -21,27 +21,33 @@ class Person {
   String name;
 
   @HiveField(2)
-  int phone;
+  String phone;
 
   @HiveField(3)
   List<String> socialNetworks;
 
   @HiveField(4)
-  AddressModel addressModel;
+  Address address;
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
       id: json['id'],
       name: json['name'],
       phone: json['phone'],
       socialNetworks: json['socialNetworks'],
-      addressModel: json['addressModel']);
+      address: json['address']);
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
       'phone': phone,
-      'socialNetworks': socialNetworks
+      'socialNetworks': socialNetworks,
+      'address': address
     };
+  }
+
+  @override
+  String toString() {
+    return 'Nome: $name, Telefone: $phone, Social Media: $socialNetworks, Endereço: ${address.toString()}';
   }
 }
