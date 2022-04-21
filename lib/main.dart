@@ -10,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 
 Future main() async {
+  /*
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
@@ -18,6 +19,8 @@ Future main() async {
   await Hive.openBox<Person>('people');
   Hive.registerAdapter(AddressAdapter());
   await Hive.openBox<Address>('address');
+
+  */
 
   runApp(const MyApp());
 }

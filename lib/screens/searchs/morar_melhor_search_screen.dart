@@ -48,8 +48,8 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
       cepModel = await networkHelper.getData();
       _bairroController.text = cepModel.bairro;
       _ruaController.text = cepModel.logradouro;
-      _ufController.text = cepModel.uf;
-      _cidadeController.text = cepModel.localidade;
+      //_ufController.text = cepModel.uf;
+      //_cidadeController.text = cepModel.localidade;
     } catch (e) {
       var snackBar = SnackBar(content: Text('Erro'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -59,12 +59,34 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
 
   addPerson(Person person) {
     listOfpeople.add(person);
-    final box = Boxes.getPeople();
-    box.add(person);
+    clearFields();
+    print(listOfpeople);
+    // final box = Boxes.getPeople();
+    // box.add(person);
+  }
+
+  clearFields() {
+    setState(() {
+      _nameController.clear();
+      _cepController.clear();
+      _ruaController.clear();
+      _bairroController.clear();
+      _numeroController.clear();
+      _telefoneController.clear();
+
+      _complementoController.clear();
+      _facebookSocialMedia = false;
+      _instagramSocialMedia = false;
+      _youtubeSocialMedia = false;
+      _whatsappSocialMedia = false;
+      socialMedia = [];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _ufController.text = 'RR';
+    _cidadeController.text = 'Boa Vista';
     return Scaffold(
       appBar: AppBar(
         title: Text('Pesquisa Morar Melhor'),
@@ -75,14 +97,13 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
         child: Form(
           key: _form,
           child: SingleChildScrollView(
-            reverse: true,
             child: Column(
               children: [
-                Divider(),
+                Divider(height: 5),
                 CompletNameWidget(nameController: _nameController),
-                Divider(),
+                Divider(height: 5),
                 PhoneWidget(telefoneController: _telefoneController),
-                Divider(),
+                Divider(height: 5),
                 Container(
                   padding: EdgeInsets.all(10),
                   decoration:
@@ -101,7 +122,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           ),
                         ],
                       ),
-                      Divider(),
+                      Divider(height: 5),
                       Row(
                         children: [
                           Expanded(
@@ -135,7 +156,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           )
                         ],
                       ),
-                      Divider(),
+                      Divider(height: 5),
                       Row(
                         children: [
                           UfWidget(ufController: _ufController),
@@ -143,9 +164,9 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           CityWidget(cidadeController: _cidadeController),
                         ],
                       ),
-                      Divider(),
+                      Divider(height: 5),
                       StreetWidget(ruaController: _ruaController),
-                      Divider(),
+                      Divider(height: 5),
                       Row(
                         children: [
                           BairroWidget(bairroController: _bairroController),
@@ -153,13 +174,13 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           NumberWidget(numeroController: _numeroController),
                         ],
                       ),
-                      Divider(),
+                      Divider(height: 5),
                       ComplementWidget(
                           complementoController: _complementoController),
                     ],
                   ),
                 ),
-                Divider(),
+                Divider(height: 5),
                 Container(
                   padding: EdgeInsets.all(10),
                   decoration:
@@ -178,12 +199,12 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           ),
                         ],
                       ),
-                      Divider(),
+                      Divider(height: 5),
                       Row(children: checkBoxSocialNetworkMorarMelhor()),
                     ],
                   ),
                 ),
-                Divider(),
+                Divider(height: 5),
                 Row(
                   children: [
                     Expanded(
@@ -232,72 +253,83 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   List<Widget> checkBoxSocialNetworkMorarMelhor() {
     return [
       Expanded(
-        child: CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Colors.orange,
-            title: Text('Facebook'),
-            value: _facebookSocialMedia,
-            onChanged: (value) {
-              setState(() {
-                _facebookSocialMedia = value!;
-                if (_facebookSocialMedia) {
-                  socialMedia.add('Facebook');
-                } else {
-                  socialMedia.remove('Facebook');
-                }
-              });
-            }),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _facebookSocialMedia = !_facebookSocialMedia;
+              _facebookSocialMedia
+                  ? socialMedia.add('Facebook')
+                  : socialMedia.remove('Facebook');
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: _facebookSocialMedia ? Colors.amber : Colors.white,
+                border: Border.all()),
+            child: Text('Facebook'),
+          ),
+        ),
       ),
+      SizedBox(width: 3),
       Expanded(
-        child: CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Colors.orange,
-            title: Text('Instagram'),
-            value: _instagramSocialMedia,
-            onChanged: (value) {
-              setState(() {
-                _instagramSocialMedia = value!;
-                if (_instagramSocialMedia) {
-                  socialMedia.add('Instagram');
-                } else {
-                  socialMedia.remove('Instagram');
-                }
-              });
-            }),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _instagramSocialMedia = !_instagramSocialMedia;
+              _instagramSocialMedia
+                  ? socialMedia.add('Instagram')
+                  : socialMedia.remove('Instagram');
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: _instagramSocialMedia ? Colors.amber : Colors.white,
+                border: Border.all()),
+            child: Text('Instagram'),
+          ),
+        ),
       ),
+      SizedBox(width: 3),
       Expanded(
-        child: CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Colors.orange,
-            title: Text('Whatsapp'),
-            value: _whatsappSocialMedia,
-            onChanged: (value) {
-              setState(() {
-                _whatsappSocialMedia = value!;
-                if (_whatsappSocialMedia) {
-                  socialMedia.add('Whatsapp');
-                } else {
-                  socialMedia.remove('Whatsapp');
-                }
-              });
-            }),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _whatsappSocialMedia = !_whatsappSocialMedia;
+              _whatsappSocialMedia
+                  ? socialMedia.add('Whatsapp')
+                  : socialMedia.remove('Whatsapp');
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: _whatsappSocialMedia ? Colors.amber : Colors.white,
+                border: Border.all()),
+            child: Text('Whatsapp'),
+          ),
+        ),
       ),
+      SizedBox(width: 3),
       Expanded(
-        child: CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Colors.orange,
-            title: Text('Youtube'),
-            value: _youtubeSocialMedia,
-            onChanged: (value) {
-              setState(() {
-                _youtubeSocialMedia = value!;
-                if (_youtubeSocialMedia) {
-                  socialMedia.add('Youtube');
-                } else {
-                  socialMedia.remove('Youtube');
-                }
-              });
-            }),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _youtubeSocialMedia = !_youtubeSocialMedia;
+              _youtubeSocialMedia
+                  ? socialMedia.add('Youtube')
+                  : socialMedia.remove('Youtube');
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                color: _youtubeSocialMedia ? Colors.amber : Colors.white,
+                border: Border.all()),
+            child: Text('Youtube'),
+          ),
+        ),
       ),
     ];
   }
@@ -413,6 +445,7 @@ class CityWidget extends StatelessWidget {
     return Expanded(
       flex: 25,
       child: TextField(
+        enabled: false,
         textCapitalization: TextCapitalization.characters,
         textInputAction: TextInputAction.next,
         controller: _cidadeController,
@@ -441,6 +474,7 @@ class UfWidget extends StatelessWidget {
     return Expanded(
       flex: 5,
       child: TextField(
+        enabled: false,
         textCapitalization: TextCapitalization.characters,
         textInputAction: TextInputAction.next,
         controller: _ufController,
