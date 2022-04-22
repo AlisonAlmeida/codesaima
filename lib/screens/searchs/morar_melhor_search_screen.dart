@@ -31,10 +31,12 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   final _ufController = TextEditingController();
   final _cidadeController = TextEditingController();
   final _complementoController = TextEditingController();
+
   bool _facebookSocialMedia = false;
   bool _instagramSocialMedia = false;
   bool _youtubeSocialMedia = false;
   bool _whatsappSocialMedia = false;
+
   List<String> socialMedia = [];
   List<Person> listOfpeople = [];
 
@@ -75,6 +77,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
       _telefoneController.clear();
 
       _complementoController.clear();
+
       _facebookSocialMedia = false;
       _instagramSocialMedia = false;
       _youtubeSocialMedia = false;
@@ -200,7 +203,49 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                         ],
                       ),
                       Divider(height: 5),
-                      Row(children: checkBoxSocialNetworkMorarMelhor()),
+                      Row(
+                        children: [
+                          SocialNetworkCheck(
+                              text: 'Facebook',
+                              checkCallback: _facebookSocialMedia,
+                              toggleCallback: () => setState(() {
+                                    _facebookSocialMedia =
+                                        !_facebookSocialMedia;
+                                    _facebookSocialMedia
+                                        ? socialMedia.add('Facebook')
+                                        : socialMedia.remove('Facebook');
+                                  })),
+                          SocialNetworkCheck(
+                              text: 'Instagram',
+                              checkCallback: _instagramSocialMedia,
+                              toggleCallback: () => setState(() {
+                                    _instagramSocialMedia =
+                                        !_instagramSocialMedia;
+                                    _instagramSocialMedia
+                                        ? socialMedia.add('Instagram')
+                                        : socialMedia.remove('Instagram');
+                                  })),
+                          SocialNetworkCheck(
+                              text: 'Whatsapp',
+                              checkCallback: _whatsappSocialMedia,
+                              toggleCallback: () => setState(() {
+                                    _whatsappSocialMedia =
+                                        !_whatsappSocialMedia;
+                                    _whatsappSocialMedia
+                                        ? socialMedia.add('Whatsapp')
+                                        : socialMedia.remove('Whatsapp');
+                                  })),
+                          SocialNetworkCheck(
+                              text: 'Youtube',
+                              checkCallback: _youtubeSocialMedia,
+                              toggleCallback: () => setState(() {
+                                    _youtubeSocialMedia = !_youtubeSocialMedia;
+                                    _youtubeSocialMedia
+                                        ? socialMedia.add('Youtube')
+                                        : socialMedia.remove('Youtube');
+                                  })),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -543,6 +588,32 @@ class CompletNameWidget extends StatelessWidget {
             padding: EdgeInsets.all(5),
             child: Icon(Icons.person),
           )),
+    );
+  }
+}
+
+class SocialNetworkCheck extends StatelessWidget {
+  SocialNetworkCheck(
+      {required this.text,
+      required this.checkCallback,
+      required this.toggleCallback});
+  final String text;
+  final bool checkCallback;
+  final void Function() toggleCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: toggleCallback,
+        child: Container(
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              color: checkCallback ? Colors.amber : Colors.white,
+              border: Border.all()),
+          child: Text(text),
+        ),
+      ),
     );
   }
 }
