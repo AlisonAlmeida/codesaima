@@ -38,7 +38,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   bool _whatsappSocialMedia = false;
 
   List<String> socialMedia = [];
-  List<Person> listOfpeople = [];
+  List<Person> listOfPeople = [];
 
   void getCep() async {
     EasyLoading.show();
@@ -48,10 +48,13 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
         NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
     try {
       cepModel = await networkHelper.getData();
-      _bairroController.text = cepModel.bairro;
-      _ruaController.text = cepModel.logradouro;
-      //_ufController.text = cepModel.uf;
-      //_cidadeController.text = cepModel.localidade;
+      setState(() {
+        _bairroController.text = cepModel.bairro;
+        _ruaController.text = cepModel.logradouro;
+        //_ufController.text = cepModel.uf;
+
+        _cidadeController.text = cepModel.localidade;
+      });
     } catch (e) {
       var snackBar = SnackBar(content: Text('Erro'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -60,9 +63,9 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   }
 
   addPerson(Person person) {
-    listOfpeople.add(person);
+    listOfPeople.add(person);
     clearFields();
-    print(listOfpeople);
+    print(listOfPeople);
     // final box = Boxes.getPeople();
     // box.add(person);
   }
@@ -75,6 +78,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
       _bairroController.clear();
       _numeroController.clear();
       _telefoneController.clear();
+      _cidadeController.clear();
 
       _complementoController.clear();
 
@@ -89,7 +93,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   @override
   Widget build(BuildContext context) {
     _ufController.text = 'RR';
-    _cidadeController.text = 'Boa Vista';
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Pesquisa Morar Melhor'),
@@ -164,7 +168,22 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                         children: [
                           UfWidget(ufController: _ufController),
                           Spacer(),
-                          CityWidget(cidadeController: _cidadeController),
+                          Expanded(
+                            flex: 5,
+                            child: DropdownButtonFormField(
+                              decoration: kTextFieldDecorationMorarMelhor,
+                              items: dropdownCities,
+                              value: _cidadeController.text.isEmpty
+                                  ? 'Boa Vista'
+                                  : _cidadeController.text,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _cidadeController.text = newValue!;
+                                  print('3 ${_cidadeController.text}');
+                                });
+                              },
+                            ),
+                          ),
                         ],
                       ),
                       Divider(height: 5),
@@ -254,7 +273,9 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            print(dropdownCities[1]);
+                          },
                           icon: Icon(Icons.cancel),
                           label: Text('Cancelar')),
                     ),
@@ -576,7 +597,7 @@ class CompletNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       textCapitalization: TextCapitalization.characters,
       textInputAction: TextInputAction.next,
       controller: _nameController,
