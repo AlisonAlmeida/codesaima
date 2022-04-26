@@ -13,6 +13,15 @@ const String kPathLogoAquiTemDono = 'lib/assets/images/logo_aqui_tem_dono.png';
 
 const String kPathLogoGovRoraimaPreta = 'lib/assets/images/logo_gov_preta.png';
 
+const String kPathLogoFacebook =
+    'lib/assets/images/logotipo-circular-do-facebook.png';
+const String kPathLogoInstagram =
+    'lib/assets/images/logotipo-circular-do-instagram.png';
+const String kPathLogoYoutube =
+    'lib/assets/images/logotipo-circular-do-youtube.png';
+const String kPathLogoWhatsapp =
+    'lib/assets/images/logotipo-circular-do-whatsapp.png';
+
 final kTextFieldDecorationMorarMelhor = InputDecoration(
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),

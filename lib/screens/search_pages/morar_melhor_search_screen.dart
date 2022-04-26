@@ -1,18 +1,18 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, prefer_const_constructors_in_immutables
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/address_model.dart';
-import 'package:codesaima/core/boxes.dart';
 import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/core/person_model.dart';
-
+import 'package:codesaima/screens/list_of_people.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class MorarMelhorSearchScreen extends StatefulWidget {
-  const MorarMelhorSearchScreen({Key? key}) : super(key: key);
+  MorarMelhorSearchScreen({Key? key}) : super(key: key);
 
   @override
   State<MorarMelhorSearchScreen> createState() =>
@@ -20,6 +20,7 @@ class MorarMelhorSearchScreen extends StatefulWidget {
 }
 
 class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
+  final personListBox = Hive.box<Person>('personList');
   final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -38,7 +39,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   bool _whatsappSocialMedia = false;
 
   List<String> socialMedia = [];
-  List<Person> listOfPeople = [];
 
   void getCep() async {
     EasyLoading.show();
@@ -51,8 +51,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
       setState(() {
         _bairroController.text = cepModel.bairro;
         _ruaController.text = cepModel.logradouro;
-        //_ufController.text = cepModel.uf;
-
         _cidadeController.text = cepModel.localidade;
       });
     } catch (e) {
@@ -63,11 +61,13 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
   }
 
   addPerson(Person person) {
-    listOfPeople.add(person);
     clearFields();
-    print(listOfPeople);
-    // final box = Boxes.getPeople();
-    // box.add(person);
+
+    personListBox.add(person);
+  }
+
+  removeLastPerson() {
+    personListBox.deleteAt(personListBox.length - 1);
   }
 
   clearFields() {
@@ -167,7 +167,9 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                       Row(
                         children: [
                           UfWidget(ufController: _ufController),
-                          Spacer(),
+                          Spacer(
+                            flex: 1,
+                          ),
                           Expanded(
                             flex: 5,
                             child: DropdownButtonFormField(
@@ -179,7 +181,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   _cidadeController.text = newValue!;
-                                  print('3 ${_cidadeController.text}');
                                 });
                               },
                             ),
@@ -273,13 +274,10 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
-                          onPressed: () {
-                            print(dropdownCities[1]);
-                          },
+                          onPressed: () {},
                           icon: Icon(Icons.cancel),
                           label: Text('Cancelar')),
                     ),
-                    Spacer(),
                     Expanded(
                       child: ElevatedButton.icon(
                           style:
@@ -306,6 +304,21 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           icon: Icon(Icons.save),
                           label: Text('Salvar')),
                     ),
+                    Expanded(
+                        child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(primary: Colors.blue),
+                      label: Text(
+                        'Lista de Pessoas',
+                      ),
+                      icon: Icon(Icons.person),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListOfPeople()),
+                        );
+                      },
+                    ))
                   ],
                 )
               ],
@@ -314,90 +327,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
         ),
       ),
     );
-  }
-
-  List<Widget> checkBoxSocialNetworkMorarMelhor() {
-    return [
-      Expanded(
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _facebookSocialMedia = !_facebookSocialMedia;
-              _facebookSocialMedia
-                  ? socialMedia.add('Facebook')
-                  : socialMedia.remove('Facebook');
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: _facebookSocialMedia ? Colors.amber : Colors.white,
-                border: Border.all()),
-            child: Text('Facebook'),
-          ),
-        ),
-      ),
-      SizedBox(width: 3),
-      Expanded(
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _instagramSocialMedia = !_instagramSocialMedia;
-              _instagramSocialMedia
-                  ? socialMedia.add('Instagram')
-                  : socialMedia.remove('Instagram');
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: _instagramSocialMedia ? Colors.amber : Colors.white,
-                border: Border.all()),
-            child: Text('Instagram'),
-          ),
-        ),
-      ),
-      SizedBox(width: 3),
-      Expanded(
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _whatsappSocialMedia = !_whatsappSocialMedia;
-              _whatsappSocialMedia
-                  ? socialMedia.add('Whatsapp')
-                  : socialMedia.remove('Whatsapp');
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: _whatsappSocialMedia ? Colors.amber : Colors.white,
-                border: Border.all()),
-            child: Text('Whatsapp'),
-          ),
-        ),
-      ),
-      SizedBox(width: 3),
-      Expanded(
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _youtubeSocialMedia = !_youtubeSocialMedia;
-              _youtubeSocialMedia
-                  ? socialMedia.add('Youtube')
-                  : socialMedia.remove('Youtube');
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: _youtubeSocialMedia ? Colors.amber : Colors.white,
-                border: Border.all()),
-            child: Text('Youtube'),
-          ),
-        ),
-      ),
-    ];
   }
 }
 
@@ -538,7 +467,7 @@ class UfWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 5,
+      flex: 2,
       child: TextField(
         enabled: false,
         textCapitalization: TextCapitalization.characters,
@@ -614,10 +543,12 @@ class CompletNameWidget extends StatelessWidget {
 }
 
 class SocialNetworkCheck extends StatelessWidget {
-  SocialNetworkCheck(
-      {required this.text,
-      required this.checkCallback,
-      required this.toggleCallback});
+  SocialNetworkCheck({
+    Key? key,
+    required this.text,
+    required this.checkCallback,
+    required this.toggleCallback,
+  }) : super(key: key);
   final String text;
   final bool checkCallback;
   final void Function() toggleCallback;
@@ -631,8 +562,15 @@ class SocialNetworkCheck extends StatelessWidget {
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
               color: checkCallback ? Colors.amber : Colors.white,
-              border: Border.all()),
-          child: Text(text),
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight:
+                    checkCallback ? FontWeight.bold : FontWeight.normal),
+          ),
         ),
       ),
     );

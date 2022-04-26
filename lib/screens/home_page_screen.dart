@@ -2,7 +2,8 @@
 
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/screens/searchs/morar_melhor_search_screen.dart';
+import 'package:codesaima/screens/list_of_people.dart';
+import 'package:codesaima/screens/search_pages/morar_melhor_search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -15,12 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void dispose() {
-    Hive.box('person').close();
-    super.dispose();
-  }
-
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -31,25 +26,34 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+                accountEmail: Text('email Usuario'),
+                accountName: Text('Usuario')),
+            Card(
+              elevation: 2,
+              child: ListTile(
+                  leading: Icon(Icons.person_search),
+                  title: Text('Lista de cidadãos cadastrados'),
+                  trailing: Icon(Icons.arrow_forward),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListOfPeople()));
+                  }),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        actions: [
-          GestureDetector(
-            onTap: () async {
-              var box = await Hive.openBox('testBox');
-
-              box.put('name', 'David');
-
-              print('Name: ${box.get('name')}');
-            },
-            child: Padding(
-                padding: EdgeInsets.only(right: 20), child: Icon(Icons.person)),
-          )
-        ],
-        title:
-            Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover, height: 30),
+        title: Image.asset(kPathMainLogoCodesaima, height: 30),
       ),
       body: Center(
         child: GridView.count(

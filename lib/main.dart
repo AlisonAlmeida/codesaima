@@ -2,27 +2,24 @@
 
 import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/person_model.dart';
-import 'package:codesaima/screens/searchs/morar_melhor_search_screen.dart';
+import 'package:codesaima/screens/home_page_screen.dart';
+import 'package:codesaima/screens/search_pages/morar_melhor_search_screen.dart';
 import 'package:codesaima/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 
 Future main() async {
-  /*
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
 
+  await Hive.openBox('address');
   Hive.registerAdapter(PersonAdapter());
-  await Hive.openBox<Person>('people');
   Hive.registerAdapter(AddressAdapter());
-  await Hive.openBox<Address>('address');
+  await Hive.openBox<Person>('personList');
 
-  */
-
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -42,7 +39,7 @@ class MyApp extends StatelessWidget {
           filled: true,
         ),
       ),
-      home: MorarMelhorSearchScreen(),
+      home: HomePage(title: 'Codesaima'),
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
