@@ -3,7 +3,7 @@
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_people.dart';
-import 'package:codesaima/screens/crup_person.dart';
+import 'package:codesaima/screens/crup_person_screen.dart';
 import 'package:codesaima/screens/morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -83,6 +83,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+
+      /*
       bottomNavigationBar: BottomNavigationBar(
           elevation: 10,
           currentIndex: _selectedIndex,
@@ -102,6 +104,8 @@ class _HomePageState extends State<HomePage> {
               label: 'Pesquisas',
             ),
           ]),
+
+          */
     );
   }
 }

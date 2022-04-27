@@ -11,14 +11,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class CrupPeopleScreen extends StatefulWidget {
-  CrupPeopleScreen({Key? key}) : super(key: key);
+class CrupPersonScreen extends StatefulWidget {
+  CrupPersonScreen({Key? key}) : super(key: key);
 
   @override
-  State<CrupPeopleScreen> createState() => _CrupPeopleScreen2State();
+  State<CrupPersonScreen> createState() => _CrupPeopleScreen2State();
 }
 
-class _CrupPeopleScreen2State extends State<CrupPeopleScreen> {
+class _CrupPeopleScreen2State extends State<CrupPersonScreen> {
   final personListBox = Hive.box<Person>('personList');
   final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
