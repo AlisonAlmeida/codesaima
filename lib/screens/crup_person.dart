@@ -4,22 +4,21 @@ import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/core/person_model.dart';
-import 'package:codesaima/screens/list_of_people.dart';
+
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class MorarMelhorSearchScreen extends StatefulWidget {
-  MorarMelhorSearchScreen({Key? key}) : super(key: key);
+class CrupPeopleScreen extends StatefulWidget {
+  CrupPeopleScreen({Key? key}) : super(key: key);
 
   @override
-  State<MorarMelhorSearchScreen> createState() =>
-      _MorarMelhorSearchScreen2State();
+  State<CrupPeopleScreen> createState() => _CrupPeopleScreen2State();
 }
 
-class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
+class _CrupPeopleScreen2State extends State<CrupPeopleScreen> {
   final personListBox = Hive.box<Person>('personList');
   final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
@@ -79,9 +78,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
       _numeroController.clear();
       _telefoneController.clear();
       _cidadeController.clear();
-
       _complementoController.clear();
-
       _facebookSocialMedia = false;
       _instagramSocialMedia = false;
       _youtubeSocialMedia = false;
@@ -96,8 +93,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pesquisa Morar Melhor'),
-        backgroundColor: Colors.orange,
+        title: Text('Cadastro de Pessoa'),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -153,8 +149,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                                 style: ButtonStyle(
                                   padding: MaterialStateProperty.all(
                                       EdgeInsets.all(15)),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.orange),
                                   shape:
                                       MaterialStateProperty.all(CircleBorder()),
                                 ),
@@ -223,43 +217,40 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                         ],
                       ),
                       Divider(height: 5),
-                      Row(
+                      Wrap(
                         children: [
                           SocialNetworkCheck(
-                              text: 'Facebook',
                               checkCallback: _facebookSocialMedia,
-                              toggleCallback: () => setState(() {
-                                    _facebookSocialMedia =
-                                        !_facebookSocialMedia;
+                              text: 'Facebook',
+                              toggleCallback: (value) => setState(() {
+                                    _facebookSocialMedia = value;
                                     _facebookSocialMedia
                                         ? socialMedia.add('Facebook')
                                         : socialMedia.remove('Facebook');
                                   })),
                           SocialNetworkCheck(
-                              text: 'Instagram',
                               checkCallback: _instagramSocialMedia,
-                              toggleCallback: () => setState(() {
-                                    _instagramSocialMedia =
-                                        !_instagramSocialMedia;
+                              text: 'Instagram',
+                              toggleCallback: (value) => setState(() {
+                                    _instagramSocialMedia = value;
                                     _instagramSocialMedia
                                         ? socialMedia.add('Instagram')
                                         : socialMedia.remove('Instagram');
                                   })),
                           SocialNetworkCheck(
-                              text: 'Whatsapp',
                               checkCallback: _whatsappSocialMedia,
-                              toggleCallback: () => setState(() {
-                                    _whatsappSocialMedia =
-                                        !_whatsappSocialMedia;
+                              text: 'Whatsapp',
+                              toggleCallback: (value) => setState(() {
+                                    _whatsappSocialMedia = value;
                                     _whatsappSocialMedia
                                         ? socialMedia.add('Whatsapp')
                                         : socialMedia.remove('Whatsapp');
                                   })),
                           SocialNetworkCheck(
-                              text: 'Youtube',
                               checkCallback: _youtubeSocialMedia,
-                              toggleCallback: () => setState(() {
-                                    _youtubeSocialMedia = !_youtubeSocialMedia;
+                              text: 'Youtube',
+                              toggleCallback: (value) => setState(() {
+                                    _youtubeSocialMedia = value;
                                     _youtubeSocialMedia
                                         ? socialMedia.add('Youtube')
                                         : socialMedia.remove('Youtube');
@@ -278,6 +269,7 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           icon: Icon(Icons.cancel),
                           label: Text('Cancelar')),
                     ),
+                    VerticalDivider(),
                     Expanded(
                       child: ElevatedButton.icon(
                           style:
@@ -304,21 +296,6 @@ class _MorarMelhorSearchScreen2State extends State<MorarMelhorSearchScreen> {
                           icon: Icon(Icons.save),
                           label: Text('Salvar')),
                     ),
-                    Expanded(
-                        child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(primary: Colors.blue),
-                      label: Text(
-                        'Lista de Pessoas',
-                      ),
-                      icon: Icon(Icons.person),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ListOfPeople()),
-                        );
-                      },
-                    ))
                   ],
                 )
               ],
@@ -551,28 +528,18 @@ class SocialNetworkCheck extends StatelessWidget {
   }) : super(key: key);
   final String text;
   final bool checkCallback;
-  final void Function() toggleCallback;
+
+  final void Function(bool) toggleCallback;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: toggleCallback,
-        child: Container(
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-              color: checkCallback ? Colors.amber : Colors.white,
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight:
-                    checkCallback ? FontWeight.bold : FontWeight.normal),
-          ),
-        ),
-      ),
+    return InputChip(
+      label: Text(text),
+      labelStyle: TextStyle(color: Colors.white),
+      backgroundColor: Colors.grey,
+      onSelected: toggleCallback,
+      selected: checkCallback,
+      selectedColor: Colors.red,
     );
   }
 }

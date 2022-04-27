@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 const String kAppName = 'Codesaima';
@@ -7,12 +5,9 @@ const String kAppName = 'Codesaima';
 const String kPathMainLogoCodesaima = 'lib/assets/images/logo_codesaima.png';
 const String kPathMainLogoCodesaimaBranca =
     'lib/assets/images/logo_codesaima_branca.png';
-
 const String kPathLogoMorarMelhor = 'lib/assets/images/logo_morar_melhor.png';
 const String kPathLogoAquiTemDono = 'lib/assets/images/logo_aqui_tem_dono.png';
-
 const String kPathLogoGovRoraimaPreta = 'lib/assets/images/logo_gov_preta.png';
-
 const String kPathLogoFacebook =
     'lib/assets/images/logotipo-circular-do-facebook.png';
 const String kPathLogoInstagram =
@@ -27,11 +22,23 @@ final kTextFieldDecorationMorarMelhor = InputDecoration(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide.none,
   ),
-  fillColor: Colors.orange[50],
+  fillColor: Colors.brown[50],
   filled: true,
 );
 
-List<DropdownMenuItem<String>> dropdownCities = [
+final kGeneralThemeData = ThemeData(primarySwatch: Colors.red);
+final kMorarMelhorThemeData = ThemeData(
+  inputDecorationTheme: InputDecorationTheme(
+      fillColor: Colors.orange[50],
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide.none,
+      )),
+  primarySwatch: Colors.orange,
+);
+
+const List<DropdownMenuItem<String>> dropdownCities = [
   DropdownMenuItem(child: Text('Amajari'), value: 'Amajari'),
   DropdownMenuItem(child: Text('Alto Alegre'), value: 'Alto Alegre'),
   DropdownMenuItem(child: Text('Boa Vista'), value: 'Boa Vista'),

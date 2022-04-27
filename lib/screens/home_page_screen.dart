@@ -3,9 +3,9 @@
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_people.dart';
-import 'package:codesaima/screens/search_pages/morar_melhor_search_screen.dart';
+import 'package:codesaima/screens/crup_person.dart';
+import 'package:codesaima/screens/morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MorarMelhorSearchScreen(),
+                        builder: (context) => MorarMelhorScreen(),
                       ));
                 })
           ],
@@ -86,12 +86,10 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
           elevation: 10,
           currentIndex: _selectedIndex,
-          selectedIconTheme: IconThemeData(color: Colors.red),
           selectedItemColor: Colors.red,
           unselectedIconTheme: IconThemeData(color: Colors.black),
           unselectedItemColor: Colors.black,
           onTap: _onItemTapped,
-          backgroundColor: Colors.white,
           items: [
             BottomNavigationBarItem(
               icon: Icon(
