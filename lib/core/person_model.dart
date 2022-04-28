@@ -7,10 +7,10 @@ part 'person_model.g.dart';
 @HiveType(typeId: 0)
 class Person {
   Person({
-    required this.name,
-    required this.phone,
-    required this.socialNetworks,
-    required this.address,
+    this.name = '',
+    this.phone = '',
+    this.socialNetworks,
+    this.address,
   });
 
   @HiveField(0)
@@ -20,10 +20,10 @@ class Person {
   String phone;
 
   @HiveField(2)
-  List<String> socialNetworks;
+  late List<String>? socialNetworks;
 
   @HiveField(3)
-  Address address;
+  late Address? address;
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
       name: json['name'],

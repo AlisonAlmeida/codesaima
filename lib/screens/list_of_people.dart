@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/person_model.dart';
+import 'package:codesaima/screens/crup_person_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -64,6 +66,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
   @override
   Widget build(BuildContext context) {
+    final Person? person;
     return Scaffold(
       appBar: AppBar(
         title: _isSearching ? _buildSearchField() : Text('Pessoas cadastradas'),
@@ -86,7 +89,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                         itemBuilder: (context, index) {
                           var currentBox = box;
                           var personData = currentBox.getAt(index)!;
-                          var person = personData as Person;
+                          final person = personData as Person;
                           return Card(
                             margin: EdgeInsets.all(10),
                             child: ListTile(
@@ -96,11 +99,22 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
+                                      //edit button
                                       onPressed: () {
-                                        setState(() {});
+                                        setState(() {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CrudPersonScreen(
+                                                        person: person,
+                                                        hasPersonData: true),
+                                              ));
+                                        });
                                       },
                                       icon: Icon(Icons.edit)),
                                   IconButton(
+                                      //delete button
                                       onPressed: () {
                                         setState(() {
                                           personListBox.deleteAt(index);
@@ -119,11 +133,22 @@ class _ListOfPeopleState extends State<ListOfPeople> {
         ],
       )),
       floatingActionButton: FloatingActionButton(
+          //add button
           child: Icon(
             Icons.person_add,
             size: 30,
           ),
-          onPressed: () {}),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                Person person = Person();
+                return CrudPersonScreen(
+                  hasPersonData: false,
+                  person: person,
+                );
+              },
+            ));
+          }),
     );
   }
 

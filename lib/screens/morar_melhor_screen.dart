@@ -22,11 +22,31 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
               icon: Icons.search,
               title: 'Pesquisas',
               onTap: () {
-                _configurandoModalBottomSheet(context);
+                _showModalBottomSheetSearchs(context);
               }),
           CustomListTileMorarMelhor(
               icon: Icons.info, title: 'Informações', onTap: () {}),
         ]));
+  }
+
+  void _showModalBottomSheetSearchs(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.orange[50],
+        builder: (BuildContext context) {
+          return Container(
+            color: Colors.orange[50],
+            child: Column(
+              children: [
+                Flexible(child: Text('Pesquisas')),
+                Expanded(
+                    child: ListView(
+                  children: [],
+                )),
+              ],
+            ),
+          );
+        });
   }
 }
 
@@ -54,19 +74,4 @@ class CustomListTileMorarMelhor extends StatelessWidget {
       )),
     );
   }
-}
-
-void _configurandoModalBottomSheet(context) {
-  showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return Wrap(
-          children: <Widget>[
-            ListTile(
-                leading: Icon(Icons.query_stats_sharp),
-                title: Text('Pesquisa Qualitativa'),
-                onTap: () => {}),
-          ],
-        );
-      });
 }
