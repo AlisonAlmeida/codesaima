@@ -20,7 +20,7 @@ class Person {
   String phone;
 
   @HiveField(2)
-  Map<String, bool>? socialNetworks;
+  List<String>? socialNetworks;
 
   @HiveField(3)
   Address? address;

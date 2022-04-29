@@ -66,7 +66,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       _ruaController.text = person.address!.logradouro;
       _complementoController.text = person.address!.complemento;
 
-      socialMedia = person.socialNetworks;
+      //socialMedia = person.socialNetworks;
+
     }
 
     super.initState();
@@ -110,7 +111,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         address: address,
         name: _nameController.text,
         phone: _telefoneController.text,
-        socialNetworks: socialMedia);
+        socialNetworks: [socialMedia.toString()]);
     _ufController.text = 'RR';
     clearFields();
 
@@ -270,48 +271,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
                         ],
                       ),
                       Divider(height: 5),
-                      Wrap(children: buildSocialMediaInputChips()
-
-                          /*
-                        [
-                          SocialNetworkCheck(
-                              checkCallback: socialMedia!.,
-                              text: 'Facebook',
-                              toggleCallback: (value) => setState(() {
-                                    _facebookSocialMedia = value;
-                                    _facebookSocialMedia!
-                                        ? socialMedia!.add('Facebook')
-                                        : socialMedia!.remove('Facebook');
-                                  })),
-                          SocialNetworkCheck(
-                              checkCallback: _instagramSocialMedia!,
-                              text: 'Instagram',
-                              toggleCallback: (value) => setState(() {
-                                    _instagramSocialMedia = value;
-                                    _instagramSocialMedia!
-                                        ? socialMedia!.add('Instagram')
-                                        : socialMedia!.remove('Instagram');
-                                  })),
-                          SocialNetworkCheck(
-                              checkCallback: _whatsappSocialMedia!,
-                              text: 'Whatsapp',
-                              toggleCallback: (value) => setState(() {
-                                    _whatsappSocialMedia = value;
-                                    _whatsappSocialMedia!
-                                        ? socialMedia!.add('Whatsapp')
-                                        : socialMedia!.remove('Whatsapp');
-                                  })),
-                          SocialNetworkCheck(
-                              checkCallback: _youtubeSocialMedia!,
-                              text: 'Youtube',
-                              toggleCallback: (value) => setState(() {
-                                    _youtubeSocialMedia = value;
-                                    _youtubeSocialMedia!
-                                        ? socialMedia!.add('Youtube')
-                                        : socialMedia!.remove('Youtube');
-                                  })),
-                        ],*/
-                          ),
+                      Wrap(children: buildSocialMediaInputChips()),
                     ],
                   ),
                 ),
@@ -335,6 +295,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
           text: key,
           checkCallback: value,
           toggleCallback: (newValue) => setState(() {
+                print(value);
+                print(newValue);
                 value = newValue;
               })));
     });
@@ -608,7 +570,6 @@ class SocialNetworkCheck extends StatelessWidget {
   }) : super(key: key);
   final String text;
   final bool checkCallback;
-
   final void Function(bool) toggleCallback;
 
   @override

@@ -19,7 +19,7 @@ class PersonAdapter extends TypeAdapter<Person> {
     return Person(
       name: fields[0] as String,
       phone: fields[1] as String,
-      socialNetworks: (fields[2] as Map?)?.cast<String, bool>(),
+      socialNetworks: (fields[2] as List?)?.cast<String>(),
       address: fields[3] as Address?,
     );
   }

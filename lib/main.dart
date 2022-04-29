@@ -16,8 +16,9 @@ Future main() async {
   await Hive.openBox('address');
   Hive.registerAdapter(PersonAdapter());
   Hive.registerAdapter(AddressAdapter());
-  await Hive.openBox<Person>('personList');
 
+  await Hive.openBox<Person>('personList');
+  //await Hive.deleteFromDisk(); //DELETE DATABASE
   runApp(MyApp());
 }
 
