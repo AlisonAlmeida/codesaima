@@ -20,10 +20,10 @@ class Person {
   String phone;
 
   @HiveField(2)
-  late List<String>? socialNetworks;
+  Map<String, bool>? socialNetworks;
 
   @HiveField(3)
-  late Address? address;
+  Address? address;
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
       name: json['name'],

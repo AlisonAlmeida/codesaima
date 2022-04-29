@@ -35,13 +35,21 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   final _cidadeController = TextEditingController();
   final _complementoController = TextEditingController();
   final _estadoController = TextEditingController();
-
+/*
   bool? _facebookSocialMedia = false;
   bool? _instagramSocialMedia = false;
   bool? _youtubeSocialMedia = false;
   bool? _whatsappSocialMedia = false;
 
-  List<String>? socialMedia = [];
+  */
+
+  Map<String, bool>? socialMedia = {
+    'Facebook': false,
+    'Instagram': false,
+    'Whatsapp': false,
+    'Youtube': false
+  };
+  Address address = Address();
   Person person = Person();
 
   @override
@@ -49,6 +57,15 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
     if (widget.hasPersonData) {
       person = widget.person;
       _nameController.text = person.name;
+      _telefoneController.text = person.phone;
+      _cepController.text = person.address!.cep;
+      _bairroController.text = person.address!.bairro;
+      _numeroController.text = person.address!.numero;
+      _ufController.text = person.address!.uf;
+      _cidadeController.text = person.address!.localidade;
+      _ruaController.text = person.address!.logradouro;
+      _complementoController.text = person.address!.complemento;
+
       socialMedia = person.socialNetworks;
     }
 
@@ -112,12 +129,15 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       _numeroController.clear();
       _telefoneController.clear();
       _cidadeController.clear();
-      _complementoController.clear();
+      _complementoController
+          .clear(); /*
       _facebookSocialMedia = false;
       _instagramSocialMedia = false;
       _youtubeSocialMedia = false;
-      _whatsappSocialMedia = false;
-      socialMedia = [];
+      _whatsappSocialMedia = false;*/
+      socialMedia!.forEach((key, value) {
+        value = false;
+      });
     });
   }
 
@@ -250,10 +270,12 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
                         ],
                       ),
                       Divider(height: 5),
-                      Wrap(
-                        children: [
+                      Wrap(children: buildSocialMediaInputChips()
+
+                          /*
+                        [
                           SocialNetworkCheck(
-                              checkCallback: _facebookSocialMedia!,
+                              checkCallback: socialMedia!.,
                               text: 'Facebook',
                               toggleCallback: (value) => setState(() {
                                     _facebookSocialMedia = value;
@@ -288,8 +310,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
                                         ? socialMedia!.add('Youtube')
                                         : socialMedia!.remove('Youtube');
                                   })),
-                        ],
-                      ),
+                        ],*/
+                          ),
                     ],
                   ),
                 ),
@@ -303,6 +325,21 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> buildSocialMediaInputChips() {
+    List<Widget> list = [];
+
+    socialMedia!.forEach((key, value) {
+      list.add(SocialNetworkCheck(
+          text: key,
+          checkCallback: value,
+          toggleCallback: (newValue) => setState(() {
+                value = newValue;
+              })));
+    });
+
+    return list;
   }
 
   List<Widget> buildOptionButtons() {
@@ -521,7 +558,7 @@ class PhoneWidget extends StatelessWidget {
         FilteringTextInputFormatter.digitsOnly,
         TextInputMask(mask: '(99)9 9999-9999')
       ],
-      keyboardType: TextInputType.phone,
+      keyboardType: TextInputType.number,
       controller: _telefoneController,
       decoration: kTextFieldDecorationMorarMelhor.copyWith(
         labelText: 'Telefone',
