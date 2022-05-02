@@ -66,7 +66,6 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
   @override
   Widget build(BuildContext context) {
-    final Person? person;
     return Scaffold(
       appBar: AppBar(
         title: _isSearching ? _buildSearchField() : Text('Pessoas cadastradas'),
@@ -105,11 +104,15 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CrudPersonScreen(
-                                                        person: person,
-                                                        hasPersonData: true),
-                                              ));
+                                                  builder: (context) =>
+                                                      CrudPersonScreen(
+                                                          person: person,
+                                                          hasPersonData: true,
+                                                          personIndex:
+                                                              personListBox
+                                                                      .keys
+                                                                      .toList()[
+                                                                  index])));
                                         });
                                       },
                                       icon: Icon(Icons.edit)),
