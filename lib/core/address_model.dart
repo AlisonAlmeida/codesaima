@@ -75,4 +75,18 @@ class Address {
   String toString() {
     return 'CEP: $cep, Logradouro: $logradouro, Complemento: $complemento, Bairro: $bairro, Localidade: $localidade, UF: $uf, IBGE: $ibge, GIA: $gia, DDD: $ddd, SIAFI: $siafi, Número: $numero';
   }
+
+  void clearFields() {
+    cep = '';
+    logradouro = '';
+    complemento = '';
+    bairro = '';
+    localidade = '';
+    uf = '';
+    ibge = '';
+    gia = '';
+    ddd = '';
+    siafi = '';
+    numero = '';
+  }
 }

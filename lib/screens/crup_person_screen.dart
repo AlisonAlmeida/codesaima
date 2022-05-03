@@ -4,6 +4,7 @@ import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/core/person_model.dart';
+import 'package:codesaima/core/social_networks.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,17 +42,14 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   final _complementoController = TextEditingController();
   final _estadoController = TextEditingController();
 
-  Map<String, bool>? socialMedia = {
-    'Facebook': false,
-    'Instagram': false,
-    'Whatsapp': false,
-    'Youtube': false
-  };
+  SocialNetworks socialNetworks = SocialNetworks();
+
   Address address = Address();
   Person person = Person();
 
   @override
   void initState() {
+    socialNetworks.clear();
     if (widget.hasPersonData) {
       person = widget.person;
       _nameController.text = person.name;
@@ -63,6 +61,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       _cidadeController.text = person.address!.localidade;
       _ruaController.text = person.address!.logradouro;
       _complementoController.text = person.address!.complemento;
+      socialNetworks = person.socialNetworks!;
     }
     super.initState();
   }
@@ -70,17 +69,17 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   void getCep() async {
     EasyLoading.show();
     FocusManager.instance.primaryFocus?.unfocus(); //dismiss Keyboard
-    Address cepModel = Address();
+
     NetworkHelper networkHelper =
         NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
     try {
-      cepModel = await networkHelper.getData();
+      address = await networkHelper.getData();
       setState(() {
-        if (cepModel.uf == 'RR') {
+        if (address.uf == 'RR') {
           _ufController.text = 'RR';
-          _cidadeController.text = cepModel.localidade.toUpperCase();
-          _bairroController.text = cepModel.bairro.toUpperCase();
-          _ruaController.text = cepModel.logradouro.toUpperCase();
+          _cidadeController.text = address.localidade.toUpperCase();
+          _bairroController.text = address.bairro.toUpperCase();
+          _ruaController.text = address.logradouro.toUpperCase();
         }
       });
     } catch (e) {
@@ -91,6 +90,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   }
 
   addPerson() {
+    EasyLoading.show();
     final address = Address(
         cep: _cepController.text,
         uf: _ufController.text.toUpperCase(),
@@ -104,15 +104,18 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         address: address,
         name: _nameController.text,
         phone: _telefoneController.text,
-        socialNetworks: [socialMedia.toString()]);
+        socialNetworks: socialNetworks);
     _ufController.text = 'RR';
     clearFields();
 
     personListBox.add(person);
+    EasyLoading.dismiss();
     Navigator.pop(context);
   }
 
   updatePerson() {
+    EasyLoading.show();
+
     final address = Address(
         cep: _cepController.text,
         uf: _ufController.text.toUpperCase(),
@@ -121,18 +124,22 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         bairro: _bairroController.text.toUpperCase(),
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
+
     final person = Person(
         address: address,
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
-        socialNetworks: [socialMedia.toString()]);
+        socialNetworks: socialNetworks);
+
     personListBox.put(widget.personIndex!, person);
+    EasyLoading.dismiss();
     Navigator.pop(context);
   }
 
   clearFields() {
     setState(() {
       _nameController.clear();
+
       _cepController.clear();
       _ruaController.clear();
       _bairroController.clear();
@@ -140,9 +147,6 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       _telefoneController.clear();
       _cidadeController.clear();
       _complementoController.clear();
-      socialMedia!.forEach((key, value) {
-        value = false;
-      });
     });
   }
 
@@ -273,18 +277,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
                         ],
                       ),
                       Divider(height: 5),
-                      Wrap(children: [
-                        for (var item in socialMedia!.entries)
-                          SocialNetworkCheck(
-                              text: item.key,
-                              checkCallback: item.value,
-                              toggleCallback: (newValue) {
-                                setState(() {
-                                  socialMedia!
-                                      .update(item.key, (value) => newValue);
-                                });
-                              })
-                      ])
+                      Wrap(children: buildSocialMediaNetworks())
                     ],
                   ),
                 ),
@@ -300,25 +293,38 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
     );
   }
 
-  /*
-
-  List<Widget> buildSocialMediaInputChips() {
+  List<Widget> buildSocialMediaNetworks() {
     List<Widget> list = [];
 
-    socialMedia!.forEach((key, value) {
-      list.add(SocialNetworkCheck(
-          text: key,
-          checkCallback: value,
+    list.addAll([
+      SocialNetworkCheck(
+          text: 'Facebook',
+          checkCallback: socialNetworks.facebook!,
           toggleCallback: (newValue) => setState(() {
-                
-                value = newValue;
-              })));
-    });
+                socialNetworks.facebook = newValue;
+              })),
+      SocialNetworkCheck(
+          text: 'Instagram',
+          checkCallback: socialNetworks.instagram!,
+          toggleCallback: (newValue) => setState(() {
+                socialNetworks.instagram = newValue;
+              })),
+      SocialNetworkCheck(
+          text: 'Whatsapp',
+          checkCallback: socialNetworks.whatsapp!,
+          toggleCallback: (newValue) => setState(() {
+                socialNetworks.whatsapp = newValue;
+              })),
+      SocialNetworkCheck(
+          text: 'Youtube',
+          checkCallback: socialNetworks.youtube!,
+          toggleCallback: (newValue) => setState(() {
+                socialNetworks.youtube = newValue;
+              })),
+    ]);
 
     return list;
   }
-
-  */
 
   List<Widget> buildOptionButtons() {
     final List<Widget> list = [];
@@ -347,9 +353,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       list.addAll([
         Expanded(
           child: ElevatedButton.icon(
-              onPressed: () {
-                print(socialMedia!.length);
-              },
+              onPressed: () {},
               icon: Icon(Icons.cancel),
               label: Text('Cancelar')),
         ),

@@ -3,6 +3,7 @@
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/person_model.dart';
+import 'package:codesaima/core/social_networks.dart';
 import 'package:codesaima/screens/home_page_screen.dart';
 import 'package:codesaima/screens/crup_person_screen.dart';
 import 'package:codesaima/screens/splash_screen.dart';
@@ -13,12 +14,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 Future main() async {
   await Hive.initFlutter();
 
-  await Hive.openBox('address');
-  Hive.registerAdapter(PersonAdapter());
   Hive.registerAdapter(AddressAdapter());
-
+  await Hive.openBox<Address>('address');
+  Hive.registerAdapter(SocialNetworksAdapter());
+  await Hive.openBox<SocialNetworks>('social_Networks');
+  Hive.registerAdapter(PersonAdapter());
   await Hive.openBox<Person>('personList');
+
   //await Hive.deleteFromDisk(); //DELETE DATABASE
+
   runApp(MyApp());
 }
 
