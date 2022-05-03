@@ -2,6 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/home_page_screen.dart';
+import 'package:codesaima/screens/search_screens/qualitative_research_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
@@ -11,7 +12,7 @@ class SplashPage extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => HomePage(title: kAppName))));
+                builder: (context) => QualitativeResearchScreen())));
 
     return Scaffold(
       body: Container(

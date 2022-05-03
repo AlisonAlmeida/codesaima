@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/person_model.dart';
 import 'package:codesaima/screens/crup_person_screen.dart';
 import 'package:flutter/material.dart';
@@ -100,20 +99,17 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                                   IconButton(
                                       //edit button
                                       onPressed: () {
-                                        setState(() {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CrudPersonScreen(
-                                                          person: person,
-                                                          hasPersonData: true,
-                                                          personIndex:
-                                                              personListBox
-                                                                      .keys
-                                                                      .toList()[
-                                                                  index])));
-                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CrudPersonScreen(
+                                                        person: person,
+                                                        hasPersonData: true,
+                                                        personIndex:
+                                                            personListBox.keys
+                                                                    .toList()[
+                                                                index])));
                                       },
                                       icon: Icon(Icons.edit)),
                                   IconButton(

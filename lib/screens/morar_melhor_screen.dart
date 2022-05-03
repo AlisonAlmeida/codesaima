@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:codesaima/screens/search_screens/qualitative_research_screen.dart';
 import 'package:flutter/material.dart';
 
 class MorarMelhorScreen extends StatefulWidget {
@@ -40,10 +41,30 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
             color: Colors.orange[50],
             child: Column(
               children: [
-                Flexible(child: Text('Pesquisas')),
+                Flexible(
+                    child: Text(
+                  'Pesquisas',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                )),
                 Expanded(
                     child: ListView(
-                  children: [],
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => QualitativeResearchScreen(),
+                            ));
+                      },
+                      child: Card(
+                          margin: EdgeInsets.all(10),
+                          child: ListTile(
+                            title: Text('Pequisa Qualitativa'),
+                            trailing: Icon(Icons.forward),
+                          )),
+                    )
+                  ],
                 )),
               ],
             ),
