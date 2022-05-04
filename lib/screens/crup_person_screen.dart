@@ -89,7 +89,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
     EasyLoading.dismiss();
   }
 
-  addPerson() {
+  addPerson() async {
     EasyLoading.show();
     final address = Address(
         cep: _cepController.text,
@@ -108,12 +108,12 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
     _ufController.text = 'RR';
     clearFields();
 
-    personListBox.add(person);
+    await personListBox.add(person);
     EasyLoading.dismiss();
     Navigator.pop(context);
   }
 
-  updatePerson() {
+  updatePerson() async {
     EasyLoading.show();
 
     final address = Address(
@@ -131,7 +131,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         phone: _telefoneController.text,
         socialNetworks: socialNetworks);
 
-    personListBox.put(widget.personIndex!, person);
+    await personListBox.put(widget.personIndex!, person);
     EasyLoading.dismiss();
     Navigator.pop(context);
   }
