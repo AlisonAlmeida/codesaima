@@ -8,18 +8,21 @@ import 'package:flutter/material.dart';
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 0)).then((value) =>
-        Navigator.pushReplacement(
+    Future.delayed(Duration(seconds: 1))
+        .then((value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => QualitativeResearchScreen())));
+                builder: (context) => HomePage(
+                      title: 'Codesaima',
+                    ))));
 
     return Scaffold(
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(color: Colors.white),
         child: Center(
-            child: Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover)),
+          child: Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover),
+        ),
       ),
     );
   }

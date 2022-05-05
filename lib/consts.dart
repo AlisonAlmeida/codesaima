@@ -16,6 +16,8 @@ const String kPathLogoYoutube =
     'lib/assets/images/logotipo-circular-do-youtube.png';
 const String kPathLogoWhatsapp =
     'lib/assets/images/logotipo-circular-do-whatsapp.png';
+const String kPathEdificeCodesaimaBackground =
+    'lib/assets/images/edifice_codesaima_background.jpg';
 
 final kTextFieldDecorationMorarMelhor = InputDecoration(
   border: OutlineInputBorder(

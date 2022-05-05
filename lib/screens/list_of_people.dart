@@ -115,9 +115,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                                   IconButton(
                                       //delete button
                                       onPressed: () {
-                                        setState(() {
-                                          personListBox.deleteAt(index);
-                                        });
+                                        showAlertDialog(context, person, index);
                                       },
                                       icon: Icon(Icons.delete)),
                                 ],
@@ -148,6 +146,41 @@ class _ListOfPeopleState extends State<ListOfPeople> {
               },
             ));
           }),
+    );
+  }
+
+  showAlertDialog(BuildContext context, Person person, int index) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancelar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Confirmar"),
+      onPressed: () async {
+        await personListBox.deleteAt(index);
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(person.name),
+      content: Text("Confirma a exclusão do cadastro?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 
