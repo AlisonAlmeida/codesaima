@@ -12,10 +12,6 @@ class ListOfPeople extends StatefulWidget {
   State<ListOfPeople> createState() => _ListOfPeopleState();
 }
 
-TextEditingController _searchQueryController = TextEditingController();
-bool _isSearching = false;
-String searchQuery = "Search query";
-
 class _ListOfPeopleState extends State<ListOfPeople> {
   late final Box personListBox;
 
@@ -33,46 +29,27 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     personListBox.deleteAt(index);
   }
 
-  void _startSearch() {
-    ModalRoute.of(context)!
-        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: _stopSearching));
-
-    setState(() {
-      _isSearching = true;
-    });
-  }
-
-  void updateSearchQuery(String newQuery) {
-    setState(() {
-      searchQuery = newQuery;
-    });
-  }
-
-  void _stopSearching() {
-    _clearSearchQuery();
-
-    setState(() {
-      _isSearching = false;
-    });
-  }
-
-  void _clearSearchQuery() {
-    setState(() {
-      _searchQueryController.clear();
-      updateSearchQuery("");
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _isSearching ? _buildSearchField() : Text('Pessoas cadastradas'),
-        actions: _buildActions(),
-      ),
-      body: Center(
-          child: Column(
-        children: [
+        appBar: AppBar(
+          title: Text('Pessoas'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        endDrawer: Drawer(
+          child: Center(
+              child: ElevatedButton(
+                  onPressed: () => showAlertDeleteAllData(context),
+                  child: Text('Deletar todos os cadastros'))),
+        ),
+        body: Center(
+            child: Column(children: [
           Expanded(
             child: ValueListenableBuilder(
                 valueListenable: personListBox.listenable(),
@@ -88,65 +65,75 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                           var currentBox = box;
                           var personData = currentBox.getAt(index)!;
                           final person = personData as Person;
-                          return Card(
-                            margin: EdgeInsets.all(10),
-                            child: ListTile(
-                              title: Text(person.name),
-                              subtitle: Text(person.phone),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                      //edit button
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CrudPersonScreen(
-                                                        person: person,
-                                                        hasPersonData: true,
-                                                        personIndex:
-                                                            personListBox.keys
-                                                                    .toList()[
-                                                                index])));
-                                      },
-                                      icon: Icon(Icons.edit)),
-                                  IconButton(
-                                      //delete button
-                                      onPressed: () {
-                                        showAlertDialog(context, person, index);
-                                      },
-                                      icon: Icon(Icons.delete)),
-                                ],
+                          return Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CrudPersonScreen(
+                                                  person: person,
+                                                  hasPersonData: true,
+                                                  personIndex: personListBox
+                                                      .keys
+                                                      .toList()[index])));
+                                },
+                                child: Card(
+                                  margin: EdgeInsets.all(10),
+                                  child: ListTile(
+                                    title: Text(person.name),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(children: [
+                                          Icon(Icons.phone),
+                                          Text(person.phone)
+                                        ]),
+                                        Row(children: [
+                                          Icon(Icons.room),
+                                          Flexible(
+                                              child: Text(
+                                                  person.address!.logradouro))
+                                        ])
+                                      ],
+                                    ),
+                                    trailing: IconButton(
+                                        //delete button
+                                        onPressed: () => showAlertDialog(
+                                            context, person, index),
+                                        icon: Icon(Icons.delete)),
+                                  ),
+                                ),
                               ),
-                              leading: Icon(Icons.person),
-                            ),
+                            ],
                           );
                         });
                   }
                 }),
           ),
-        ],
-      )),
-      floatingActionButton: FloatingActionButton(
-          //add button
-          child: Icon(
-            Icons.person_add,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                Person person = Person();
-                return CrudPersonScreen(
-                  hasPersonData: false,
-                  person: person,
-                );
-              },
-            ));
-          }),
-    );
+          Row(children: [
+            Expanded(
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(primary: Colors.green[700]),
+                    icon: Icon(
+                      Icons.person_add,
+                      size: 30,
+                    ),
+                    label: Text('Cadastrar Pessoa'),
+                    onPressed: () => Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          Person person = Person();
+                          return CrudPersonScreen(
+                            hasPersonData: false,
+                            person: person,
+                          );
+                        })) //                  await Hive.box<Person>('personlist').clear();
+                    ))
+          ])
+        ])));
   }
 
   showAlertDialog(BuildContext context, Person person, int index) {
@@ -184,42 +171,40 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     );
   }
 
-  Widget _buildSearchField() {
-    return TextField(
-      controller: _searchQueryController,
-      autofocus: true,
-      decoration: InputDecoration(
-        hintText: "Insira o nome",
-        border: InputBorder.none,
-        hintStyle: TextStyle(color: Colors.white70),
-      ),
-      style: TextStyle(color: Colors.white, fontSize: 16.0),
-      onChanged: (query) => updateSearchQuery(query),
+  showAlertDeleteAllData(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancelar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
     );
-  }
+    Widget continueButton = TextButton(
+      child: Text("Confirmar"),
+      onPressed: () async {
+        await personListBox.clear();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      },
+    );
 
-  List<Widget> _buildActions() {
-    if (_isSearching) {
-      return <Widget>[
-        IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () {
-            if (_searchQueryController == null ||
-                _searchQueryController.text.isEmpty) {
-              Navigator.pop(context);
-              return;
-            }
-            _clearSearchQuery();
-          },
-        ),
-      ];
-    }
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+          'Isso vai deletar todos os cadastros do seu dispositivo com as pesquisas realizadas!'),
+      content: Text('Confirma a exclusão?'),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
 
-    return <Widget>[
-      IconButton(
-        icon: const Icon(Icons.search),
-        onPressed: _startSearch,
-      ),
-    ];
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

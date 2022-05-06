@@ -23,6 +23,7 @@ bool _visibilityPlaceRegister = false;
 bool _visibilitySocialProfile = false;
 bool _visibilityNumberVisits = false;
 int _numberOfVisits = 0;
+bool? checkBoxTimeLiveInHome = false;
 
 class _QualitativeResearchScreenState extends State<QualitativeResearchScreen> {
   @override
@@ -59,6 +60,33 @@ class _QualitativeResearchScreenState extends State<QualitativeResearchScreen> {
                       labelText: 'Proprietário do Imóvel',
                       hintText: 'Proprietário do Imóvel'),
                 ),
+              ),
+              Divider(),
+              Text(
+                'Quanto tempo reside no imóvel?',
+                style: TextStyle(fontSize: 25),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: TextField(decoration: kTextFieldDecorationMorarMelhor),
+              ),
+              Divider(),
+              Text(
+                'Quantas famílias residem no imóvel?',
+                style: TextStyle(fontSize: 25),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: TextField(decoration: kTextFieldDecorationMorarMelhor),
+              ),
+              Divider(),
+              Text(
+                'Quantas famílias vivem no imóvel?',
+                style: TextStyle(fontSize: 25),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: TextField(decoration: kTextFieldDecorationMorarMelhor),
               ),
               Divider(),
               Text(

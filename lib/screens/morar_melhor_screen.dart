@@ -19,8 +19,8 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
           backgroundColor: Colors.orange,
         ),
         body: ListView(children: [
-          CustomListTileMorarMelhor(
-              icon: Icons.last_page, title: 'Inscrições', onTap: () {}),
+          //CustomListTileMorarMelhor(
+          //    icon: Icons.last_page, title: 'Inscrições', onTap: () {}),
           CustomListTileMorarMelhor(
               icon: Icons.search,
               title: 'Pesquisas',

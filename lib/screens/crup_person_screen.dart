@@ -40,7 +40,6 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   final _ufController = TextEditingController();
   final _cidadeController = TextEditingController();
   final _complementoController = TextEditingController();
-  final _estadoController = TextEditingController();
 
   SocialNetworks socialNetworks = SocialNetworks();
 
@@ -83,7 +82,9 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         }
       });
     } catch (e) {
-      var snackBar = SnackBar(content: Text('Erro'));
+      var snackBar = SnackBar(
+          content:
+              Text('Erro ${e.toString().replaceAll(RegExp(r'[^0-9]'), '')}'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     EasyLoading.dismiss();
@@ -152,7 +153,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _estadoController.text = 'RR';
+    _ufController.text = 'RR';
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Cadastro de Pessoa'),
@@ -360,7 +362,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         VerticalDivider(),
         Expanded(
           child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.green),
+              style: ElevatedButton.styleFrom(primary: Colors.green[700]),
               onPressed: () {
                 addPerson();
               },
