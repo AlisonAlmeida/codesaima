@@ -31,7 +31,9 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey _scaffold = GlobalKey();
     return Scaffold(
+        key: _scaffold,
         appBar: AppBar(
           title: Text('Pessoas'),
           leading: IconButton(
@@ -103,7 +105,9 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                                     trailing: IconButton(
                                         //delete button
                                         onPressed: () => showAlertDialog(
-                                            context, person, index),
+                                            _scaffold.currentState!.context,
+                                            person,
+                                            index),
                                         icon: Icon(Icons.delete)),
                                   ),
                                 ),
@@ -114,41 +118,40 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                   }
                 }),
           ),
-          Row(children: [
-            Expanded(
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(primary: Colors.green[700]),
-                    icon: Icon(
-                      Icons.person_add,
-                      size: 30,
-                    ),
-                    label: Text('Cadastrar Pessoa'),
-                    onPressed: () => Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          Person person = Person();
-                          return CrudPersonScreen(
-                            hasPersonData: false,
-                            person: person,
-                          );
-                        })) //                  await Hive.box<Person>('personlist').clear();
-                    ))
-          ])
+          ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  fixedSize: Size(MediaQuery.of(context).size.width, 70),
+                  primary: Colors.green[700]),
+              icon: Icon(
+                Icons.person_add,
+                size: 30,
+              ),
+              label: Text('Cadastrar Pessoa'),
+              onPressed: () =>
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Person person = Person();
+                    return CrudPersonScreen(
+                      hasPersonData: false,
+                      person: person,
+                    );
+                  })) //                  await Hive.box<Person>('personlist').clear();
+              )
         ])));
   }
 
-  showAlertDialog(BuildContext context, Person person, int index) {
+  showAlertDialog(BuildContext dialogContext, Person person, int index) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text("Cancelar"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(dialogContext).pop();
       },
     );
     Widget continueButton = TextButton(
       child: Text("Confirmar"),
       onPressed: () async {
         await personListBox.deleteAt(index);
-        Navigator.of(context).pop();
+        Navigator.of(dialogContext).pop();
       },
     );
 
@@ -164,27 +167,27 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
     // show the dialog
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: dialogContext,
+      builder: (BuildContext dialogContext) {
         return alert;
       },
     );
   }
 
-  showAlertDeleteAllData(BuildContext context) {
+  showAlertDeleteAllData(BuildContext dialogContext) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text("Cancelar"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(dialogContext).pop();
       },
     );
     Widget continueButton = TextButton(
       child: Text("Confirmar"),
       onPressed: () async {
         await personListBox.clear();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        Navigator.of(dialogContext).pop();
+        Navigator.of(dialogContext).pop();
       },
     );
 
@@ -202,7 +205,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     // show the dialog
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return alert;
       },
     );

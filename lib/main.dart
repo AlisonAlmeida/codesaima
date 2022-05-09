@@ -4,8 +4,6 @@ import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/address_model.dart';
 import 'package:codesaima/core/person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
-import 'package:codesaima/screens/home_page_screen.dart';
-import 'package:codesaima/screens/crup_person_screen.dart';
 import 'package:codesaima/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

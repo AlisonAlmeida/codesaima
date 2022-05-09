@@ -24,7 +24,7 @@ final kTextFieldDecorationMorarMelhor = InputDecoration(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide.none,
   ),
-  fillColor: Colors.brown[50],
+  fillColor: Colors.orange[50],
   filled: true,
 );
 

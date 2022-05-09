@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:codesaima/consts.dart';
+import 'package:codesaima/core/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class QualitativeResearchScreen extends StatefulWidget {
   const QualitativeResearchScreen({Key? key}) : super(key: key);
@@ -11,6 +14,9 @@ class QualitativeResearchScreen extends StatefulWidget {
   State<QualitativeResearchScreen> createState() =>
       _QualitativeResearchScreenState();
 }
+
+final personListBox = Hive.box<Person>('personList');
+Person person = Person();
 
 int _groupValue1 = 0;
 int _groupValue2 = 0;
@@ -23,7 +29,7 @@ bool _visibilityPlaceRegister = false;
 bool _visibilitySocialProfile = false;
 bool _visibilityNumberVisits = false;
 int _numberOfVisits = 0;
-bool? checkBoxTimeLiveInHome = false;
+TextEditingController ownerHouse = TextEditingController();
 
 class _QualitativeResearchScreenState extends State<QualitativeResearchScreen> {
   @override
@@ -55,10 +61,18 @@ class _QualitativeResearchScreenState extends State<QualitativeResearchScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: TextField(
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                      labelText: 'Proprietário do Imóvel',
-                      hintText: 'Proprietário do Imóvel'),
+                child: SearchField(
+                  controller: ownerHouse,
+                  suggestionState: Suggestion.expand,
+                  searchInputDecoration:
+                      kTextFieldDecorationMorarMelhor.copyWith(
+                          hintText: 'Quem é o proprietário do imóvel?',
+                          labelText: 'Quem é o proprietário do imóvel?'),
+                  suggestions: personListBox.values.map((e) {
+                    person = e;
+                    return SearchFieldListItem<Person>(person.name);
+                  }).toList(),
+                  onSuggestionTap: (a) {},
                 ),
               ),
               Divider(),
