@@ -1,17 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/core/person_model.dart';
+import 'package:codesaima/models/person_model.dart';
+import 'package:codesaima/screens/crud_person_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:searchfield/searchfield.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class QualitativeResearchScreen extends StatefulWidget {
-  const QualitativeResearchScreen({Key? key}) : super(key: key);
+class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
+  QualitativeResearchMorarMelhorScreen({Key? key}) : super(key: key);
 
   @override
-  State<QualitativeResearchScreen> createState() =>
+  State<QualitativeResearchMorarMelhorScreen> createState() =>
       _QualitativeResearchScreenState();
 }
 
@@ -31,7 +31,14 @@ bool _visibilityNumberVisits = false;
 int _numberOfVisits = 0;
 TextEditingController ownerHouse = TextEditingController();
 
-class _QualitativeResearchScreenState extends State<QualitativeResearchScreen> {
+class _QualitativeResearchScreenState
+    extends State<QualitativeResearchMorarMelhorScreen> {
+  @override
+  void dispose() {
+    person = Person();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,25 +62,59 @@ class _QualitativeResearchScreenState extends State<QualitativeResearchScreen> {
                 ],
               ),
               Divider(height: 7),
+              person.name != ''
+                  ? Row(
+                      children: [
+                        Expanded(
+                          flex: 10,
+                          child: Text(
+                            person.name,
+                            style: TextStyle(
+                                fontSize: 25, color: Colors.orange[700]),
+                          ),
+                        ),
+                        Flexible(
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => CrudPersonScreen(
+                                            person: person,
+                                            personIndex: 1,
+                                            hasPersonData: true))));
+                              },
+                              icon: Icon(Icons.edit)),
+                        )
+                      ],
+                    )
+                  : Text(''),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                ElevatedButton(
+                    onPressed: () async {
+                      person = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CrudPersonScreen(
+                                    person: person,
+                                    hasPersonData: true,
+                                  )));
+                      setState(() => person);
+                    },
+                    child: Text('Cadastrar Morador'))
+              ]),
+              Divider(),
               Text(
                 'Quem é o proprietário do imóvel?',
                 style: TextStyle(fontSize: 25),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
-                child: SearchField(
-                  controller: ownerHouse,
-                  suggestionState: Suggestion.expand,
-                  searchInputDecoration:
-                      kTextFieldDecorationMorarMelhor.copyWith(
-                          hintText: 'Quem é o proprietário do imóvel?',
-                          labelText: 'Quem é o proprietário do imóvel?'),
-                  suggestions: personListBox.values.map((e) {
-                    person = e;
-                    return SearchFieldListItem<Person>(person.name);
-                  }).toList(),
-                  onSuggestionTap: (a) {},
-                ),
+                child: TextField(
+                    controller: ownerHouse,
+                    decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                        hintText: 'Quem é o proprietário do imóvel?',
+                        labelText: 'Quem é o proprietário do imóvel?')),
               ),
               Divider(),
               Text(

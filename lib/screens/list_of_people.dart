@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:codesaima/core/person_model.dart';
-import 'package:codesaima/screens/crup_person_screen.dart';
+import 'package:codesaima/models/person_model.dart';
+import 'package:codesaima/screens/crud_person_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -14,19 +14,12 @@ class ListOfPeople extends StatefulWidget {
 
 class _ListOfPeopleState extends State<ListOfPeople> {
   late final Box personListBox;
+  late int personIndex;
 
   @override
   void initState() {
     personListBox = Hive.box<Person>('personList');
     super.initState();
-  }
-
-  addPerson(Person person) {
-    personListBox.add(person);
-  }
-
-  removePerson(int index) {
-    personListBox.deleteAt(index);
   }
 
   @override
@@ -35,7 +28,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     return Scaffold(
         key: _scaffold,
         appBar: AppBar(
-          title: Text('Pessoas'),
+          title: Text('Moradores'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -71,16 +64,15 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CrudPersonScreen(
-                                                  person: person,
-                                                  hasPersonData: true,
-                                                  personIndex: personListBox
-                                                      .keys
-                                                      .toList()[index])));
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    personIndex =
+                                        personListBox.keys.toList()[index];
+                                    return CrudPersonScreen(
+                                        person: person,
+                                        hasPersonData: true,
+                                        personIndex: personIndex);
+                                  }));
                                 },
                                 child: Card(
                                   margin: EdgeInsets.all(10),
@@ -126,7 +118,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                 Icons.person_add,
                 size: 30,
               ),
-              label: Text('Cadastrar Pessoa'),
+              label: Text('Cadastrar Morador'),
               onPressed: () =>
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     Person person = Person();
@@ -134,8 +126,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                       hasPersonData: false,
                       person: person,
                     );
-                  })) //                  await Hive.box<Person>('personlist').clear();
-              )
+                  })))
         ])));
   }
 

@@ -2,7 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/home_page_screen.dart';
-import 'package:codesaima/screens/search_screens/qualitative_research_screen.dart';
+import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {

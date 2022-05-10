@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:codesaima/screens/search_screens/qualitative_research_screen.dart';
+import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
 class MorarMelhorScreen extends StatefulWidget {
@@ -54,7 +54,8 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => QualitativeResearchScreen(),
+                              builder: (context) =>
+                                  QualitativeResearchMorarMelhorScreen(),
                             ));
                       },
                       child: Card(

@@ -1,4 +1,4 @@
-import 'package:codesaima/core/address_model.dart';
+import 'package:codesaima/models/address_model.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkHelper {

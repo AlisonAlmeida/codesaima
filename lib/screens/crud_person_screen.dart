@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, prefer_const_constructors_in_immutables, must_be_immutable
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/core/address_model.dart';
+import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
-import 'package:codesaima/core/person_model.dart';
+import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,8 @@ class CrudPersonScreen extends StatefulWidget {
 }
 
 class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
-  final personListBox = Hive.box<Person>('personList');
+  var personListBox = Hive.box<Person>('personList');
+  late final int personIndex;
 
   final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
@@ -131,16 +132,16 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
         socialNetworks: socialNetworks);
+    print('index: ${widget.personIndex}');
+    await personListBox.put(widget.personIndex, person);
 
-    await personListBox.put(widget.personIndex!, person);
     EasyLoading.dismiss();
-    Navigator.pop(context);
+    Navigator.pop(context, person);
   }
 
   clearFields() {
     setState(() {
       _nameController.clear();
-
       _cepController.clear();
       _ruaController.clear();
       _bairroController.clear();
@@ -203,8 +204,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
                                 TextInputMask(mask: '99999-999')
                               ],
                               controller: _cepController,
-                              decoration: kTextFieldDecorationMorarMelhor
-                                  .copyWith(labelText: 'CEP', hintText: 'CEP'),
+                              decoration: kTextFieldGeneralDecoration.copyWith(
+                                  labelText: 'CEP', hintText: 'CEP'),
                             ),
                           ),
                           Expanded(
@@ -229,7 +230,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
                           Flexible(
                             flex: 10,
                             child: DropdownButtonFormField(
-                              decoration: kTextFieldDecorationMorarMelhor,
+                              decoration: kTextFieldGeneralDecoration,
                               items: dropdownCities,
                               value: _cidadeController.text.isEmpty
                                   ? 'BOA VISTA'
@@ -335,7 +336,9 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       list.addAll([
         Expanded(
           child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Icon(Icons.cancel),
               label: Text('Cancelar')),
         ),
@@ -355,7 +358,9 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
       list.addAll([
         Expanded(
           child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Icon(Icons.cancel),
               label: Text('Cancelar')),
         ),
@@ -390,7 +395,7 @@ class ComplementWidget extends StatelessWidget {
         textCapitalization: TextCapitalization.characters,
         textInputAction: TextInputAction.next,
         controller: _complementoController,
-        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+        decoration: kTextFieldGeneralDecoration.copyWith(
           labelText: 'Complemento',
           hintText: 'Complemento',
         ));
@@ -414,7 +419,7 @@ class NumberWidget extends StatelessWidget {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         controller: _numeroController,
         keyboardType: TextInputType.number,
-        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+        decoration: kTextFieldGeneralDecoration.copyWith(
             labelText: 'Número', hintText: 'Número'),
       ),
     );
@@ -438,7 +443,7 @@ class BairroWidget extends StatelessWidget {
           textCapitalization: TextCapitalization.characters,
           textInputAction: TextInputAction.next,
           controller: _bairroController,
-          decoration: kTextFieldDecorationMorarMelhor.copyWith(
+          decoration: kTextFieldGeneralDecoration.copyWith(
             labelText: 'Bairro',
             hintText: 'Bairro',
           )),
@@ -463,7 +468,7 @@ class StreetWidget extends StatelessWidget {
       controller: _ruaController,
       keyboardType: TextInputType.multiline,
       maxLines: null,
-      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+      decoration: kTextFieldGeneralDecoration.copyWith(
         labelText: 'Rua',
         hintText: 'Rua, avenida,',
       ),
@@ -491,7 +496,7 @@ class CityWidget extends StatelessWidget {
         controller: _cidadeController,
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+        decoration: kTextFieldGeneralDecoration.copyWith(
           labelText: 'Cidade',
           hintText: 'Cidade',
         ),
@@ -520,7 +525,7 @@ class UfWidget extends StatelessWidget {
         controller: _ufController,
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+        decoration: kTextFieldGeneralDecoration.copyWith(
           labelText: 'UF',
           hintText: 'UF',
         ),
@@ -548,7 +553,7 @@ class PhoneWidget extends StatelessWidget {
       ],
       keyboardType: TextInputType.number,
       controller: _telefoneController,
-      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+      decoration: kTextFieldGeneralDecoration.copyWith(
         labelText: 'Telefone',
         hintText: '(95)98765-4321',
         prefixIcon: Padding(
@@ -576,7 +581,7 @@ class CompletNameWidget extends StatelessWidget {
       textInputAction: TextInputAction.next,
       controller: _nameController,
       keyboardType: TextInputType.name,
-      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+      decoration: kTextFieldGeneralDecoration.copyWith(
           labelText: 'Nome',
           hintText: 'Nome Completo',
           prefixIcon: Padding(

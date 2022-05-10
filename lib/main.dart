@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/core/address_model.dart';
-import 'package:codesaima/core/person_model.dart';
+import 'package:codesaima/models/address_model.dart';
+import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
 import 'package:codesaima/screens/splash_screen.dart';
 import 'package:flutter/material.dart';

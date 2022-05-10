@@ -27,6 +27,14 @@ final kTextFieldDecorationMorarMelhor = InputDecoration(
   fillColor: Colors.orange[50],
   filled: true,
 );
+final kTextFieldGeneralDecoration = InputDecoration(
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide.none,
+  ),
+  fillColor: Colors.blueGrey[50],
+  filled: true,
+);
 
 final kGeneralThemeData = ThemeData(primarySwatch: Colors.red);
 final kMorarMelhorThemeData = ThemeData(

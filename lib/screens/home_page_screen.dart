@@ -3,7 +3,7 @@
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_people.dart';
-import 'package:codesaima/screens/crup_person_screen.dart';
+import 'package:codesaima/screens/crud_person_screen.dart';
 import 'package:codesaima/screens/morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
