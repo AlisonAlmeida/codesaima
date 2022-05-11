@@ -15,6 +15,7 @@ class ListOfPeople extends StatefulWidget {
 class _ListOfPeopleState extends State<ListOfPeople> {
   late final Box personListBox;
   late int personIndex;
+  final List<int> _mainIndex = [];
 
   @override
   void initState() {
@@ -60,48 +61,53 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                           var currentBox = box;
                           var personData = currentBox.getAt(index)!;
                           final person = personData as Person;
+                          _mainIndex.add(personListBox.keys.toList()[index]);
                           return Column(
                             children: [
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    personIndex =
-                                        personListBox.keys.toList()[index];
                                     return CrudPersonScreen(
                                         person: person,
                                         hasPersonData: true,
-                                        personIndex: personIndex);
+                                        personIndex: _mainIndex[index]);
                                   }));
                                 },
                                 child: Card(
                                   margin: EdgeInsets.all(10),
                                   child: ListTile(
-                                    title: Text(person.name),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(children: [
-                                          Icon(Icons.phone),
-                                          Text(person.phone)
-                                        ]),
-                                        Row(children: [
-                                          Icon(Icons.room),
-                                          Flexible(
-                                              child: Text(
-                                                  person.address!.logradouro))
-                                        ])
-                                      ],
-                                    ),
-                                    trailing: IconButton(
+                                      title: Text(person.name),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(children: [
+                                            Icon(Icons.phone),
+                                            Text(person.phone)
+                                          ]),
+                                          Row(children: [
+                                            Icon(Icons.room),
+                                            Flexible(
+                                                child: Text(
+                                                    person.address!.logradouro))
+                                          ])
+                                        ],
+                                      ),
+                                      trailing:
+                                          Text(_mainIndex[index].toString())
+
+                                      /*
+                                    IconButton(
                                         //delete button
                                         onPressed: () => showAlertDialog(
                                             _scaffold.currentState!.context,
                                             person,
                                             index),
                                         icon: Icon(Icons.delete)),
-                                  ),
+
+                                        */
+                                      ),
                                 ),
                               ),
                             ],
