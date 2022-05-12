@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:codesaima/screens/list_of_people.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -23,54 +24,16 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
           //    icon: Icons.last_page, title: 'Inscrições', onTap: () {}),
           CustomListTileMorarMelhor(
               icon: Icons.search,
-              title: 'Pesquisas',
-              onTap: () {
-                _showModalBottomSheetSearchs(context);
-              }),
+              title: 'Pequisa Qualitativa',
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListOfPeople(
+                            fromResearch: true,
+                          )))),
           CustomListTileMorarMelhor(
               icon: Icons.info, title: 'Informações', onTap: () {}),
         ]));
-  }
-
-  void _showModalBottomSheetSearchs(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.orange[50],
-        builder: (BuildContext context) {
-          return Container(
-            color: Colors.orange[50],
-            child: Column(
-              children: [
-                Flexible(
-                    child: Text(
-                  'Pesquisas',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                )),
-                Expanded(
-                    child: ListView(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  QualitativeResearchMorarMelhorScreen(),
-                            ));
-                      },
-                      child: Card(
-                          margin: EdgeInsets.all(10),
-                          child: ListTile(
-                            title: Text('Pequisa Qualitativa'),
-                            trailing: Icon(Icons.forward),
-                          )),
-                    )
-                  ],
-                )),
-              ],
-            ),
-          );
-        });
   }
 }
 

@@ -27,7 +27,7 @@ class CrudPersonScreen extends StatefulWidget {
 }
 
 class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
-  var personListBox = Hive.box<Person>('personList');
+  final Box personListBox = Hive.box<Person>('personList');
   late final int personIndex;
 
   final String name = 'Morar Melhor';
@@ -43,7 +43,6 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   final _complementoController = TextEditingController();
 
   SocialNetworks socialNetworks = SocialNetworks();
-
   Address address = Address();
   Person person = Person();
 
@@ -132,7 +131,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
         socialNetworks: socialNetworks);
-    print('index: ${widget.personIndex}');
+
     await personListBox.put(widget.personIndex, person);
 
     EasyLoading.dismiss();

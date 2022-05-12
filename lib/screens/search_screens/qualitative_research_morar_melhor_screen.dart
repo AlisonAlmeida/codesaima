@@ -90,18 +90,23 @@ class _QualitativeResearchScreenState
                     )
                   : Text(''),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      person = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CrudPersonScreen(
-                                    person: person,
-                                    hasPersonData: true,
-                                  )));
-                      setState(() => person);
-                    },
-                    child: Text('Cadastrar Morador'))
+                Flexible(
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        person = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CrudPersonScreen(
+                                      person: person,
+                                      hasPersonData: true,
+                                    )));
+                        setState(() => person);
+                      },
+                      child: Text('Cadastrar Morador')),
+                ),
+                Flexible(
+                    child: ElevatedButton(
+                        onPressed: () {}, child: Text('Usar um já Cadastrado')))
               ]),
               Divider(),
               Text(

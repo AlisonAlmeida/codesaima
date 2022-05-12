@@ -6,20 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ListOfPeople extends StatefulWidget {
-  const ListOfPeople({Key? key}) : super(key: key);
+  const ListOfPeople({Key? key, required this.fromResearch}) : super(key: key);
+  final bool fromResearch;
 
   @override
   State<ListOfPeople> createState() => _ListOfPeopleState();
 }
 
 class _ListOfPeopleState extends State<ListOfPeople> {
-  late final Box personListBox;
+  late final Box _personListBox;
   late int personIndex;
-  final List<int> _mainIndex = [];
 
   @override
   void initState() {
-    personListBox = Hive.box<Person>('personList');
+    _personListBox = Hive.box<Person>('personList');
     super.initState();
   }
 
@@ -34,7 +34,6 @@ class _ListOfPeopleState extends State<ListOfPeople> {
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
-              Navigator.pop(context);
             },
           ),
         ),
@@ -47,108 +46,107 @@ class _ListOfPeopleState extends State<ListOfPeople> {
         body: Center(
             child: Column(children: [
           Expanded(
-            child: ValueListenableBuilder(
-                valueListenable: personListBox.listenable(),
-                builder: (context, Box box, widget) {
-                  if (box.isEmpty) {
-                    return Center(
-                      child: Text('Vazio'),
-                    );
-                  } else {
-                    return ListView.builder(
-                        itemCount: box.length,
-                        itemBuilder: (context, index) {
-                          var currentBox = box;
-                          var personData = currentBox.getAt(index)!;
-                          final person = personData as Person;
-                          _mainIndex.add(personListBox.keys.toList()[index]);
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return CrudPersonScreen(
-                                        person: person,
-                                        hasPersonData: true,
-                                        personIndex: _mainIndex[index]);
-                                  }));
-                                },
-                                child: Card(
-                                  margin: EdgeInsets.all(10),
-                                  child: ListTile(
-                                      title: Text(person.name),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(children: [
-                                            Icon(Icons.phone),
-                                            Text(person.phone)
-                                          ]),
-                                          Row(children: [
-                                            Icon(Icons.room),
-                                            Flexible(
-                                                child: Text(
-                                                    person.address!.logradouro))
-                                          ])
-                                        ],
-                                      ),
-                                      trailing:
-                                          Text(_mainIndex[index].toString())
-
-                                      /*
-                                    IconButton(
-                                        //delete button
-                                        onPressed: () => showAlertDialog(
-                                            _scaffold.currentState!.context,
-                                            person,
-                                            index),
-                                        icon: Icon(Icons.delete)),
-
-                                        */
-                                      ),
-                                ),
-                              ),
-                            ],
-                          );
-                        });
-                  }
-                }),
-          ),
+              child: ValueListenableBuilder(
+                  valueListenable: _personListBox.listenable(),
+                  builder: (context, Box box, widget) {
+                    if (box.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'Vazio',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      );
+                    } else {
+                      return ListView(
+                        children: buildListOfPeople(),
+                      );
+                    }
+                  })),
           ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  fixedSize: Size(MediaQuery.of(context).size.width, 70),
-                  primary: Colors.green[700]),
-              icon: Icon(
-                Icons.person_add,
-                size: 30,
-              ),
-              label: Text('Cadastrar Morador'),
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    Person person = Person();
-                    return CrudPersonScreen(
-                      hasPersonData: false,
-                      person: person,
-                    );
-                  })))
+            style: ElevatedButton.styleFrom(
+                fixedSize: Size(MediaQuery.of(context).size.width, 70),
+                primary: Colors.green[700]),
+            icon: Icon(
+              Icons.person_add,
+              size: 30,
+            ),
+            label: Text('Cadastrar Morador'),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                Person person = Person();
+                return CrudPersonScreen(
+                  hasPersonData: false,
+                  person: person,
+                );
+              }),
+            ),
+          ),
         ])));
   }
 
-  showAlertDialog(BuildContext dialogContext, Person person, int index) {
+  List<Widget> buildListOfPeople() {
+    List<Widget> _list = [];
+    _personListBox.toMap().forEach((key, person) {
+      person as Person;
+      _list.add(
+        GestureDetector(
+            child: Card(
+              margin: EdgeInsets.all(10),
+              child: ListTile(
+                title: Text(person.name),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [Icon(Icons.phone), Text(person.phone)]),
+                    Row(children: [
+                      Icon(Icons.room),
+                      Flexible(child: Text(person.address!.logradouro))
+                    ])
+                  ],
+                ),
+                trailing: Wrap(
+                  children: [
+                    IconButton(
+                        onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => CrudPersonScreen(
+                                        person: person,
+                                        hasPersonData: true,
+                                        personIndex: key,
+                                      ))),
+                            ),
+                        icon: Icon(Icons.edit)),
+                    IconButton(
+                        onPressed: () async {
+                          showAlertDialog(context, person, key);
+                        },
+                        icon: Icon(Icons.delete)),
+                  ],
+                ),
+              ),
+            ),
+            onTap: () {}),
+      );
+    });
+
+    return _list;
+  }
+
+  showAlertDialog(context, Person person, int index) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text("Cancelar"),
       onPressed: () {
-        Navigator.of(dialogContext).pop();
+        Navigator.of(context).pop();
       },
     );
     Widget continueButton = TextButton(
       child: Text("Confirmar"),
       onPressed: () async {
-        await personListBox.deleteAt(index);
-        Navigator.of(dialogContext).pop();
+        await _personListBox.delete(index);
+        Navigator.of(context).pop();
       },
     );
 
@@ -164,7 +162,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
     // show the dialog
     showDialog(
-      context: dialogContext,
+      context: context,
       builder: (BuildContext dialogContext) {
         return alert;
       },
@@ -182,7 +180,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     Widget continueButton = TextButton(
       child: Text("Confirmar"),
       onPressed: () async {
-        await personListBox.clear();
+        await _personListBox.clear();
         Navigator.of(dialogContext).pop();
         Navigator.of(dialogContext).pop();
       },

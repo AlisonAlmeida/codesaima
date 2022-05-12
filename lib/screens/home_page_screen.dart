@@ -3,7 +3,6 @@
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_people.dart';
-import 'package:codesaima/screens/crud_person_screen.dart';
 import 'package:codesaima/screens/morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +35,9 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ListOfPeople()));
+                            builder: (context) => ListOfPeople(
+                                  fromResearch: false,
+                                )));
                   }),
             ),
           ],
@@ -56,6 +57,14 @@ class _HomePageState extends State<HomePage> {
           mainAxisSpacing: 16,
           children: [
             CentralButton(
+                title: 'Morar Melhor',
+                img: kPathLogoMorarMelhor,
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MorarMelhorScreen(),
+                    ))),
+            CentralButton(
                 title: 'Governo de Roraima',
                 img: kPathLogoGovRoraimaPreta,
                 onTap: () {}),
@@ -63,42 +72,9 @@ class _HomePageState extends State<HomePage> {
                 title: 'Aqui Tem Dono',
                 img: kPathLogoAquiTemDono,
                 onTap: () {}),
-            CentralButton(
-                title: 'Morar Melhor',
-                img: kPathLogoMorarMelhor,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MorarMelhorScreen(),
-                      ));
-                })
           ],
         ),
       ),
-
-      /*
-      bottomNavigationBar: BottomNavigationBar(
-          elevation: 10,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.red,
-          unselectedIconTheme: IconThemeData(color: Colors.black),
-          unselectedItemColor: Colors.black,
-          onTap: _onItemTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Pesquisas',
-            ),
-          ]),
-
-          */
     );
   }
 }
