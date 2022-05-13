@@ -5,6 +5,7 @@ import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
+import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,10 +17,12 @@ class CrudPersonScreen extends StatefulWidget {
       {Key? key,
       required this.person,
       required this.hasPersonData,
-      this.personIndex})
+      this.personIndex,
+      required this.fromResearch})
       : super(key: key);
   final Person person;
   final bool hasPersonData;
+  final bool fromResearch;
   final int? personIndex;
 
   @override
@@ -111,7 +114,11 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
 
     await personListBox.add(person);
     EasyLoading.dismiss();
-    Navigator.pop(context);
+    Navigator.pop(context, person);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => QualitativeResearchMorarMelhorScreen()));
   }
 
   updatePerson() async {
@@ -136,6 +143,10 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
 
     EasyLoading.dismiss();
     Navigator.pop(context, person);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => QualitativeResearchMorarMelhorScreen()));
   }
 
   clearFields() {

@@ -2,6 +2,7 @@
 
 import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/screens/crud_person_screen.dart';
+import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -76,6 +77,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
               MaterialPageRoute(builder: (context) {
                 Person person = Person();
                 return CrudPersonScreen(
+                  fromResearch: false,
                   hasPersonData: false,
                   person: person,
                 );
@@ -112,6 +114,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) => CrudPersonScreen(
+                                        fromResearch: false,
                                         person: person,
                                         hasPersonData: true,
                                         personIndex: key,
@@ -127,7 +130,15 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                 ),
               ),
             ),
-            onTap: () {}),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: ((context) =>
+                        QualitativeResearchMorarMelhorScreen())),
+              );
+            }),
       );
     });
 

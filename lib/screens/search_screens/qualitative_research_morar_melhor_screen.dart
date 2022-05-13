@@ -35,7 +35,6 @@ class _QualitativeResearchScreenState
     extends State<QualitativeResearchMorarMelhorScreen> {
   @override
   void dispose() {
-    person = Person();
     super.dispose();
   }
 
@@ -80,6 +79,7 @@ class _QualitativeResearchScreenState
                                     context,
                                     MaterialPageRoute(
                                         builder: ((context) => CrudPersonScreen(
+                                            fromResearch: true,
                                             person: person,
                                             personIndex: 1,
                                             hasPersonData: true))));
@@ -89,25 +89,6 @@ class _QualitativeResearchScreenState
                       ],
                     )
                   : Text(''),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Flexible(
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        person = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CrudPersonScreen(
-                                      person: person,
-                                      hasPersonData: true,
-                                    )));
-                        setState(() => person);
-                      },
-                      child: Text('Cadastrar Morador')),
-                ),
-                Flexible(
-                    child: ElevatedButton(
-                        onPressed: () {}, child: Text('Usar um já Cadastrado')))
-              ]),
               Divider(),
               Text(
                 'Quem é o proprietário do imóvel?',
