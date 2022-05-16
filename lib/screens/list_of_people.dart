@@ -21,6 +21,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
   @override
   void initState() {
     _personListBox = Hive.box<Person>('personList');
+    print(widget.fromResearch);
     super.initState();
   }
 
@@ -69,9 +70,13 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                 primary: Colors.green[700]),
             icon: Icon(
               Icons.person_add,
+              color: Colors.white,
               size: 30,
             ),
-            label: Text('Cadastrar Morador'),
+            label: Text(
+              'Cadastrar Morador',
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
@@ -131,13 +136,17 @@ class _ListOfPeopleState extends State<ListOfPeople> {
               ),
             ),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: ((context) =>
-                        QualitativeResearchMorarMelhorScreen())),
-              );
+              print('Key from list: $key');
+              widget.fromResearch
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) =>
+                              QualitativeResearchMorarMelhorScreen(
+                                personIndex: key,
+                              ))),
+                    )
+                  : null;
             }),
       );
     });

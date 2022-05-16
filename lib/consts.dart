@@ -36,9 +36,10 @@ final kTextFieldGeneralDecoration = InputDecoration(
   filled: true,
 );
 
-final kGeneralThemeData = ThemeData(primarySwatch: Colors.red);
+final kGeneralThemeData =
+    ThemeData(primarySwatch: Colors.red, useMaterial3: true);
 final kMorarMelhorThemeData = ThemeData(
-  backgroundColor: Colors.orange[700],
+  backgroundColor: Colors.orange,
   inputDecorationTheme: InputDecorationTheme(
       fillColor: Colors.orange[50],
       filled: true,
@@ -67,3 +68,21 @@ const List<DropdownMenuItem<String>> dropdownCities = [
   DropdownMenuItem(child: Text('SÃO LUIZ'), value: 'SÃO LUIZ'),
   DropdownMenuItem(child: Text('UIRAMUTÃ'), value: 'UIRAMUTÃ'),
 ];
+
+showGeneralProgressIndicator(BuildContext context, String message) {
+  AlertDialog alert = AlertDialog(
+    content: Row(
+      children: [
+        const CircularProgressIndicator(),
+        Container(margin: const EdgeInsets.only(left: 5), child: Text(message)),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

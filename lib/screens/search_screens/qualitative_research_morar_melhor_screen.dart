@@ -8,15 +8,17 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
-  QualitativeResearchMorarMelhorScreen({Key? key}) : super(key: key);
+  QualitativeResearchMorarMelhorScreen({Key? key, required this.personIndex})
+      : super(key: key);
+  int personIndex;
 
   @override
   State<QualitativeResearchMorarMelhorScreen> createState() =>
       _QualitativeResearchScreenState();
 }
 
-final personListBox = Hive.box<Person>('personList');
-Person person = Person();
+final _personListBox = Hive.box<Person>('personList');
+Person? _person = Person();
 
 int _groupValue1 = 0;
 int _groupValue2 = 0;
@@ -30,12 +32,16 @@ bool _visibilitySocialProfile = false;
 bool _visibilityNumberVisits = false;
 int _numberOfVisits = 0;
 TextEditingController ownerHouse = TextEditingController();
+bool checkBoxOwnerHouse = false;
 
 class _QualitativeResearchScreenState
     extends State<QualitativeResearchMorarMelhorScreen> {
   @override
-  void dispose() {
-    super.dispose();
+  void initState() {
+    if (widget.personIndex >= 0) {
+      _person = _personListBox.get(widget.personIndex);
+    }
+    super.initState();
   }
 
   @override
@@ -61,13 +67,13 @@ class _QualitativeResearchScreenState
                 ],
               ),
               Divider(height: 7),
-              person.name != ''
+              _person! != null
                   ? Row(
                       children: [
                         Expanded(
                           flex: 10,
                           child: Text(
-                            person.name,
+                            _person!.name,
                             style: TextStyle(
                                 fontSize: 25, color: Colors.orange[700]),
                           ),
@@ -80,8 +86,8 @@ class _QualitativeResearchScreenState
                                     MaterialPageRoute(
                                         builder: ((context) => CrudPersonScreen(
                                             fromResearch: true,
-                                            person: person,
-                                            personIndex: 1,
+                                            person: _person!,
+                                            personIndex: widget.personIndex,
                                             hasPersonData: true))));
                               },
                               icon: Icon(Icons.edit)),
@@ -94,9 +100,25 @@ class _QualitativeResearchScreenState
                 'Quem é o proprietário do imóvel?',
                 style: TextStyle(fontSize: 25),
               ),
+              Row(
+                children: [
+                  Flexible(
+                    child: Text('O proprietário é o mesmo da pesquisa?'),
+                  ),
+                  Checkbox(
+                      value: checkBoxOwnerHouse,
+                      onChanged: (newValue) => setState(() {
+                            checkBoxOwnerHouse = newValue!;
+                            checkBoxOwnerHouse
+                                ? ownerHouse.text = _person!.name
+                                : ownerHouse.text = '';
+                          })),
+                ],
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: TextField(
+                    enabled: !checkBoxOwnerHouse,
                     controller: ownerHouse,
                     decoration: kTextFieldDecorationMorarMelhor.copyWith(
                         hintText: 'Quem é o proprietário do imóvel?',

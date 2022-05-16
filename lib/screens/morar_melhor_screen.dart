@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_people.dart';
-import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
 class MorarMelhorScreen extends StatefulWidget {
@@ -17,11 +17,9 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Morar Melhor'),
-          backgroundColor: Colors.orange,
+          backgroundColor: kMorarMelhorThemeData.backgroundColor,
         ),
         body: ListView(children: [
-          //CustomListTileMorarMelhor(
-          //    icon: Icons.last_page, title: 'Inscrições', onTap: () {}),
           CustomListTileMorarMelhor(
               icon: Icons.search,
               title: 'Pequisa Qualitativa',

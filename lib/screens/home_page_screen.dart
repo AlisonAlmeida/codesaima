@@ -44,9 +44,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       appBar: AppBar(
-        elevation: 1,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         title: Image.asset(kPathMainLogoCodesaima, height: 30),
       ),
       body: Center(

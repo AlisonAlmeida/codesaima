@@ -9,7 +9,6 @@ import 'package:codesaima/screens/search_screens/qualitative_research_morar_melh
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class CrudPersonScreen extends StatefulWidget {
@@ -69,13 +68,14 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   }
 
   void getCep() async {
-    EasyLoading.show();
     FocusManager.instance.primaryFocus?.unfocus(); //dismiss Keyboard
 
     NetworkHelper networkHelper =
         NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
+    showGeneralProgressIndicator(context, 'Buscando CEP');
     try {
       address = await networkHelper.getData();
+
       setState(() {
         if (address.uf == 'RR') {
           _ufController.text = 'RR';
@@ -90,11 +90,10 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
               Text('Erro ${e.toString().replaceAll(RegExp(r'[^0-9]'), '')}'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    EasyLoading.dismiss();
+    Navigator.pop(context);
   }
 
   addPerson() async {
-    EasyLoading.show();
     final address = Address(
         cep: _cepController.text,
         uf: _ufController.text.toUpperCase(),
@@ -113,17 +112,19 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
     clearFields();
 
     await personListBox.add(person);
-    EasyLoading.dismiss();
+
     Navigator.pop(context, person);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => QualitativeResearchMorarMelhorScreen()));
+    if (widget.fromResearch) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => QualitativeResearchMorarMelhorScreen(
+                    personIndex: personListBox.keys.last,
+                  )));
+    }
   }
 
   updatePerson() async {
-    EasyLoading.show();
-
     final address = Address(
         cep: _cepController.text,
         uf: _ufController.text.toUpperCase(),
@@ -141,12 +142,15 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
 
     await personListBox.put(widget.personIndex, person);
 
-    EasyLoading.dismiss();
-    Navigator.pop(context, person);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => QualitativeResearchMorarMelhorScreen()));
+    Navigator.pop(context, widget.personIndex);
+    if (widget.fromResearch) {
+      Navigator.pop(context, widget.personIndex);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => QualitativeResearchMorarMelhorScreen(
+                  personIndex: widget.personIndex!)));
+    }
   }
 
   clearFields() {
@@ -359,8 +363,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
               onPressed: () {
                 updatePerson();
               },
-              icon: Icon(Icons.save),
-              label: Text('Atualizar')),
+              icon: Icon(Icons.save, color: Colors.white),
+              label: Text('Atualizar', style: TextStyle(color: Colors.white))),
         )
       ]);
     } else {
@@ -381,8 +385,8 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
               onPressed: () {
                 addPerson();
               },
-              icon: Icon(Icons.save),
-              label: Text('Salvar')),
+              icon: Icon(Icons.save, color: Colors.white),
+              label: Text('Salvar', style: TextStyle(color: Colors.white))),
         )
       ]);
     }

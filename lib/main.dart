@@ -5,8 +5,8 @@ import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
 import 'package:codesaima/screens/splash_screen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future main() async {
@@ -18,8 +18,6 @@ Future main() async {
   await Hive.openBox<SocialNetworks>('social_Networks');
   Hive.registerAdapter(PersonAdapter());
   await Hive.openBox<Person>('personList');
-
-  //await Hive.deleteFromDisk(); //DELETE DATABASE
 
   runApp(MyApp());
 }
@@ -33,7 +31,6 @@ class MyApp extends StatelessWidget {
       theme: kGeneralThemeData,
       home: SplashPage(),
       debugShowCheckedModeBanner: false,
-      builder: EasyLoading.init(),
     );
   }
 }
