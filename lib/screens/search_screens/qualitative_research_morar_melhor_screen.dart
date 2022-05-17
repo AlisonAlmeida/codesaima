@@ -3,7 +3,9 @@
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/screens/crud_person_screen.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -20,19 +22,31 @@ class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
 final _personListBox = Hive.box<Person>('personList');
 Person? _person = Person();
 
-int _groupValue1 = 0;
-int _groupValue2 = 0;
-int _groupValue3 = 0;
+int _groupPlaceRegister = 0;
+int _groupSocialProfile = 0;
+int _groupNumberVisits = 0;
 int _groupValue4 = 0;
 int _groupValue5 = 0;
 double _currentSliderValue = 0;
 double _currentSliderValue2 = 0;
-bool _visibilityPlaceRegister = false;
-bool _visibilitySocialProfile = false;
-bool _visibilityNumberVisits = false;
+
 int _numberOfVisits = 0;
-TextEditingController ownerHouse = TextEditingController();
-bool checkBoxOwnerHouse = false;
+TextEditingController _ownerHouse = TextEditingController();
+TextEditingController _howMuchTimeLiveHome = TextEditingController();
+TextEditingController _numberPeopleLiveHome = TextEditingController();
+TextEditingController _numberOfFamilies = TextEditingController();
+/*
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+TextEditingController = TextEditingController();
+*/
+
+bool _checkBoxOwnerHouse = false;
 
 class _QualitativeResearchScreenState
     extends State<QualitativeResearchMorarMelhorScreen> {
@@ -86,7 +100,6 @@ class _QualitativeResearchScreenState
                                     MaterialPageRoute(
                                         builder: ((context) => CrudPersonScreen(
                                             fromResearch: true,
-                                            person: _person!,
                                             personIndex: widget.personIndex,
                                             hasPersonData: true))));
                               },
@@ -106,20 +119,20 @@ class _QualitativeResearchScreenState
                     child: Text('O proprietário é o mesmo da pesquisa?'),
                   ),
                   Checkbox(
-                      value: checkBoxOwnerHouse,
+                      value: _checkBoxOwnerHouse,
                       onChanged: (newValue) => setState(() {
-                            checkBoxOwnerHouse = newValue!;
-                            checkBoxOwnerHouse
-                                ? ownerHouse.text = _person!.name
-                                : ownerHouse.text = '';
+                            _checkBoxOwnerHouse = newValue!;
+                            _checkBoxOwnerHouse
+                                ? _ownerHouse.text = _person!.name
+                                : _ownerHouse.text = '';
                           })),
                 ],
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: TextField(
-                    enabled: !checkBoxOwnerHouse,
-                    controller: ownerHouse,
+                    enabled: !_checkBoxOwnerHouse,
+                    controller: _ownerHouse,
                     decoration: kTextFieldDecorationMorarMelhor.copyWith(
                         hintText: 'Quem é o proprietário do imóvel?',
                         labelText: 'Quem é o proprietário do imóvel?')),
@@ -129,62 +142,50 @@ class _QualitativeResearchScreenState
                 'Quanto tempo reside no imóvel?',
                 style: TextStyle(fontSize: 25),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: TextField(decoration: kTextFieldDecorationMorarMelhor),
-              ),
+              ReusabledIntWidget(
+                  controller: _howMuchTimeLiveHome, text: 'Anos'),
               Divider(),
               Text(
                 'Quantas famílias residem no imóvel?',
                 style: TextStyle(fontSize: 25),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: TextField(decoration: kTextFieldDecorationMorarMelhor),
-              ),
+              ReusabledIntWidget(
+                  controller: _numberPeopleLiveHome, text: 'Pessoas'),
               Divider(),
               Text(
                 'Quantas famílias vivem no imóvel?',
                 style: TextStyle(fontSize: 25),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: TextField(decoration: kTextFieldDecorationMorarMelhor),
-              ),
+              ReusabledIntWidget(
+                  controller: _numberOfFamilies, text: 'Famílias'),
               Divider(),
               Text(
-                'Local onde foi realializado o cadastro do Morar Melhor?',
+                'Local onde foi realizado o cadastro do Morar Melhor?',
                 style: TextStyle(fontSize: 25),
               ),
-              RadioListTile<int>(
-                  title: Text('Na Codesaima'),
-                  activeColor: Colors.orange,
+              ReusabledRadioListItem(
+                  text: 'Codesaima',
                   value: 1,
-                  groupValue: _groupValue1,
-                  onChanged: (value) => setState(() {
-                        _visibilityPlaceRegister = false;
-                        _groupValue1 = value!;
+                  groupValue: _groupPlaceRegister,
+                  function: (newValue) => setState(() {
+                        _groupPlaceRegister = newValue!;
                       })),
-              RadioListTile<int>(
-                  title: Text('Na evento Governo Sem Parar'),
-                  activeColor: Colors.orange,
+              ReusabledRadioListItem(
+                  text: 'No evento Governo Sem Parar',
                   value: 2,
-                  groupValue: _groupValue1,
-                  onChanged: (value) => setState(() {
-                        _visibilityPlaceRegister = false;
-                        _groupValue1 = value!;
+                  groupValue: _groupPlaceRegister,
+                  function: (newValue) => setState(() {
+                        _groupPlaceRegister = newValue!;
                       })),
-              RadioListTile<int>(
-                  title: Text('Outros'),
-                  activeColor: Colors.orange,
+              ReusabledRadioListItem(
+                  text: 'Outros',
                   value: 3,
-                  groupValue: _groupValue1,
-                  onChanged: (value) => setState(() {
-                        _visibilityPlaceRegister = true;
-                        _groupValue1 = value!;
+                  groupValue: _groupPlaceRegister,
+                  function: (newValue) => setState(() {
+                        _groupPlaceRegister = newValue!;
                       })),
               Visibility(
-                visible: _visibilityPlaceRegister,
+                visible: _groupPlaceRegister == 3 ? true : false,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: TextField(
@@ -198,44 +199,36 @@ class _QualitativeResearchScreenState
                 'Perfil social para o benefício? (obrigatório)',
                 style: TextStyle(fontSize: 25),
               ),
-              RadioListTile<int>(
-                  title: Text('PCD'),
-                  activeColor: Colors.orange,
+              ReusabledRadioListItem(
                   value: 1,
-                  groupValue: _groupValue2,
-                  onChanged: (value) => setState(() {
-                        _visibilitySocialProfile = false;
-                        _groupValue2 = value!;
-                      })),
-              RadioListTile<int>(
-                  title: Text('Idoso'),
-                  activeColor: Colors.orange,
+                  groupValue: _groupSocialProfile,
+                  function: (newValue) => setState(() {
+                        _groupSocialProfile = newValue!;
+                      }),
+                  text: 'PCD'),
+              ReusabledRadioListItem(
                   value: 2,
-                  groupValue: _groupValue2,
-                  onChanged: (value) => setState(() {
-                        _visibilitySocialProfile = false;
-                        _groupValue2 = value!;
-                      })),
-              RadioListTile<int>(
-                  title: Text('Mãe chefe de família'),
-                  activeColor: Colors.orange,
+                  groupValue: _groupSocialProfile,
+                  function: (newValue) => setState(() {
+                        _groupSocialProfile = newValue!;
+                      }),
+                  text: 'Idoso'),
+              ReusabledRadioListItem(
                   value: 3,
-                  groupValue: _groupValue2,
-                  onChanged: (value) => setState(() {
-                        _visibilitySocialProfile = false;
-                        _groupValue2 = value!;
-                      })),
-              RadioListTile<int>(
-                  title: Text('Outros'),
-                  activeColor: Colors.orange,
+                  groupValue: _groupSocialProfile,
+                  function: (newValue) => setState(() {
+                        _groupSocialProfile = newValue!;
+                      }),
+                  text: 'Mãe chefe de família'),
+              ReusabledRadioListItem(
                   value: 4,
-                  groupValue: _groupValue2,
-                  onChanged: (value) => setState(() {
-                        _visibilitySocialProfile = true;
-                        _groupValue2 = value!;
-                      })),
+                  groupValue: _groupSocialProfile,
+                  function: (newValue) => setState(() {
+                        _groupSocialProfile = newValue!;
+                      }),
+                  text: 'Outros'),
               Visibility(
-                visible: _visibilitySocialProfile,
+                visible: _groupSocialProfile == 4 ? true : false,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: TextField(
@@ -249,26 +242,6 @@ class _QualitativeResearchScreenState
                 'Data da assinatura da ordem de serviço:',
                 style: TextStyle(fontSize: 25),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        showDatePicker(
-                            context: context,
-                            cancelText: 'Cancelar',
-                            confirmText: 'Confirmar',
-                            initialDatePickerMode: DatePickerMode.year,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2021),
-                            lastDate: DateTime.now());
-                      },
-                      icon: Icon(Icons.calendar_month),
-                      label: Text('Selecione'),
-                    ),
-                  ),
-                ],
-              ),
               Divider(),
               Text(
                 'Já recebeu a visita técnica dos engenheiros?',
@@ -278,22 +251,20 @@ class _QualitativeResearchScreenState
                   title: Text('Não'),
                   activeColor: Colors.orange,
                   value: 2,
-                  groupValue: _groupValue3,
+                  groupValue: _groupNumberVisits,
                   onChanged: (value) => setState(() {
-                        _visibilityNumberVisits = false;
-                        _groupValue3 = value!;
+                        _groupNumberVisits = value!;
                       })),
               RadioListTile<int>(
                   title: Text('Sim'),
                   activeColor: Colors.orange,
                   value: 1,
-                  groupValue: _groupValue3,
+                  groupValue: _groupNumberVisits,
                   onChanged: (value) => setState(() {
-                        _visibilityNumberVisits = true;
-                        _groupValue3 = value!;
+                        _groupNumberVisits = value!;
                       })),
               Visibility(
-                visible: _visibilityNumberVisits,
+                visible: _groupNumberVisits == 1 ? true : false,
                 child: NumberPicker(
                   value: _numberOfVisits,
                   minValue: 0,
@@ -439,5 +410,55 @@ class _QualitativeResearchScreenState
         ),
       ),
     );
+  }
+}
+
+class ReusabledIntWidget extends StatelessWidget {
+  const ReusabledIntWidget(
+      {Key? key, required this.controller, required this.text})
+      : super(key: key);
+
+  final TextEditingController controller;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: ListTile(
+        trailing: Text(text),
+        title: TextField(
+            controller: _howMuchTimeLiveHome,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              TextInputMask(mask: '999')
+            ],
+            decoration: kTextFieldDecorationMorarMelhor),
+      ),
+    );
+  }
+}
+
+class ReusabledRadioListItem extends StatelessWidget {
+  const ReusabledRadioListItem(
+      {Key? key,
+      required this.value,
+      required this.groupValue,
+      required this.function,
+      required this.text})
+      : super(key: key);
+  final int value;
+  final int groupValue;
+  final Function(int?) function;
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return RadioListTile<int>(
+        activeColor: Colors.orange,
+        title: Text(text),
+        value: value,
+        groupValue: groupValue,
+        onChanged: function);
   }
 }

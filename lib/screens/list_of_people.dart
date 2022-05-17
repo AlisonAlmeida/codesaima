@@ -16,12 +16,12 @@ class ListOfPeople extends StatefulWidget {
 
 class _ListOfPeopleState extends State<ListOfPeople> {
   late final Box _personListBox;
-  late int personIndex;
+  List<Widget> _listOfPeople = [];
 
   @override
   void initState() {
     _personListBox = Hive.box<Person>('personList');
-    print(widget.fromResearch);
+
     super.initState();
   }
 
@@ -31,7 +31,9 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     return Scaffold(
         key: _scaffold,
         appBar: AppBar(
-          title: Text('Moradores'),
+          title: widget.fromResearch
+              ? Text('Selecione um morador')
+              : Text('Moradores'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -80,11 +82,9 @@ class _ListOfPeopleState extends State<ListOfPeople> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
-                Person person = Person();
                 return CrudPersonScreen(
                   fromResearch: false,
                   hasPersonData: false,
-                  person: person,
                 );
               }),
             ),
@@ -94,68 +94,69 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
   List<Widget> buildListOfPeople() {
     List<Widget> _list = [];
-    _personListBox.toMap().forEach((key, person) {
-      person as Person;
+    _personListBox.toMap().forEach((key, _person) {
+      _person as Person;
       _list.add(
-        GestureDetector(
-            child: Card(
-              margin: EdgeInsets.all(10),
-              child: ListTile(
-                title: Text(person.name),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(children: [Icon(Icons.phone), Text(person.phone)]),
-                    Row(children: [
-                      Icon(Icons.room),
-                      Flexible(child: Text(person.address!.logradouro))
-                    ])
-                  ],
-                ),
-                trailing: Wrap(
-                  children: [
-                    IconButton(
-                        onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => CrudPersonScreen(
-                                        fromResearch: false,
-                                        person: person,
-                                        hasPersonData: true,
-                                        personIndex: key,
-                                      ))),
-                            ),
-                        icon: Icon(Icons.edit)),
-                    IconButton(
-                        onPressed: () async {
-                          showAlertDialog(context, person, key);
-                        },
-                        icon: Icon(Icons.delete)),
-                  ],
-                ),
-              ),
+        Card(
+          margin: EdgeInsets.all(10),
+          child: ListTile(
+            title: Text(_person.name),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [Icon(Icons.phone), Text(_person.phone)]),
+                Row(children: [
+                  Icon(Icons.room),
+                  Flexible(child: Text(_person.address!.logradouro))
+                ])
+              ],
             ),
-            onTap: () {
-              print('Key from list: $key');
-              widget.fromResearch
-                  ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) =>
-                              QualitativeResearchMorarMelhorScreen(
-                                personIndex: key,
-                              ))),
-                    )
-                  : null;
-            }),
+            trailing: Wrap(
+              children: [
+                IconButton(
+                    onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => CrudPersonScreen(
+                                    fromResearch: false,
+                                    hasPersonData: true,
+                                    personIndex: key,
+                                  ))),
+                        ),
+                    icon: Icon(Icons.edit)),
+                IconButton(
+                    onPressed: () async {
+                      showAlertDialog(context, _person, key);
+                    },
+                    icon: Icon(Icons.delete)),
+                if (widget.fromResearch)
+                  IconButton(
+                      onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    QualitativeResearchMorarMelhorScreen(
+                                      personIndex: key,
+                                    ))),
+                          ),
+                      icon: Icon(Icons.forward))
+              ],
+            ),
+          ),
+        ),
       );
     });
+    _listOfPeople = [];
+    for (var element in _list.reversed) {
+      _listOfPeople.add(element);
+    }
 
-    return _list;
+    return _listOfPeople;
   }
 
   showAlertDialog(context, Person person, int index) {
     // set up the buttons
+
     Widget cancelButton = TextButton(
       child: Text("Cancelar"),
       onPressed: () {

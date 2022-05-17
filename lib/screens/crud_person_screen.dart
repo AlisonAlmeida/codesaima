@@ -14,12 +14,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 class CrudPersonScreen extends StatefulWidget {
   CrudPersonScreen(
       {Key? key,
-      required this.person,
       required this.hasPersonData,
       this.personIndex,
       required this.fromResearch})
       : super(key: key);
-  final Person person;
+
   final bool hasPersonData;
   final bool fromResearch;
   final int? personIndex;
@@ -29,7 +28,7 @@ class CrudPersonScreen extends StatefulWidget {
 }
 
 class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
-  final Box personListBox = Hive.box<Person>('personList');
+  final Box _personListBox = Hive.box<Person>('personList');
   late final int personIndex;
 
   final String name = 'Morar Melhor';
@@ -44,25 +43,26 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   final _cidadeController = TextEditingController();
   final _complementoController = TextEditingController();
 
-  SocialNetworks socialNetworks = SocialNetworks();
-  Address address = Address();
-  Person person = Person();
+  SocialNetworks _socialNetworks = SocialNetworks();
+  Address _address = Address();
+  Person _person = Person();
 
   @override
   void initState() {
-    socialNetworks.clear();
+    _socialNetworks.clear();
     if (widget.hasPersonData) {
-      person = widget.person;
-      _nameController.text = person.name;
-      _telefoneController.text = person.phone;
-      _cepController.text = person.address!.cep;
-      _bairroController.text = person.address!.bairro;
-      _numeroController.text = person.address!.numero;
-      _ufController.text = person.address!.uf;
-      _cidadeController.text = person.address!.localidade;
-      _ruaController.text = person.address!.logradouro;
-      _complementoController.text = person.address!.complemento;
-      socialNetworks = person.socialNetworks!;
+      _person = _personListBox.get(widget.personIndex);
+
+      _nameController.text = _person.name;
+      _telefoneController.text = _person.phone;
+      _cepController.text = _person.address!.cep;
+      _bairroController.text = _person.address!.bairro;
+      _numeroController.text = _person.address!.numero;
+      _ufController.text = _person.address!.uf;
+      _cidadeController.text = _person.address!.localidade;
+      _ruaController.text = _person.address!.logradouro;
+      _complementoController.text = _person.address!.complemento;
+      _socialNetworks = _person.socialNetworks!;
     }
     super.initState();
   }
@@ -74,14 +74,14 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         NetworkHelper('https://viacep.com.br/ws/${_cepController.text}/json/');
     showGeneralProgressIndicator(context, 'Buscando CEP');
     try {
-      address = await networkHelper.getData();
+      _address = await networkHelper.getData();
 
       setState(() {
-        if (address.uf == 'RR') {
+        if (_address.uf == 'RR') {
           _ufController.text = 'RR';
-          _cidadeController.text = address.localidade.toUpperCase();
-          _bairroController.text = address.bairro.toUpperCase();
-          _ruaController.text = address.logradouro.toUpperCase();
+          _cidadeController.text = _address.localidade.toUpperCase();
+          _bairroController.text = _address.bairro.toUpperCase();
+          _ruaController.text = _address.logradouro.toUpperCase();
         }
       });
     } catch (e) {
@@ -94,7 +94,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
   }
 
   addPerson() async {
-    final address = Address(
+    _address = Address(
         cep: _cepController.text,
         uf: _ufController.text.toUpperCase(),
         localidade: _cidadeController.text.toUpperCase(),
@@ -103,29 +103,29 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    final person = Person(
-        address: address,
+    _person = Person(
+        address: _address,
         name: _nameController.text,
         phone: _telefoneController.text,
-        socialNetworks: socialNetworks);
+        socialNetworks: _socialNetworks);
     _ufController.text = 'RR';
     clearFields();
 
-    await personListBox.add(person);
+    await _personListBox.add(_person);
 
-    Navigator.pop(context, person);
+    Navigator.pop(context, _person);
     if (widget.fromResearch) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => QualitativeResearchMorarMelhorScreen(
-                    personIndex: personListBox.keys.last,
+                    personIndex: _personListBox.keys.last,
                   )));
     }
   }
 
   updatePerson() async {
-    final address = Address(
+    _address = Address(
         cep: _cepController.text,
         uf: _ufController.text.toUpperCase(),
         localidade: _cidadeController.text.toUpperCase(),
@@ -134,13 +134,13 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    final person = Person(
-        address: address,
+    _person = Person(
+        address: _address,
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
-        socialNetworks: socialNetworks);
+        socialNetworks: _socialNetworks);
 
-    await personListBox.put(widget.personIndex, person);
+    await _personListBox.put(widget.personIndex, _person);
 
     Navigator.pop(context, widget.personIndex);
     if (widget.fromResearch) {
@@ -316,27 +316,27 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
     list.addAll([
       SocialNetworkCheck(
           text: 'Facebook',
-          checkCallback: socialNetworks.facebook!,
+          checkCallback: _socialNetworks.facebook!,
           toggleCallback: (newValue) => setState(() {
-                socialNetworks.facebook = newValue;
+                _socialNetworks.facebook = newValue;
               })),
       SocialNetworkCheck(
           text: 'Instagram',
-          checkCallback: socialNetworks.instagram!,
+          checkCallback: _socialNetworks.instagram!,
           toggleCallback: (newValue) => setState(() {
-                socialNetworks.instagram = newValue;
+                _socialNetworks.instagram = newValue;
               })),
       SocialNetworkCheck(
           text: 'Whatsapp',
-          checkCallback: socialNetworks.whatsapp!,
+          checkCallback: _socialNetworks.whatsapp!,
           toggleCallback: (newValue) => setState(() {
-                socialNetworks.whatsapp = newValue;
+                _socialNetworks.whatsapp = newValue;
               })),
       SocialNetworkCheck(
           text: 'Youtube',
-          checkCallback: socialNetworks.youtube!,
+          checkCallback: _socialNetworks.youtube!,
           toggleCallback: (newValue) => setState(() {
-                socialNetworks.youtube = newValue;
+                _socialNetworks.youtube = newValue;
               })),
     ]);
 
