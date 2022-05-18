@@ -41,12 +41,14 @@ class _ListOfPeopleState extends State<ListOfPeople> {
             },
           ),
         ),
-        endDrawer: Drawer(
-          child: Center(
-              child: ElevatedButton(
-                  onPressed: () => showAlertDeleteAllData(context),
-                  child: Text('Deletar todos os cadastros'))),
-        ),
+        endDrawer: !widget.fromResearch
+            ? Drawer(
+                child: Center(
+                    child: ElevatedButton(
+                        onPressed: () => showAlertDeleteAllData(context),
+                        child: Text('Deletar todos os cadastros'))),
+              )
+            : null,
         body: Center(
             child: Column(children: [
           Expanded(
@@ -139,7 +141,10 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                                       personIndex: key,
                                     ))),
                           ),
-                      icon: Icon(Icons.forward))
+                      icon: CircleAvatar(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          child: Icon(Icons.forward)))
               ],
             ),
           ),

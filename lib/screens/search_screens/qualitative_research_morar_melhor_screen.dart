@@ -6,7 +6,6 @@ import 'package:codesaima/screens/crud_person_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
@@ -27,26 +26,22 @@ int _groupSocialProfile = 0;
 int _groupNumberVisits = 0;
 int _groupValue4 = 0;
 int _groupValue5 = 0;
-double _currentSliderValue = 0;
-double _currentSliderValue2 = 0;
+double _classificationMorarMelhor = 0;
+double _classificationGovenment = 0;
+String _knowEnterpriseOfService = '';
 
 int _numberOfVisits = 0;
+bool _checkBoxOwnerHouse = false;
+String _degreeOfSatisfactionServices = '';
+
 TextEditingController _ownerHouse = TextEditingController();
 TextEditingController _howMuchTimeLiveHome = TextEditingController();
 TextEditingController _numberPeopleLiveHome = TextEditingController();
 TextEditingController _numberOfFamilies = TextEditingController();
-/*
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-TextEditingController = TextEditingController();
-*/
-
-bool _checkBoxOwnerHouse = false;
+TextEditingController _placeRegisterDone = TextEditingController();
+TextEditingController _socialProfileBenefit = TextEditingController();
+TextEditingController _kindOfImprovement = TextEditingController();
+TextEditingController _otherInformationsImprovement = TextEditingController();
 
 class _QualitativeResearchScreenState
     extends State<QualitativeResearchMorarMelhorScreen> {
@@ -54,6 +49,8 @@ class _QualitativeResearchScreenState
   void initState() {
     if (widget.personIndex >= 0) {
       _person = _personListBox.get(widget.personIndex);
+      _ownerHouse.text = '';
+      _checkBoxOwnerHouse = false;
     }
     super.initState();
   }
@@ -169,6 +166,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupPlaceRegister,
                   function: (newValue) => setState(() {
                         _groupPlaceRegister = newValue!;
+                        _placeRegisterDone.text = 'Codesaima';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               ReusabledRadioListItem(
                   text: 'No evento Governo Sem Parar',
@@ -176,6 +176,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupPlaceRegister,
                   function: (newValue) => setState(() {
                         _groupPlaceRegister = newValue!;
+                        _placeRegisterDone.text = 'No evento Governo Sem Parar';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               ReusabledRadioListItem(
                   text: 'Outros',
@@ -183,12 +186,16 @@ class _QualitativeResearchScreenState
                   groupValue: _groupPlaceRegister,
                   function: (newValue) => setState(() {
                         _groupPlaceRegister = newValue!;
+                        _placeRegisterDone.text = '';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               Visibility(
                 visible: _groupPlaceRegister == 3 ? true : false,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: TextField(
+                    controller: _placeRegisterDone,
                     decoration: kTextFieldDecorationMorarMelhor.copyWith(
                         hintText: 'Outros'),
                   ),
@@ -204,6 +211,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupSocialProfile,
                   function: (newValue) => setState(() {
                         _groupSocialProfile = newValue!;
+                        _socialProfileBenefit.text = 'PCD';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       }),
                   text: 'PCD'),
               ReusabledRadioListItem(
@@ -211,6 +221,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupSocialProfile,
                   function: (newValue) => setState(() {
                         _groupSocialProfile = newValue!;
+                        _socialProfileBenefit.text = 'Idoso';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       }),
                   text: 'Idoso'),
               ReusabledRadioListItem(
@@ -218,6 +231,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupSocialProfile,
                   function: (newValue) => setState(() {
                         _groupSocialProfile = newValue!;
+                        _socialProfileBenefit.text = 'Mãe chefe de família';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       }),
                   text: 'Mãe chefe de família'),
               ReusabledRadioListItem(
@@ -225,6 +241,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupSocialProfile,
                   function: (newValue) => setState(() {
                         _groupSocialProfile = newValue!;
+                        _socialProfileBenefit.text = '';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       }),
                   text: 'Outros'),
               Visibility(
@@ -232,6 +251,7 @@ class _QualitativeResearchScreenState
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: TextField(
+                    controller: _socialProfileBenefit,
                     decoration: kTextFieldDecorationMorarMelhor.copyWith(
                         hintText: 'Outros'),
                   ),
@@ -254,6 +274,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupNumberVisits,
                   onChanged: (value) => setState(() {
                         _groupNumberVisits = value!;
+                        _numberOfVisits = 0;
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               RadioListTile<int>(
                   title: Text('Sim'),
@@ -262,22 +285,37 @@ class _QualitativeResearchScreenState
                   groupValue: _groupNumberVisits,
                   onChanged: (value) => setState(() {
                         _groupNumberVisits = value!;
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               Visibility(
-                visible: _groupNumberVisits == 1 ? true : false,
-                child: NumberPicker(
-                  value: _numberOfVisits,
-                  minValue: 0,
-                  maxValue: 10,
-                  step: 1,
-                  axis: Axis.horizontal,
-                  onChanged: (value) => setState(() => _numberOfVisits = value),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.black26),
-                  ),
-                ),
-              ),
+                  visible: _groupNumberVisits == 1 ? true : false,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: IconButton(
+                            icon: Icon(Icons.remove, size: 40),
+                            onPressed: () => setState(() {
+                                  _numberOfVisits > 0
+                                      ? _numberOfVisits--
+                                      : null;
+                                })),
+                      ),
+                      Flexible(
+                          child: Text(
+                        _numberOfVisits.toString(),
+                        style: TextStyle(fontSize: 50),
+                      )),
+                      Flexible(
+                        child: IconButton(
+                            icon: Icon(Icons.add, size: 40),
+                            onPressed: () => setState(() {
+                                  _numberOfVisits++;
+                                })),
+                      ),
+                    ],
+                  )),
               Divider(),
               Text(
                 'Que tipo de melhoria foi contemplada?',
@@ -286,6 +324,9 @@ class _QualitativeResearchScreenState
               Padding(
                 padding: EdgeInsets.all(5),
                 child: TextFormField(
+                  controller: _kindOfImprovement,
+                  minLines: 2,
+                  maxLines: 5,
                   decoration: kTextFieldDecorationMorarMelhor.copyWith(
                       labelText: 'Ex.: Reforma do banheiro'),
                 ),
@@ -302,6 +343,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupValue4,
                   onChanged: (value) => setState(() {
                         _groupValue4 = value!;
+                        _degreeOfSatisfactionServices = 'Ótimo';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               RadioListTile<int>(
                   title: Text('Bom'),
@@ -310,6 +354,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupValue4,
                   onChanged: (value) => setState(() {
                         _groupValue4 = value!;
+                        _degreeOfSatisfactionServices = 'Bom';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               RadioListTile<int>(
                   title: Text('Regular'),
@@ -318,6 +365,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupValue4,
                   onChanged: (value) => setState(() {
                         _groupValue4 = value!;
+                        _degreeOfSatisfactionServices = 'Regular';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               RadioListTile<int>(
                   title: Text('Péssimo'),
@@ -326,6 +376,9 @@ class _QualitativeResearchScreenState
                   groupValue: _groupValue4,
                   onChanged: (value) => setState(() {
                         _groupValue4 = value!;
+                        _degreeOfSatisfactionServices = 'Péssimo';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               Divider(),
               Text(
@@ -333,20 +386,26 @@ class _QualitativeResearchScreenState
                 style: TextStyle(fontSize: 25),
               ),
               RadioListTile<int>(
-                  title: Text('Não'),
+                  title: Text('NÃO'),
                   activeColor: Colors.orange,
                   value: 2,
                   groupValue: _groupValue5,
                   onChanged: (value) => setState(() {
                         _groupValue5 = value!;
+                        _knowEnterpriseOfService = 'NÃO';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               RadioListTile<int>(
-                  title: Text('Sim'),
+                  title: Text('SIM'),
                   activeColor: Colors.orange,
                   value: 1,
                   groupValue: _groupValue5,
                   onChanged: (value) => setState(() {
                         _groupValue5 = value!;
+                        _knowEnterpriseOfService = 'SIM';
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
                       })),
               Divider(),
               Text(
@@ -358,10 +417,12 @@ class _QualitativeResearchScreenState
                 max: 10,
                 divisions: 10,
                 activeColor: Colors.orange,
-                value: _currentSliderValue,
-                label: _currentSliderValue.round().toString(),
+                value: _classificationMorarMelhor,
+                label: _classificationMorarMelhor.round().toString(),
+                onChangeStart: (_) => FocusManager.instance.primaryFocus
+                    ?.unfocus(), //dismiss Keyboard,
                 onChanged: (newValue) => setState(() {
-                  _currentSliderValue = newValue;
+                  _classificationMorarMelhor = newValue;
                 }),
               ),
               Divider(),
@@ -374,10 +435,12 @@ class _QualitativeResearchScreenState
                 max: 10,
                 divisions: 10,
                 activeColor: Colors.orange,
-                value: _currentSliderValue2,
-                label: _currentSliderValue2.round().toString(),
+                value: _classificationGovenment,
+                label: _classificationGovenment.round().toString(),
+                onChangeStart: (_) =>
+                    FocusManager.instance.primaryFocus?.unfocus(),
                 onChanged: (newValue) => setState(() {
-                  _currentSliderValue2 = newValue;
+                  _classificationGovenment = newValue;
                 }),
               ),
               Divider(),
@@ -388,6 +451,9 @@ class _QualitativeResearchScreenState
               Padding(
                 padding: EdgeInsets.all(5),
                 child: TextFormField(
+                  minLines: 2,
+                  maxLines: 5,
+                  controller: _otherInformationsImprovement,
                   decoration: kTextFieldDecorationMorarMelhor.copyWith(
                       hintText: 'Sugestões, críticas ou observações'),
                 ),
@@ -397,10 +463,19 @@ class _QualitativeResearchScreenState
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
-                        onPressed: () {},
-                        icon: Icon(Icons.save),
-                        label: Text('Salvar')),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            fixedSize:
+                                Size(MediaQuery.of(context).size.width, 70)),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.save, color: Colors.white),
+                        label: Text(
+                          'Salvar',
+                          style: TextStyle(color: Colors.white),
+                        )),
                   )
                 ],
               ),
@@ -428,7 +503,7 @@ class ReusabledIntWidget extends StatelessWidget {
       child: ListTile(
         trailing: Text(text),
         title: TextField(
-            controller: _howMuchTimeLiveHome,
+            controller: controller,
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,

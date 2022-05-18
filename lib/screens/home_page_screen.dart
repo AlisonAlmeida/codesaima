@@ -61,6 +61,8 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                       builder: (context) => MorarMelhorScreen(),
                     ))),
+
+            /*
             CentralButton(
                 title: 'Governo de Roraima',
                 img: kPathLogoGovRoraimaPreta,
@@ -69,6 +71,8 @@ class _HomePageState extends State<HomePage> {
                 title: 'Aqui Tem Dono',
                 img: kPathLogoAquiTemDono,
                 onTap: () {}),
+
+                */
           ],
         ),
       ),
