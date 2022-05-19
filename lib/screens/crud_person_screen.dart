@@ -359,7 +359,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         VerticalDivider(),
         Expanded(
           child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(primary: Colors.orange),
+              style: ElevatedButton.styleFrom(primary: Colors.green[700]),
               onPressed: () {
                 updatePerson();
               },

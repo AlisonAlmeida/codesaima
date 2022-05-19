@@ -8,6 +8,7 @@ import 'package:codesaima/screens/splash_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future main() async {
   await Hive.initFlutter();
@@ -31,6 +32,8 @@ class MyApp extends StatelessWidget {
       theme: kGeneralThemeData,
       home: SplashPage(),
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: [const Locale('pt')],
     );
   }
 }

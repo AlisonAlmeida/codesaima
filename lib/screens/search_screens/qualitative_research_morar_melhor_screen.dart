@@ -7,6 +7,7 @@ import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
   QualitativeResearchMorarMelhorScreen({Key? key, required this.personIndex})
@@ -42,6 +43,11 @@ TextEditingController _placeRegisterDone = TextEditingController();
 TextEditingController _socialProfileBenefit = TextEditingController();
 TextEditingController _kindOfImprovement = TextEditingController();
 TextEditingController _otherInformationsImprovement = TextEditingController();
+//int _steppsIndex = 0;
+DateTime now = DateTime.now();
+
+String dateSignatureContratcMorarMelhor =
+    DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
 class _QualitativeResearchScreenState
     extends State<QualitativeResearchMorarMelhorScreen> {
@@ -68,6 +74,36 @@ class _QualitativeResearchScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /*SizedBox.fromSize(
+                size: MediaQuery.of(context).size,
+                child: Stepper(
+                  currentStep: _steppsIndex,
+                  type: StepperType.horizontal,
+                  steps: [
+                    Step(title: Text('title'), content: Text('asd')),
+                    Step(title: Text('title'), content: Text('asd'))
+                  ],
+                  onStepCancel: () {
+                    if (_steppsIndex > 0) {
+                      setState(() {
+                        _steppsIndex -= 1;
+                      });
+                    }
+                  },
+                  onStepContinue: () {
+                    if (_steppsIndex <= 0) {
+                      setState(() {
+                        _steppsIndex += 1;
+                      });
+                    }
+                  },
+                  onStepTapped: (int index) {
+                    setState(() {
+                      _steppsIndex = index;
+                    });
+                  },
+                ),
+              ),*/
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -261,6 +297,27 @@ class _QualitativeResearchScreenState
               Text(
                 'Data da assinatura da ordem de serviço:',
                 style: TextStyle(fontSize: 25),
+              ),
+              Divider(),
+              Align(
+                  alignment: Alignment.center,
+                  child: Text(dateSignatureContratcMorarMelhor.toString())),
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2025),
+                        cancelText: 'Cancelar',
+                        confirmText: 'Selecionar',
+                        locale: Locale('pt', 'BR'),
+                      );
+                    },
+                    icon: Icon(Icons.calendar_month),
+                    label: Text('Selecione uma data')),
               ),
               Divider(),
               Text(
@@ -476,7 +533,7 @@ class _QualitativeResearchScreenState
                           'Salvar',
                           style: TextStyle(color: Colors.white),
                         )),
-                  )
+                  ),
                 ],
               ),
               Divider(),
