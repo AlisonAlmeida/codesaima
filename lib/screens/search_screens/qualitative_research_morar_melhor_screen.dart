@@ -27,6 +27,7 @@ int _groupSocialProfile = 0;
 int _groupNumberVisits = 0;
 int _groupValue4 = 0;
 int _groupValue5 = 0;
+int _groupDateSignatureContratcMorarMelhor = 0;
 double _classificationMorarMelhor = 0;
 double _classificationGovenment = 0;
 String _knowEnterpriseOfService = '';
@@ -46,7 +47,7 @@ TextEditingController _otherInformationsImprovement = TextEditingController();
 //int _steppsIndex = 0;
 DateTime now = DateTime.now();
 
-String dateSignatureContratcMorarMelhor =
+String _dateSignatureContratcMorarMelhor =
     DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
 class _QualitativeResearchScreenState
@@ -299,25 +300,37 @@ class _QualitativeResearchScreenState
                 style: TextStyle(fontSize: 25),
               ),
               Divider(),
-              Align(
-                  alignment: Alignment.center,
-                  child: Text(dateSignatureContratcMorarMelhor.toString())),
-              Align(
-                alignment: Alignment.center,
-                child: ElevatedButton.icon(
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2025),
-                        cancelText: 'Cancelar',
-                        confirmText: 'Selecionar',
-                        locale: Locale('pt', 'BR'),
-                      );
-                    },
-                    icon: Icon(Icons.calendar_month),
-                    label: Text('Selecione uma data')),
+              ReusabledRadioListItem(
+                  value: 1,
+                  groupValue: _groupDateSignatureContratcMorarMelhor,
+                  function: (newValue) => setState(() {
+                        _groupDateSignatureContratcMorarMelhor = newValue!;
+
+                        FocusManager.instance.primaryFocus
+                            ?.unfocus(); //dismiss Keyboard
+                      }),
+                  text: 'Não Lembra a data'),
+              ReusabledRadioListItem(
+                  value: 2,
+                  groupValue: _groupDateSignatureContratcMorarMelhor,
+                  function: (newValue) => setState(() {
+                        _groupDateSignatureContratcMorarMelhor = newValue!;
+                      }),
+                  text: 'Selecionar data'),
+              Visibility(
+                visible: _groupSocialProfile == 4 ? true : false,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: TextField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      TextInputMask(mask: '99/99/9999')
+                    ],
+                    controller: _socialProfileBenefit,
+                    decoration:
+                        kTextFieldDecorationMorarMelhor.copyWith(hintText: ''),
+                  ),
+                ),
               ),
               Divider(),
               Text(
