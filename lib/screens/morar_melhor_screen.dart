@@ -19,7 +19,15 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
           title: Text('Morar Melhor'),
           backgroundColor: kMorarMelhorThemeData.backgroundColor,
         ),
-        body: ListView(children: [
+        body: ListView(children: [ CustomListTileMorarMelhor(
+              icon: Icons.add,
+              title: 'Inscrição',
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListOfPeople(
+                            fromResearch: true,
+                          )))),
           CustomListTileMorarMelhor(
               icon: Icons.search,
               title: 'Pequisa Qualitativa',
