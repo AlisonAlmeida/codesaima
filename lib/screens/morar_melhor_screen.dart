@@ -2,6 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_people.dart';
+import 'package:codesaima/screens/new_register_morar_melhor.dart';
 import 'package:flutter/material.dart';
 
 class MorarMelhorScreen extends StatefulWidget {
@@ -25,8 +26,8 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ListOfPeople(
-                            fromResearch: true,
+                      builder: (context) => NewRegisterMorarMelhor(
+                            
                           )))),
           CustomListTileMorarMelhor(
               icon: Icons.search,

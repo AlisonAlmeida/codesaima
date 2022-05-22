@@ -2,13 +2,12 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/home_page_screen.dart';
-import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 1))
+    Future.delayed(Duration(seconds: 3))
         .then((value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -21,7 +20,10 @@ class SplashPage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(color: Colors.white),
         child: Center(
-          child: Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Image.asset(kPathMainLogoCodesaima, fit: BoxFit.cover),
+          ),
         ),
       ),
     );

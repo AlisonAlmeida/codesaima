@@ -5,7 +5,6 @@ import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/models/person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
 import 'package:codesaima/screens/splash_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

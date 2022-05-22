@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
               elevation: 2,
               child: ListTile(
                   leading: Icon(Icons.person_search),
-                  title: Text('Lista de moradores cadastrados'),
+                  title: Text('Lista de cidadãos cadastrados para pesquisas'),
                   trailing: Icon(Icons.arrow_forward),
                   onTap: () {
                     Navigator.push(
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 img: kPathLogoAquiTemDono,
                 onTap: () {}),
 
-                */
+               */ 
           ],
         ),
       ),
