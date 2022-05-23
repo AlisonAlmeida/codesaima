@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:codesaima/models/person_model.dart';
-import 'package:codesaima/screens/crud_person_screen.dart';
+import 'package:codesaima/models/simple_person_model.dart';
+import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,7 +20,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
   @override
   void initState() {
-    _personListBox = Hive.box<Person>('personList');
+    _personListBox = Hive.box<SimplePerson>('personList');
 
     super.initState();
   }
@@ -97,7 +97,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
   List<Widget> buildListOfPeople() {
     List<Widget> _list = [];
     _personListBox.toMap().forEach((key, _person) {
-      _person as Person;
+      _person as SimplePerson;
       _list.add(
         Card(
           margin: EdgeInsets.all(10),
@@ -159,7 +159,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     return _listOfPeople;
   }
 
-  showAlertDialog(context, Person person, int index) {
+  showAlertDialog(context, SimplePerson SimplePerson, int index) {
     // set up the buttons
 
     Widget cancelButton = TextButton(
@@ -178,7 +178,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(person.name),
+      title: Text(SimplePerson.name),
       content: Text("Confirma a exclusão do cadastro?"),
       actions: [
         cancelButton,

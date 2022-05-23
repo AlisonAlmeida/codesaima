@@ -22,7 +22,7 @@ class QRMorarMelhorModel {
   final int? numberOfFamilies;
   final String? placeRegisterDone;
   final String? socialProfileBenefit;
-  final DateTime? dateTime; //TODO
+  final DateTime? dateTime;
   final int? numberOfVisits;
   final String? kindOfImprovement;
   final String? degreeOfSatisfaction;

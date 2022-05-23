@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/models/person_model.dart';
-import 'package:codesaima/screens/crud_person_screen.dart';
+import 'package:codesaima/models/simple_person_model.dart';
+import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +19,8 @@ class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
       _QualitativeResearchScreenState();
 }
 
-final _personListBox = Hive.box<Person>('personList');
-Person? _person = Person();
+final _personListBox = Hive.box<SimplePerson>('personList');
+SimplePerson? _person = SimplePerson();
 
 int _groupPlaceRegister = 0;
 int _groupSocialProfile = 0;

@@ -1,17 +1,16 @@
 import 'package:codesaima/core/social_networks.dart';
-
 import 'address_model.dart';
 import 'package:hive/hive.dart';
 
-part 'person_model.g.dart';
+part 'simple_person_model.g.dart';
 
 // to generate model.g.dart run> flutter pub run build_runner build
 
 //to delete conflict run> flutter pub run build_runner build --delete-conflicting-outputs
 
 @HiveType(typeId: 0)
-class Person {
-  Person({
+class SimplePerson {
+  SimplePerson({
     this.name = '',
     this.phone = '',
     this.socialNetworks,
@@ -30,7 +29,7 @@ class Person {
   @HiveField(3)
   final Address? address;
 
-  factory Person.fromMap(Map<String, dynamic> json) => Person(
+  factory SimplePerson.fromMap(Map<String, dynamic> json) => SimplePerson(
       name: json['name'],
       phone: json['phone'],
       socialNetworks: json['socialNetworks'],
@@ -41,7 +40,7 @@ class Person {
       'name': name,
       'phone': phone,
       'socialNetworks': SocialNetworks,
-      'address': address
+      'address': Address
     };
   }
 

@@ -2,7 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/address_model.dart';
-import 'package:codesaima/models/person_model.dart';
+import 'package:codesaima/models/simple_person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
 import 'package:codesaima/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,8 @@ Future main() async {
   await Hive.openBox<Address>('address');
   Hive.registerAdapter(SocialNetworksAdapter());
   await Hive.openBox<SocialNetworks>('social_Networks');
-  Hive.registerAdapter(PersonAdapter());
-  await Hive.openBox<Person>('personList');
+  Hive.registerAdapter(SimplePersonAdapter());
+  await Hive.openBox<SimplePerson>('personList');
 
   runApp(MyApp());
 }

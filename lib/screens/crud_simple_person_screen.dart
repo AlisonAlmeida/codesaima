@@ -3,7 +3,7 @@
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
-import 'package:codesaima/models/person_model.dart';
+import 'package:codesaima/models/simple_person_model.dart';
 import 'package:codesaima/core/social_networks.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
@@ -28,7 +28,7 @@ class CrudPersonScreen extends StatefulWidget {
 }
 
 class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
-  final Box _personListBox = Hive.box<Person>('personList');
+  final Box _personListBox = Hive.box<SimplePerson>('personList');
   late final int personIndex;
 
   final String name = 'Morar Melhor';
@@ -45,7 +45,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
 
   SocialNetworks _socialNetworks = SocialNetworks();
   Address _address = Address();
-  Person _person = Person();
+  SimplePerson _person = SimplePerson();
 
   @override
   void initState() {
@@ -103,7 +103,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    _person = Person(
+    _person = SimplePerson(
         address: _address,
         name: _nameController.text,
         phone: _telefoneController.text,
@@ -134,7 +134,7 @@ class _CrupPeopleScreen2State extends State<CrudPersonScreen> {
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    _person = Person(
+    _person = SimplePerson(
         address: _address,
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
