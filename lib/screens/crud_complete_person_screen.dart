@@ -6,7 +6,6 @@ import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/models/complete_person_model.dart';
 import 'package:codesaima/models/social_networks.dart';
-import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +32,6 @@ class CrudCompletePersonScreen extends StatefulWidget {
 
 class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
   late final Box _completePersonListBox;
-
-  final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _cepController = TextEditingController();
@@ -49,16 +46,29 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
   final _nacionalityController = TextEditingController();
   final _ufNaturalityController = TextEditingController();
   final _cityNaturalityController = TextEditingController();
+  final _mothersNameController = TextEditingController();
+  final _fathersNameController = TextEditingController();
+  final _tipeOfDocumentController = TextEditingController();
+  final _numberDocumentController = TextEditingController();
+  final _issueDocumentController = TextEditingController();
+  final _ufDocumentController = TextEditingController();
+  final _dateIssueDocumentController = TextEditingController();
+  final _pisNisPasepController = TextEditingController();
+  final _cpfController = TextEditingController();
+  final _professionController = TextEditingController();
+  final _maritalStatusController = TextEditingController();
 
   SocialNetworks _socialNetworks = SocialNetworks();
   Address _address = Address();
   CompletePerson _person = CompletePerson();
+  int _currentStep = 0;
 
   @override
   void initState() {
     _completePersonListBox = Hive.box<CompletePerson>(kCompletePersonBox);
     _nacionalityController.text = 'BRASIL';
     _ufNaturalityController.text = 'RR';
+    _cityNaturalityController.text = 'BOA VISTA';
     _socialNetworks.clear();
     if (widget.hasPersonData) {
       _person = _completePersonListBox.get(widget.personIndex);
@@ -175,6 +185,15 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
     });
   }
 
+  _stepContinue() {
+    setState(
+        () => _currentStep >= 0 && _currentStep < 3 ? _currentStep++ : null);
+  }
+
+  _stepReturn() {
+    setState(() => _currentStep > 0 ? _currentStep-- : null);
+  }
+
   @override
   Widget build(BuildContext context) {
     _ufAddressController.text = 'RR';
@@ -183,220 +202,346 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
       appBar: AppBar(
         title: Text('Cadastro de Pessoa'),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Form(
-          key: _form,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Divider(height: 5),
-                CompletNameWidget(nameController: _nameController),
-                Divider(height: 5),
-                ElevatedButton.icon(
-                    onPressed: () {}, //TODO
-                    icon: Icon(Icons.calendar_month),
-                    label: Text('Data de nascimento')),
-                ListTile(
-                  leading: Text('Sexo:'),
-                  title: DropdownButton(
-                    items: sexOptions,
-                    value: _sexController.text.isEmpty
-                        ? 'MASCULINO'
-                        : _sexController.text,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _sexController.text = newValue!;
-                      });
-                    },
-                  ),
-                ),
-                Visibility(
-                    visible: _sexController.text == 'OUTRO' ? true : false,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: TextField(
-                        controller: _sexController,
-                        decoration: kTextFieldGeneralDecoration.copyWith(
-                            hintText: 'Orientação Sexual'),
-                      ),
-                    )),
-                Divider(height: 5),
-                TextFieldSearch(
-                  noItemfoundMessage: 'Nenhum item encontrado',
-                  minStringLength: 3,
-                  label: 'País-Nacionalidade',
-                  initialList: listCountries,
-                  controller: _nacionalityController,
-                  decoration: kTextFieldGeneralDecoration.copyWith(
-                      hintText: 'País-Nacionalidade',
-                      labelText: 'País-Nacionalidade'),
-                ),
-                Divider(height: 5),
-                Row(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stepper(
+              currentStep: _currentStep,
+              controlsBuilder: (context, details) {
+                return Row(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: TextField(
-                        controller: _ufNaturalityController,
-                        decoration: kTextFieldGeneralDecoration.copyWith(
-                          labelText: 'UF',
-                          hintText: 'UF',
-                        ),
-                        textCapitalization: TextCapitalization.characters,
-                        textInputAction: TextInputAction.next,
-                      ),
-                    ),
-                    Spacer(),
-                    Flexible(
-                        flex: 10,
-                        child: TextField(
-                          decoration: kTextFieldGeneralDecoration.copyWith(
-                            labelText: 'Cidade de Nascimento',
-                            hintText: 'Cidade de Nascimento',
-                          ),
-                        ))
+                    ElevatedButton(
+                        onPressed: () => _stepContinue(),
+                        child: Text('Continuar')),
+                    ElevatedButton(
+                        onPressed: () => _stepReturn(), child: Text('Voltar')),
                   ],
-                ),
-                Divider(height: 5),
-                PhoneWidget(telefoneController: _telefoneController),
-                Divider(height: 5),
-                TextFormField(
-                  textCapitalization: TextCapitalization.characters,
-                  textInputAction: TextInputAction.next,
-                  controller: _nameController,
-                  keyboardType: TextInputType.name,
-                  decoration: kTextFieldGeneralDecoration.copyWith(
-                      labelText: 'Nome da Mãe',
-                      hintText: 'Nome do Pai',
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Icon(Icons.person),
-                      )),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.black)),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.room,
-                            color: Colors.blueGrey[300],
+                );
+              },
+              elevation: 10,
+              physics: ScrollPhysics(),
+              steps: [
+                Step(
+                    isActive: _currentStep == 0,
+                    state: _currentStep >= 0
+                        ? StepState.complete
+                        : StepState.disabled,
+                    title: Text('Informações pessoais'),
+                    content: Column(
+                      children: [
+                        CompletNameWidget(nameController: _nameController),
+                        Divider(height: 5),
+                        ElevatedButton.icon(
+                            onPressed: () {}, //TODO
+                            icon: Icon(Icons.calendar_month),
+                            label: Text('Data de nascimento')),
+                        ListTile(
+                          leading: Text('Sexo:'),
+                          title: DropdownButton(
+                            items: sexOptions,
+                            value: _sexController.text.isEmpty
+                                ? 'MASCULINO'
+                                : _sexController.text,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _sexController.text = newValue!;
+                              });
+                            },
                           ),
-                          Text(
-                            'Endereço:',
-                            style: TextStyle(color: Colors.blueGrey[300]),
-                          ),
-                        ],
-                      ),
-                      Divider(height: 5),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: TextField(
-                              onEditingComplete: () async => getCep(),
-                              textInputAction: TextInputAction.done,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                TextInputMask(mask: '99999-999')
-                              ],
-                              controller: _cepController,
-                              decoration: kTextFieldGeneralDecoration.copyWith(
-                                  labelText: 'CEP', hintText: 'CEP'),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.all(15)),
-                                  shape:
-                                      MaterialStateProperty.all(CircleBorder()),
+                        ),
+                        Visibility(
+                            visible:
+                                _sexController.text == 'OUTRO' ? true : false,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: TextField(
+                                controller: _sexController,
+                                decoration: kTextFieldGeneralDecoration
+                                    .copyWith(hintText: 'Orientação Sexual'),
+                              ),
+                            )),
+                        Divider(height: 5),
+                        TextFieldSearch(
+                          noItemfoundMessage: 'Nenhum item encontrado',
+                          minStringLength: 3,
+                          label: 'País-Nacionalidade',
+                          initialList: listCountries,
+                          controller: _nacionalityController,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                              hintText: 'País-Nacionalidade',
+                              labelText: 'País-Nacionalidade'),
+                        ),
+                        Divider(height: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                controller: _ufNaturalityController,
+                                decoration:
+                                    kTextFieldGeneralDecoration.copyWith(
+                                  labelText: 'UF',
+                                  hintText: 'UF',
                                 ),
-                                onPressed: () async => getCep(),
-                                child: Icon(Icons.cached)),
-                          )
-                        ],
-                      ),
-                      Divider(height: 5),
-                      Row(
-                        children: [
-                          UfWidget(ufController: _ufAddressController),
-                          Spacer(),
-                          Flexible(
-                            flex: 10,
-                            child: DropdownButtonFormField(
-                              decoration: kTextFieldGeneralDecoration,
-                              items: dropdownCities,
-                              value: _cidadeController.text.isEmpty
-                                  ? 'BOA VISTA'
-                                  : _cidadeController.text,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  _cidadeController.text = newValue!;
-                                });
-                              },
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                                textInputAction: TextInputAction.next,
+                              ),
                             ),
+                            Spacer(),
+                            Flexible(
+                                flex: 10,
+                                child: TextField(
+                                  controller: _cityNaturalityController,
+                                  decoration:
+                                      kTextFieldGeneralDecoration.copyWith(
+                                    labelText: 'Cidade de Nascimento',
+                                    hintText: 'Cidade de Nascimento',
+                                  ),
+                                ))
+                          ],
+                        ),
+                        Divider(height: 5),
+                        TextFormField(
+                          textCapitalization: TextCapitalization.characters,
+                          textInputAction: TextInputAction.next,
+                          controller: _mothersNameController,
+                          keyboardType: TextInputType.name,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                              labelText: 'Nome da Mãe',
+                              hintText: 'Nome do Mãe',
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(Icons.person),
+                              )),
+                        ),
+                        Divider(height: 5),
+                        TextFormField(
+                          textCapitalization: TextCapitalization.characters,
+                          textInputAction: TextInputAction.next,
+                          controller: _fathersNameController,
+                          keyboardType: TextInputType.name,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                              labelText: 'Nome do Pai',
+                              hintText: 'Nome do Pai',
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(Icons.person),
+                              )),
+                        ),
+                      ],
+                    )),
+                Step(
+                    isActive: _currentStep >= 0,
+                    state: _currentStep >= 1
+                        ? StepState.complete
+                        : StepState.disabled,
+                    title: Text('Contato'),
+                    content: Column(
+                      children: [
+                        PhoneWidget(telefoneController: _telefoneController),
+                        Divider(height: 5),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.schema_rounded,
+                              color: Colors.blueGrey[300],
+                            ),
+                            Text(
+                              'Redes Sociais:',
+                              style: TextStyle(color: Colors.blueGrey[300]),
+                            ),
+                          ],
+                        ),
+                        Divider(height: 5),
+                        Wrap(children: buildSocialMediaNetworks())
+                      ],
+                    )),
+                Step(
+                    isActive: _currentStep >= 0,
+                    state: _currentStep >= 2
+                        ? StepState.complete
+                        : StepState.disabled,
+                    title: Text('Documentação'),
+                    content: Column(
+                      children: [
+                        TextFormField(
+                          textCapitalization: TextCapitalization.characters,
+                          textInputAction: TextInputAction.next,
+                          controller: _tipeOfDocumentController,
+                          keyboardType: TextInputType.name,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                              labelText: 'Tipo de Documento',
+                              hintText: 'RG, CNH, CTPS, RNM, etc'),
+                        ),
+                        Divider(height: 5),
+                        TextFormField(
+                          textCapitalization: TextCapitalization.characters,
+                          textInputAction: TextInputAction.next,
+                          controller: _numberDocumentController,
+                          keyboardType: TextInputType.name,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                              labelText: 'Nº / Série do documento',
+                              hintText: 'Nº / Série do documento'),
+                        ),
+                        Divider(height: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: TextField(
+                                controller: _issueDocumentController,
+                                decoration:
+                                    kTextFieldGeneralDecoration.copyWith(
+                                  labelText: 'Órgão emissor',
+                                  hintText: 'Órgão emissor',
+                                ),
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                                textInputAction: TextInputAction.next,
+                              ),
+                            ),
+                            Flexible(
+                                flex: 2,
+                                child: TextField(
+                                  controller: _ufDocumentController,
+                                  decoration:
+                                      kTextFieldGeneralDecoration.copyWith(
+                                    labelText: 'UF',
+                                    hintText: 'UF',
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Divider(height: 5),
+                        TextField(
+                          controller: _dateIssueDocumentController,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                            labelText: 'Data de expedição',
+                            hintText: 'Data de expedição',
                           ),
-                        ],
-                      ),
-                      Divider(height: 5),
-                      StreetWidget(ruaController: _ruaController),
-                      Divider(height: 5),
-                      Row(
-                        children: [
-                          BairroWidget(bairroController: _bairroController),
-                          Spacer(),
-                          NumberWidget(numeroController: _numeroController),
-                        ],
-                      ),
-                      Divider(height: 5),
-                      ComplementWidget(
-                          complementoController: _complementoController),
-                    ],
-                  ),
-                ),
-                Divider(height: 5),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.black)),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.schema_rounded,
-                            color: Colors.blueGrey[300],
+                        ),
+                        Divider(height: 5),
+                        TextField(
+                          controller: _pisNisPasepController,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                            labelText: 'Nº PIS/NIS/PASEP',
+                            hintText: 'Nº PIS/NIS/PASEP',
                           ),
-                          Text(
-                            'Redes Sociais:',
-                            style: TextStyle(color: Colors.blueGrey[300]),
+                        ),
+                        Divider(height: 5),
+                        TextField(
+                          controller: _cpfController,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                            labelText: 'CPF',
+                            hintText: 'CPF',
                           ),
-                        ],
-                      ),
-                      Divider(height: 5),
-                      Wrap(children: buildSocialMediaNetworks())
-                    ],
-                  ),
-                ),
-                Divider(height: 5),
-                Row(
-                  children: buildOptionButtons(),
-                )
+                        ),
+                        TextField(
+                          controller: _professionController,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                            labelText: 'Profissão',
+                            hintText: 'Profissão',
+                          ),
+                        ),
+                      ],
+                    )),
+                Step(
+                    isActive: _currentStep >= 0,
+                    state: _currentStep >= 3
+                        ? StepState.complete
+                        : StepState.disabled,
+                    title: Text('Endereço'),
+                    content: Column(
+                      children: [
+                        Divider(height: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: TextField(
+                                onEditingComplete: () async => getCep(),
+                                textInputAction: TextInputAction.done,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  TextInputMask(mask: '99999-999')
+                                ],
+                                controller: _cepController,
+                                decoration:
+                                    kTextFieldGeneralDecoration.copyWith(
+                                        labelText: 'CEP', hintText: 'CEP'),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.all(15)),
+                                    shape: MaterialStateProperty.all(
+                                        CircleBorder()),
+                                  ),
+                                  onPressed: () async => getCep(),
+                                  child: Icon(Icons.cached)),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            UfWidget(ufController: _ufAddressController),
+                            Spacer(),
+                            Flexible(
+                              flex: 10,
+                              child: DropdownButtonFormField(
+                                decoration: kTextFieldGeneralDecoration,
+                                items: dropdownCities,
+                                value: _cidadeController.text.isEmpty
+                                    ? 'BOA VISTA'
+                                    : _cidadeController.text,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _cidadeController.text = newValue!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(height: 5),
+                        StreetWidget(ruaController: _ruaController),
+                        Divider(height: 5),
+                        Row(
+                          children: [
+                            BairroWidget(bairroController: _bairroController),
+                            Spacer(),
+                            NumberWidget(numeroController: _numeroController),
+                          ],
+                        ),
+                        Divider(height: 5),
+                        ComplementWidget(
+                            complementoController: _complementoController),
+                        TextField(
+                          controller: _maritalStatusController,
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                            labelText: 'Estado Civil',
+                            hintText: 'Estado Civil',
+                          ),
+                        ),
+                        Row(
+                          children: buildOptionButtons(),
+                        )
+                      ],
+                    ))
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
   }
+
 /*
 REFERENCE OF DATETIME
   Future<void> _selectDate(BuildContext context) async {
