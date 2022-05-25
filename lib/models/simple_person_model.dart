@@ -1,4 +1,4 @@
-import 'package:codesaima/core/social_networks.dart';
+import 'package:codesaima/models/social_networks.dart';
 import 'address_model.dart';
 import 'package:hive/hive.dart';
 

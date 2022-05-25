@@ -1,14 +1,16 @@
-import 'package:codesaima/core/social_networks.dart';
+import 'package:codesaima/models/social_networks.dart';
 import 'package:codesaima/models/person_spouse.dart';
 import 'package:codesaima/models/resident_familiar.dart';
 import 'address_model.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'complete_person_model.g.dart';
 
 // to generate model.g.dart run> flutter pub run build_runner build
 
 //to delete conflict run> flutter pub run build_runner build --delete-conflicting-outputs
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 class CompletePerson {
   CompletePerson(
       {this.howMuchTimeLiveRoraima = '',
@@ -16,8 +18,6 @@ class CompletePerson {
       this.observations = '',
       this.singleMother,
       this.familiarCash = 0,
-      this.deficientPersonName = '',
-      this.deficientPersonCID = '',
       this.origemUF = '',
       this.personSpouse,
       this.origenCity = '',
@@ -116,27 +116,18 @@ class CompletePerson {
   final double familiarCash;
 
   @HiveField(24)
-  final String deficientPersonName;
-
-  @HiveField(25)
-  final String deficientPersonCID;
-
-  @HiveField(25)
   final List<ResidentFamiliar>? residentFamiliar;
 
-  @HiveField(27)
+  @HiveField(25)
   final String howMuchTimeLiveRoraima;
 
-  @HiveField(28)
+  @HiveField(26)
   final String howMuchTimeLiveHome;
 
-  @HiveField(29)
+  @HiveField(27)
   final String observations;
 
-  @HiveField(30)
-  final bool? singleMother;
-
-  @HiveField(30)
+  @HiveField(28)
   final bool? singleMother;
 
   factory CompletePerson.fromMap(Map<String, dynamic> json) => CompletePerson(
@@ -163,6 +154,12 @@ class CompletePerson {
         personSpouse: json['personSpouse'],
         origemUF: json['origenUF'],
         origenCity: json['origenCity'],
+        familiarCash: json['familiarCash'],
+        residentFamiliar: json['residentFamiliar'],
+        howMuchTimeLiveRoraima: json['howMuchTimeLiveRoraima'],
+        howMuchTimeLiveHome: json['howMuchTimeLiveHome'],
+        observations: json['observations'],
+        singleMother: json['singleMother'],
       );
 
   Map<String, dynamic> toMap() {
@@ -190,6 +187,12 @@ class CompletePerson {
       'personSpouse': PersonSpouse,
       'origemUF': origemUF,
       'origenCity': origenCity,
+      'familiarCash': familiarCash,
+      'residentFamiliar': ResidentFamiliar,
+      'howMuchTimeLiveRoraima': howMuchTimeLiveRoraima,
+      'howMuchTimeLiveHome': howMuchTimeLiveHome,
+      'observations': observations,
+      'singleMother': singleMother,
     };
   }
 

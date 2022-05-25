@@ -1,18 +1,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, prefer_const_constructors_in_immutables, must_be_immutable
 
 import 'package:codesaima/consts.dart';
+import 'package:codesaima/core/textfield_search.dart';
 import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
-import 'package:codesaima/models/simple_person_model.dart';
+import 'package:codesaima/models/complete_person_model.dart';
 import 'package:codesaima/models/social_networks.dart';
+import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:pattern_formatter/date_formatter.dart';
 
-class CrudSimplePersonScreen extends StatefulWidget {
-  CrudSimplePersonScreen(
+class CrudCompletePersonScreen extends StatefulWidget {
+  CrudCompletePersonScreen(
       {Key? key,
       required this.hasPersonData,
       this.personIndex,
@@ -24,12 +28,11 @@ class CrudSimplePersonScreen extends StatefulWidget {
   final int? personIndex;
 
   @override
-  State<CrudSimplePersonScreen> createState() => _CrupPeopleScreen2State();
+  State<CrudCompletePersonScreen> createState() => _CrupPeopleScreen2State();
 }
 
-class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
-  late final Box _personListBox;
-  late final int personIndex;
+class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
+  late final Box _completePersonListBox;
 
   final String name = 'Morar Melhor';
   final _form = GlobalKey<FormState>();
@@ -39,27 +42,32 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
   final _bairroController = TextEditingController();
   final _numeroController = TextEditingController();
   final _telefoneController = TextEditingController();
-  final _ufController = TextEditingController();
+  final _ufAddressController = TextEditingController();
   final _cidadeController = TextEditingController();
   final _complementoController = TextEditingController();
+  final _sexController = TextEditingController();
+  final _nacionalityController = TextEditingController();
+  final _ufNaturalityController = TextEditingController();
+  final _cityNaturalityController = TextEditingController();
 
   SocialNetworks _socialNetworks = SocialNetworks();
   Address _address = Address();
-  SimplePerson _person = SimplePerson();
+  CompletePerson _person = CompletePerson();
 
   @override
   void initState() {
-    _personListBox = Hive.box<SimplePerson>(kSimplePersonBox);
+    _completePersonListBox = Hive.box<CompletePerson>(kCompletePersonBox);
+    _nacionalityController.text = 'BRASIL';
+    _ufNaturalityController.text = 'RR';
     _socialNetworks.clear();
     if (widget.hasPersonData) {
-      _person = _personListBox.get(widget.personIndex);
-
+      _person = _completePersonListBox.get(widget.personIndex);
       _nameController.text = _person.name;
       _telefoneController.text = _person.phone;
       _cepController.text = _person.address!.cep;
       _bairroController.text = _person.address!.bairro;
       _numeroController.text = _person.address!.numero;
-      _ufController.text = _person.address!.uf;
+      _ufAddressController.text = _person.address!.uf;
       _cidadeController.text = _person.address!.localidade;
       _ruaController.text = _person.address!.logradouro;
       _complementoController.text = _person.address!.complemento;
@@ -79,7 +87,7 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
 
       setState(() {
         if (_address.uf == 'RR') {
-          _ufController.text = 'RR';
+          _ufAddressController.text = 'RR';
           _cidadeController.text = _address.localidade.toUpperCase();
           _bairroController.text = _address.bairro.toUpperCase();
           _ruaController.text = _address.logradouro.toUpperCase();
@@ -97,22 +105,22 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
   addPerson() async {
     _address = Address(
         cep: _cepController.text,
-        uf: _ufController.text.toUpperCase(),
+        uf: _ufAddressController.text.toUpperCase(),
         localidade: _cidadeController.text.toUpperCase(),
         logradouro: _ruaController.text.toUpperCase(),
         bairro: _bairroController.text.toUpperCase(),
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    _person = SimplePerson(
+    _person = CompletePerson(
         address: _address,
         name: _nameController.text,
         phone: _telefoneController.text,
         socialNetworks: _socialNetworks);
-    _ufController.text = 'RR';
+    _ufAddressController.text = 'RR';
     clearFields();
 
-    await _personListBox.add(_person);
+    await _completePersonListBox.add(_person);
 
     Navigator.pop(context, _person);
     if (widget.fromResearch) {
@@ -120,7 +128,7 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
           context,
           MaterialPageRoute(
               builder: (context) => QualitativeResearchMorarMelhorScreen(
-                    personIndex: _personListBox.keys.last,
+                    personIndex: _completePersonListBox.keys.last,
                   )));
     }
   }
@@ -128,20 +136,20 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
   updatePerson() async {
     _address = Address(
         cep: _cepController.text,
-        uf: _ufController.text.toUpperCase(),
+        uf: _ufAddressController.text.toUpperCase(),
         localidade: _cidadeController.text.toUpperCase(),
         logradouro: _ruaController.text.toUpperCase(),
         bairro: _bairroController.text.toUpperCase(),
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    _person = SimplePerson(
+    _person = CompletePerson(
         address: _address,
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
         socialNetworks: _socialNetworks);
 
-    await _personListBox.put(widget.personIndex, _person);
+    await _completePersonListBox.put(widget.personIndex, _person);
 
     Navigator.pop(context, widget.personIndex);
     if (widget.fromResearch) {
@@ -169,7 +177,7 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _ufController.text = 'RR';
+    _ufAddressController.text = 'RR';
 
     return Scaffold(
       appBar: AppBar(
@@ -185,8 +193,87 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
                 Divider(height: 5),
                 CompletNameWidget(nameController: _nameController),
                 Divider(height: 5),
+                ElevatedButton.icon(
+                    onPressed: () {}, //TODO
+                    icon: Icon(Icons.calendar_month),
+                    label: Text('Data de nascimento')),
+                ListTile(
+                  leading: Text('Sexo:'),
+                  title: DropdownButton(
+                    items: sexOptions,
+                    value: _sexController.text.isEmpty
+                        ? 'MASCULINO'
+                        : _sexController.text,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _sexController.text = newValue!;
+                      });
+                    },
+                  ),
+                ),
+                Visibility(
+                    visible: _sexController.text == 'OUTRO' ? true : false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: TextField(
+                        controller: _sexController,
+                        decoration: kTextFieldGeneralDecoration.copyWith(
+                            hintText: 'Orientação Sexual'),
+                      ),
+                    )),
+                Divider(height: 5),
+                TextFieldSearch(
+                  noItemfoundMessage: 'Nenhum item encontrado',
+                  minStringLength: 3,
+                  label: 'País-Nacionalidade',
+                  initialList: listCountries,
+                  controller: _nacionalityController,
+                  decoration: kTextFieldGeneralDecoration.copyWith(
+                      hintText: 'País-Nacionalidade',
+                      labelText: 'País-Nacionalidade'),
+                ),
+                Divider(height: 5),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        controller: _ufNaturalityController,
+                        decoration: kTextFieldGeneralDecoration.copyWith(
+                          labelText: 'UF',
+                          hintText: 'UF',
+                        ),
+                        textCapitalization: TextCapitalization.characters,
+                        textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    Spacer(),
+                    Flexible(
+                        flex: 10,
+                        child: TextField(
+                          decoration: kTextFieldGeneralDecoration.copyWith(
+                            labelText: 'Cidade de Nascimento',
+                            hintText: 'Cidade de Nascimento',
+                          ),
+                        ))
+                  ],
+                ),
+                Divider(height: 5),
                 PhoneWidget(telefoneController: _telefoneController),
                 Divider(height: 5),
+                TextFormField(
+                  textCapitalization: TextCapitalization.characters,
+                  textInputAction: TextInputAction.next,
+                  controller: _nameController,
+                  keyboardType: TextInputType.name,
+                  decoration: kTextFieldGeneralDecoration.copyWith(
+                      labelText: 'Nome da Mãe',
+                      hintText: 'Nome do Pai',
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Icon(Icons.person),
+                      )),
+                ),
                 Container(
                   padding: EdgeInsets.all(10),
                   decoration:
@@ -240,7 +327,7 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
                       Divider(height: 5),
                       Row(
                         children: [
-                          UfWidget(ufController: _ufController),
+                          UfWidget(ufController: _ufAddressController),
                           Spacer(),
                           Flexible(
                             flex: 10,
@@ -310,6 +397,21 @@ class _CrupPeopleScreen2State extends State<CrudSimplePersonScreen> {
       ),
     );
   }
+/*
+REFERENCE OF DATETIME
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900),
+        initialDatePickerMode: DatePickerMode.year,
+        lastDate: DateTime.now());
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }*/
 
   List<Widget> buildSocialMediaNetworks() {
     List<Widget> list = [];
@@ -495,10 +597,10 @@ class UfWidget extends StatelessWidget {
   const UfWidget({
     Key? key,
     required TextEditingController ufController,
-  })  : _ufController = ufController,
+  })  : _ufAddressController = ufController,
         super(key: key);
 
-  final TextEditingController _ufController;
+  final TextEditingController _ufAddressController;
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +610,7 @@ class UfWidget extends StatelessWidget {
         enabled: false,
         textCapitalization: TextCapitalization.characters,
         textInputAction: TextInputAction.next,
-        controller: _ufController,
+        controller: _ufAddressController,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         decoration: kTextFieldGeneralDecoration.copyWith(

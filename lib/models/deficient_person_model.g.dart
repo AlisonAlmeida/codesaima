@@ -1,41 +1,42 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'social_networks.dart';
+part of 'deficient_person_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SocialNetworksAdapter extends TypeAdapter<SocialNetworks> {
+class DeficientPersonAdapter extends TypeAdapter<DeficientPerson> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  SocialNetworks read(BinaryReader reader) {
+  DeficientPerson read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SocialNetworks(
-      facebook: fields[0] as bool?,
-      instagram: fields[1] as bool?,
-      whatsapp: fields[2] as bool?,
-      youtube: fields[3] as bool?,
+    return DeficientPerson(
+      deficientPersonCID: fields[5] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, SocialNetworks obj) {
+  void write(BinaryWriter writer, DeficientPerson obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
+      ..writeByte(5)
+      ..write(obj.deficientPersonCID)
       ..writeByte(0)
-      ..write(obj.facebook)
+      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.instagram)
+      ..write(obj.birthDate)
       ..writeByte(2)
-      ..write(obj.whatsapp)
+      ..write(obj.cpf)
       ..writeByte(3)
-      ..write(obj.youtube);
+      ..write(obj.kinship)
+      ..writeByte(4)
+      ..write(obj.deficient);
   }
 
   @override
@@ -44,7 +45,7 @@ class SocialNetworksAdapter extends TypeAdapter<SocialNetworks> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SocialNetworksAdapter &&
+      other is DeficientPersonAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

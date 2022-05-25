@@ -19,7 +19,7 @@ class QualitativeResearchMorarMelhorScreen extends StatefulWidget {
       _QualitativeResearchScreenState();
 }
 
-final _personListBox = Hive.box<SimplePerson>('personList');
+final _personListBox = Hive.box<SimplePerson>(kSimplePersonBox);
 SimplePerson? _person = SimplePerson();
 
 int _groupPlaceRegister = 0;
@@ -75,36 +75,6 @@ class _QualitativeResearchScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /*SizedBox.fromSize(
-                size: MediaQuery.of(context).size,
-                child: Stepper(
-                  currentStep: _steppsIndex,
-                  type: StepperType.horizontal,
-                  steps: [
-                    Step(title: Text('title'), content: Text('asd')),
-                    Step(title: Text('title'), content: Text('asd'))
-                  ],
-                  onStepCancel: () {
-                    if (_steppsIndex > 0) {
-                      setState(() {
-                        _steppsIndex -= 1;
-                      });
-                    }
-                  },
-                  onStepContinue: () {
-                    if (_steppsIndex <= 0) {
-                      setState(() {
-                        _steppsIndex += 1;
-                      });
-                    }
-                  },
-                  onStepTapped: (int index) {
-                    setState(() {
-                      _steppsIndex = index;
-                    });
-                  },
-                ),
-              ),*/
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -132,10 +102,11 @@ class _QualitativeResearchScreenState
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: ((context) => CrudPersonScreen(
-                                            fromResearch: true,
-                                            personIndex: widget.personIndex,
-                                            hasPersonData: true))));
+                                        builder: ((context) =>
+                                            CrudSimplePersonScreen(
+                                                fromResearch: true,
+                                                personIndex: widget.personIndex,
+                                                hasPersonData: true))));
                               },
                               icon: Icon(Icons.edit)),
                         )

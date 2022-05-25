@@ -1,5 +1,8 @@
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+part 'person_spouse.g.dart';
 
+@HiveType(typeId: 4)
 class PersonSpouse {
   PersonSpouse({
     this.name = '',

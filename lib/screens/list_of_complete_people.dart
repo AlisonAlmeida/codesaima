@@ -1,39 +1,41 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:codesaima/models/simple_person_model.dart';
+import 'package:codesaima/models/complete_person_model.dart';
+import 'package:codesaima/screens/crud_complete_person_screen.dart';
+//import 'package:codesaima/models/simple_person_model.dart';
 import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class ListOfPeople extends StatefulWidget {
-  const ListOfPeople({Key? key, required this.fromResearch}) : super(key: key);
+class ListOfCompletePeople extends StatefulWidget {
+  const ListOfCompletePeople({Key? key, required this.fromResearch})
+      : super(key: key);
   final bool fromResearch;
 
   @override
-  State<ListOfPeople> createState() => _ListOfPeopleState();
+  State<ListOfCompletePeople> createState() => _ListOfPeopleState();
 }
 
-class _ListOfPeopleState extends State<ListOfPeople> {
-  late final Box _personListBox;
+class _ListOfPeopleState extends State<ListOfCompletePeople> {
+  late final Box _completePersonListBox;
   List<Widget> _listOfPeople = [];
 
   @override
   void initState() {
-    _personListBox = Hive.box<SimplePerson>('personList');
-
+    _completePersonListBox = Hive.box<CompletePerson>('completePersonList');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey _scaffold = GlobalKey();
+    //GlobalKey _scaffold = GlobalKey();
     return Scaffold(
-        key: _scaffold,
+        // key: _scaffold,
         appBar: AppBar(
           title: widget.fromResearch
-              ? Text('Selecione um morador')
-              : Text('Moradores'),
+              ? Text('Selecione um cidadão')
+              : Text('Cidadãos'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -53,7 +55,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
             child: Column(children: [
           Expanded(
               child: ValueListenableBuilder(
-                  valueListenable: _personListBox.listenable(),
+                  valueListenable: _completePersonListBox.listenable(),
                   builder: (context, Box box, widget) {
                     if (box.isEmpty) {
                       return Center(
@@ -78,13 +80,13 @@ class _ListOfPeopleState extends State<ListOfPeople> {
               size: 30,
             ),
             label: Text(
-              'Cadastrar Morador',
+              'Cadastrar Cidadão',
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
-                return CrudPersonScreen(
+                return CrudCompletePersonScreen(
                   fromResearch: false,
                   hasPersonData: false,
                 );
@@ -96,8 +98,8 @@ class _ListOfPeopleState extends State<ListOfPeople> {
 
   List<Widget> buildListOfPeople() {
     List<Widget> _list = [];
-    _personListBox.toMap().forEach((key, _person) {
-      _person as SimplePerson;
+    _completePersonListBox.toMap().forEach((key, _person) {
+      _person as CompletePerson;
       _list.add(
         Card(
           margin: EdgeInsets.all(10),
@@ -119,7 +121,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => CrudPersonScreen(
+                              builder: ((context) => CrudCompletePersonScreen(
                                     fromResearch: false,
                                     hasPersonData: true,
                                     personIndex: key,
@@ -159,7 +161,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     return _listOfPeople;
   }
 
-  showAlertDialog(context, SimplePerson SimplePerson, int index) {
+  showAlertDialog(context, CompletePerson completePerson, int index) {
     // set up the buttons
 
     Widget cancelButton = TextButton(
@@ -171,14 +173,14 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     Widget continueButton = TextButton(
       child: Text("Confirmar"),
       onPressed: () async {
-        await _personListBox.delete(index);
+        await _completePersonListBox.delete(index);
         Navigator.of(context).pop();
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(SimplePerson.name),
+      title: Text(completePerson.name),
       content: Text("Confirma a exclusão do cadastro?"),
       actions: [
         cancelButton,
@@ -206,7 +208,7 @@ class _ListOfPeopleState extends State<ListOfPeople> {
     Widget continueButton = TextButton(
       child: Text("Confirmar"),
       onPressed: () async {
-        await _personListBox.clear();
+        await _completePersonListBox.clear();
         Navigator.of(dialogContext).pop();
         Navigator.of(dialogContext).pop();
       },

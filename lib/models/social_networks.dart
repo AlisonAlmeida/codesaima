@@ -3,7 +3,7 @@ part 'social_networks.g.dart';
 
 // to generate model.g.dart run> flutter pub run build_runner build
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 6)
 class SocialNetworks {
   SocialNetworks({this.facebook, this.instagram, this.whatsapp, this.youtube});
 
