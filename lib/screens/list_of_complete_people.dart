@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/complete_person_model.dart';
 import 'package:codesaima/screens/crud_complete_person_screen.dart';
-//import 'package:codesaima/models/simple_person_model.dart';
-import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -29,13 +28,10 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
 
   @override
   Widget build(BuildContext context) {
-    //GlobalKey _scaffold = GlobalKey();
     return Scaffold(
-        // key: _scaffold,
         appBar: AppBar(
-          title: widget.fromResearch
-              ? Text('Selecione um cidadão')
-              : Text('Cidadãos'),
+          backgroundColor: kMorarMelhorThemeData.backgroundColor,
+          title: Text('Cadastro Morar Melhor'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -43,14 +39,12 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
             },
           ),
         ),
-        endDrawer: !widget.fromResearch
-            ? Drawer(
-                child: Center(
-                    child: ElevatedButton(
-                        onPressed: () => showAlertDeleteAllData(context),
-                        child: Text('Deletar todos os cadastros'))),
-              )
-            : null,
+        endDrawer: Drawer(
+          child: Center(
+              child: ElevatedButton(
+                  onPressed: () => showAlertDeleteAllData(context),
+                  child: Text('Deletar todos os cadastros'))),
+        ),
         body: Center(
             child: Column(children: [
           Expanded(
@@ -70,24 +64,19 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                       );
                     }
                   })),
-          ElevatedButton.icon(
+          ElevatedButton(
             style: ElevatedButton.styleFrom(
                 fixedSize: Size(MediaQuery.of(context).size.width, 70),
-                primary: Colors.green[700]),
-            icon: Icon(
+                primary: kMorarMelhorThemeData.backgroundColor),
+            child: Icon(
               Icons.person_add,
               color: Colors.white,
               size: 30,
-            ),
-            label: Text(
-              'Cadastrar Cidadão',
-              style: TextStyle(color: Colors.white),
             ),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
                 return CrudCompletePersonScreen(
-                  fromResearch: false,
                   hasPersonData: false,
                 );
               }),
@@ -122,7 +111,6 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                           context,
                           MaterialPageRoute(
                               builder: ((context) => CrudCompletePersonScreen(
-                                    fromResearch: false,
                                     hasPersonData: true,
                                     personIndex: key,
                                   ))),
@@ -144,9 +132,10 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                                     ))),
                           ),
                       icon: CircleAvatar(
-                          backgroundColor: Colors.green,
+                          backgroundColor:
+                              kMorarMelhorThemeData.backgroundColor,
                           foregroundColor: Colors.white,
-                          child: Icon(Icons.forward)))
+                          child: Icon(Icons.print)))
               ],
             ),
           ),
