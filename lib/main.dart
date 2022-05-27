@@ -2,7 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/address_model.dart';
-import 'package:codesaima/models/complete_person_model.dart';
+import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/models/simple_person_model.dart';
 import 'package:codesaima/models/social_networks.dart';
 import 'package:codesaima/screens/splash_screen.dart';
@@ -19,8 +19,8 @@ Future main() async {
   await Hive.openBox<SocialNetworks>(kSocialNetworksBox);
   Hive.registerAdapter(SimplePersonAdapter());
   await Hive.openBox<SimplePerson>(kSimplePersonBox);
-  Hive.registerAdapter(CompletePersonAdapter());
-  await Hive.openBox<CompletePerson>(kCompletePersonBox);
+  Hive.registerAdapter(RegisterMorarMelhorAdapter());
+  await Hive.openBox<RegisterMorarMelhor>(kCompletePersonBox);
 
   runApp(MyApp());
 }

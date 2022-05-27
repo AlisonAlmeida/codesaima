@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'complete_person_model.dart';
+part of 'register_person_morar_melhor_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CompletePersonAdapter extends TypeAdapter<CompletePerson> {
+class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
   @override
   final int typeId = 2;
 
   @override
-  CompletePerson read(BinaryReader reader) {
+  RegisterMorarMelhor read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return CompletePerson(
+    return RegisterMorarMelhor(
       howMuchTimeLiveRoraima: fields[25] as String,
       howMuchTimeLiveHome: fields[26] as String,
       observations: fields[27] as String,
@@ -28,7 +28,7 @@ class CompletePersonAdapter extends TypeAdapter<CompletePerson> {
       maritalStatus: fields[17] as String,
       educationLevel: fields[18] as String,
       individualCash: fields[19] as double,
-      birthDate: fields[4] as DateTime?,
+      birthDate: fields[4] as String,
       sex: fields[5] as String,
       nacionality: fields[6] as String,
       mothersName: fields[7] as String,
@@ -50,7 +50,7 @@ class CompletePersonAdapter extends TypeAdapter<CompletePerson> {
   }
 
   @override
-  void write(BinaryWriter writer, CompletePerson obj) {
+  void write(BinaryWriter writer, RegisterMorarMelhor obj) {
     writer
       ..writeByte(29)
       ..writeByte(0)
@@ -119,7 +119,7 @@ class CompletePersonAdapter extends TypeAdapter<CompletePerson> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CompletePersonAdapter &&
+      other is RegisterMorarMelhorAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

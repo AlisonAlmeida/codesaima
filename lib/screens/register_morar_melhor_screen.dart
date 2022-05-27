@@ -4,17 +4,18 @@ import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/textfield_search.dart';
 import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
-import 'package:codesaima/models/complete_person_model.dart';
+import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/models/social_networks.dart';
 import 'package:easy_mask/easy_mask.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pattern_formatter/date_formatter.dart';
 
-class CrudCompletePersonScreen extends StatefulWidget {
-  CrudCompletePersonScreen({
+class RegisterMorarMelhorScreen extends StatefulWidget {
+  RegisterMorarMelhorScreen({
     Key? key,
     required this.hasPersonData,
     this.personIndex,
@@ -25,13 +26,14 @@ class CrudCompletePersonScreen extends StatefulWidget {
   final int? personIndex;
 
   @override
-  State<CrudCompletePersonScreen> createState() => _CrupPeopleScreen2State();
+  State<RegisterMorarMelhorScreen> createState() =>
+      _RegisterMorarMelhorScreen();
 }
 
-class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
+class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   late final Box _completePersonListBox;
-  final _form = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _birthDate = TextEditingController();
   final _cepController = TextEditingController();
   final _ruaController = TextEditingController();
   final _bairroController = TextEditingController();
@@ -58,20 +60,22 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
 
   SocialNetworks _socialNetworks = SocialNetworks();
   Address _address = Address();
-  CompletePerson _person = CompletePerson();
+  RegisterMorarMelhor _person = RegisterMorarMelhor();
   int _currentStep = 0;
   List<Step> _steps = [];
 
   @override
   void initState() {
-    _completePersonListBox = Hive.box<CompletePerson>(kCompletePersonBox);
+    _completePersonListBox = Hive.box<RegisterMorarMelhor>(kCompletePersonBox);
     _nacionalityController.text = 'BRASIL';
     _ufNaturalityController.text = 'RR';
     _cityNaturalityController.text = 'BOA VISTA';
     _socialNetworks.clear();
+
     if (widget.hasPersonData) {
       _person = _completePersonListBox.get(widget.personIndex);
       _nameController.text = _person.name;
+      _birthDate.text = _person.birthDate;
       _telefoneController.text = _person.phone;
       _cepController.text = _person.address!.cep;
       _bairroController.text = _person.address!.bairro;
@@ -121,7 +125,7 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    _person = CompletePerson(
+    _person = RegisterMorarMelhor(
         address: _address,
         name: _nameController.text,
         phone: _telefoneController.text,
@@ -144,7 +148,7 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
         numero: _numeroController.text,
         complemento: _complementoController.text.toUpperCase());
 
-    _person = CompletePerson(
+    _person = RegisterMorarMelhor(
         address: _address,
         name: _nameController.text.toUpperCase(),
         phone: _telefoneController.text,
@@ -158,6 +162,7 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
   clearFields() {
     setState(() {
       _nameController.clear();
+      _birthDate.clear();
       _cepController.clear();
       _ruaController.clear();
       _bairroController.clear();
@@ -192,9 +197,61 @@ class _CrupPeopleScreen2State extends State<CrudCompletePersonScreen> {
               Divider(height: 5),
               CompletNameWidget(nameController: _nameController),
               Divider(height: 5),
+              ElevatedButton(
+                  onPressed: () {
+                    DateTime? _temp;
 
-              //TODO
-              //https://pub.dev/packages/date_time_picker
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('Cancelar')),
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          try {
+                                            _birthDate.text =
+                                                DateFormat('dd/MM/yy')
+                                                    .format(_temp!)
+                                                    .toString();
+                                          } catch (e) {
+                                            var snackBar = SnackBar(
+                                                content: Text(
+                                                    'Selecione uma data!'));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
+                                        });
+
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('OK'))
+                                ],
+                              ),
+                              Expanded(
+                                  child: CupertinoDatePicker(
+                                      maximumYear: DateTime.now().year - 10,
+                                      minimumYear: 1900,
+                                      initialDateTime: DateTime(2000),
+                                      mode: CupertinoDatePickerMode.date,
+                                      dateOrder: DatePickerDateOrder.dmy,
+                                      onDateTimeChanged: (changed) {
+                                        _temp = changed;
+                                      })),
+                            ],
+                          );
+                        });
+                  },
+                  child: _birthDate.text == ''
+                      ? Text('Data de Nascimento')
+                      : Text(_birthDate.text)),
               ListTile(
                 leading: Text('Sexo:'),
                 title: DropdownButton(

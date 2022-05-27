@@ -4,15 +4,15 @@ import 'package:codesaima/models/resident_familiar.dart';
 import 'address_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-part 'complete_person_model.g.dart';
+part 'register_person_morar_melhor_model.g.dart';
 
 // to generate model.g.dart run> flutter pub run build_runner build
 
 //to delete conflict run> flutter pub run build_runner build --delete-conflicting-outputs
 
 @HiveType(typeId: 2)
-class CompletePerson {
-  CompletePerson(
+class RegisterMorarMelhor {
+  RegisterMorarMelhor(
       {this.howMuchTimeLiveRoraima = '',
       this.howMuchTimeLiveHome = '',
       this.observations = '',
@@ -24,7 +24,7 @@ class CompletePerson {
       this.maritalStatus = '',
       this.educationLevel = '',
       this.individualCash = 0.0,
-      this.birthDate,
+      this.birthDate = '',
       this.sex = '',
       this.nacionality = '',
       this.mothersName = '',
@@ -56,7 +56,7 @@ class CompletePerson {
   final Address? address;
 
   @HiveField(4)
-  final DateTime? birthDate;
+  final String birthDate;
 
   @HiveField(5)
   final String sex;
@@ -130,7 +130,8 @@ class CompletePerson {
   @HiveField(28)
   final bool? singleMother;
 
-  factory CompletePerson.fromMap(Map<String, dynamic> json) => CompletePerson(
+  factory RegisterMorarMelhor.fromMap(Map<String, dynamic> json) =>
+      RegisterMorarMelhor(
         name: json['name'],
         phone: json['phone'],
         socialNetworks: json['socialNetworks'],

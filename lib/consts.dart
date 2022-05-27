@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 const String kAppName = 'Codesaima';
 const String kAddressBox = 'address';
 const String kSocialNetworksBox = 'socialNetworks';
-const String kSimplePersonBox = 'simplePersonList';
-const String kCompletePersonBox = 'completePersonList';
+const String kSimplePersonBox = 'BoxRegisterSearch';
+const String kCompletePersonBox = 'BoxRegisterMorarMelhor';
 
 const String kPathMainLogoCodesaima = 'lib/assets/images/logo_codesaima.png';
 const String kPathMainLogoCodesaimaBranca =
@@ -78,8 +78,6 @@ const List<DropdownMenuItem<String>> sexOptions = [
   DropdownMenuItem(child: Text('FEMININO'), value: 'FEMININO'),
   DropdownMenuItem(child: Text('OUTRO'), value: 'OUTRO'),
 ];
-
-//const List<DropdownMenuItem<String>> listOfCountries = [
 
 showGeneralProgressIndicator(BuildContext context, String message) {
   AlertDialog alert = AlertDialog(

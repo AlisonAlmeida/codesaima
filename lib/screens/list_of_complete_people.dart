@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/models/complete_person_model.dart';
-import 'package:codesaima/screens/crud_complete_person_screen.dart';
+import 'package:codesaima/models/register_person_morar_melhor_model.dart';
+import 'package:codesaima/screens/register_morar_melhor_screen.dart';
 import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,7 +22,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
 
   @override
   void initState() {
-    _completePersonListBox = Hive.box<CompletePerson>('completePersonList');
+    _completePersonListBox = Hive.box<RegisterMorarMelhor>(kCompletePersonBox);
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
-                return CrudCompletePersonScreen(
+                return RegisterMorarMelhorScreen(
                   hasPersonData: false,
                 );
               }),
@@ -88,7 +88,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
   List<Widget> buildListOfPeople() {
     List<Widget> _list = [];
     _completePersonListBox.toMap().forEach((key, _person) {
-      _person as CompletePerson;
+      _person as RegisterMorarMelhor;
       _list.add(
         Card(
           margin: EdgeInsets.all(10),
@@ -110,7 +110,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => CrudCompletePersonScreen(
+                              builder: ((context) => RegisterMorarMelhorScreen(
                                     hasPersonData: true,
                                     personIndex: key,
                                   ))),
@@ -150,7 +150,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     return _listOfPeople;
   }
 
-  showAlertDialog(context, CompletePerson completePerson, int index) {
+  showAlertDialog(context, RegisterMorarMelhor RegisterMorarMelhor, int index) {
     // set up the buttons
 
     Widget cancelButton = TextButton(
@@ -169,7 +169,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(completePerson.name),
+      title: Text(RegisterMorarMelhor.name),
       content: Text("Confirma a exclusão do cadastro?"),
       actions: [
         cancelButton,
