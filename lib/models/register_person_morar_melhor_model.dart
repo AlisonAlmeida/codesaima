@@ -196,9 +196,12 @@ class RegisterMorarMelhor {
       'singleMother': singleMother,
     };
   }
-
-  @override
+/**
+ *@override
   String toString() {
     return 'Nome: $name, Telefone: $phone, Social Media: $socialNetworks, Endereço: ${address.toString()}';
-  }
+  } 
+ * 
+ */
+
 }

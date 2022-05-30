@@ -73,12 +73,6 @@ const List<DropdownMenuItem<String>> dropdownCities = [
   DropdownMenuItem(child: Text('UIRAMUTÃ'), value: 'UIRAMUTÃ'),
 ];
 
-const List<DropdownMenuItem<String>> sexOptions = [
-  DropdownMenuItem(child: Text('MASCULINO'), value: 'MASCULINO'),
-  DropdownMenuItem(child: Text('FEMININO'), value: 'FEMININO'),
-  DropdownMenuItem(child: Text('OUTRO'), value: 'OUTRO'),
-];
-
 showGeneralProgressIndicator(BuildContext context, String message) {
   AlertDialog alert = AlertDialog(
     content: Row(

@@ -33,7 +33,8 @@ class RegisterMorarMelhorScreen extends StatefulWidget {
 class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   late final Box _completePersonListBox;
   final _nameController = TextEditingController();
-  final _birthDate = TextEditingController();
+  final _birthDateController = TextEditingController();
+  final _sexController = TextEditingController();
   final _cepController = TextEditingController();
   final _ruaController = TextEditingController();
   final _bairroController = TextEditingController();
@@ -42,7 +43,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _ufAddressController = TextEditingController();
   final _cidadeController = TextEditingController();
   final _complementoController = TextEditingController();
-  final _sexController = TextEditingController();
   final _nacionalityController = TextEditingController();
   final _ufNaturalityController = TextEditingController();
   final _cityNaturalityController = TextEditingController();
@@ -63,6 +63,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   RegisterMorarMelhor _person = RegisterMorarMelhor();
   int _currentStep = 0;
   List<Step> _steps = [];
+  int _groupValueSex = 0;
 
   @override
   void initState() {
@@ -75,7 +76,20 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
     if (widget.hasPersonData) {
       _person = _completePersonListBox.get(widget.personIndex);
       _nameController.text = _person.name;
-      _birthDate.text = _person.birthDate;
+      _birthDateController.text = _person.birthDate;
+
+      if (_person.sex == 'MASCULINO') {
+        _groupValueSex = 1;
+        _sexController.text = 'MASCULINO';
+      } else if (_person.sex == 'FEMININO') {
+        _groupValueSex = 2;
+        _sexController.text = 'FEMININO';
+      } else {
+        _sexController.text = _person.sex;
+        _groupValueSex = 3;
+      }
+      _mothersNameController.text = _person.mothersName;
+      _fathersNameController.text = _person.fathersName;
       _telefoneController.text = _person.phone;
       _cepController.text = _person.address!.cep;
       _bairroController.text = _person.address!.bairro;
@@ -127,7 +141,11 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
 
     _person = RegisterMorarMelhor(
         address: _address,
-        name: _nameController.text,
+        birthDate: _birthDateController.text.toUpperCase(),
+        sex: _sexController.text.toUpperCase(),
+        name: _nameController.text.toUpperCase(),
+        mothersName: _mothersNameController.text.toUpperCase(),
+        fathersName: _fathersNameController.text.toUpperCase(),
         phone: _telefoneController.text,
         socialNetworks: _socialNetworks);
     _ufAddressController.text = 'RR';
@@ -149,8 +167,12 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         complemento: _complementoController.text.toUpperCase());
 
     _person = RegisterMorarMelhor(
-        address: _address,
         name: _nameController.text.toUpperCase(),
+        birthDate: _birthDateController.text.toUpperCase(),
+        sex: _sexController.text.toUpperCase(),
+        mothersName: _mothersNameController.text.toUpperCase(),
+        fathersName: _fathersNameController.text.toUpperCase(),
+        address: _address,
         phone: _telefoneController.text,
         socialNetworks: _socialNetworks);
 
@@ -162,7 +184,8 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   clearFields() {
     setState(() {
       _nameController.clear();
-      _birthDate.clear();
+      _groupValueSex = 0;
+      _birthDateController.clear();
       _cepController.clear();
       _ruaController.clear();
       _bairroController.clear();
@@ -198,10 +221,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               CompletNameWidget(nameController: _nameController),
               Divider(height: 5),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     DateTime? _temp;
-
-                    showModalBottomSheet(
+                    _temp = await showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
                           return Column(
@@ -217,7 +239,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                                       onPressed: () {
                                         setState(() {
                                           try {
-                                            _birthDate.text =
+                                            _birthDateController.text =
                                                 DateFormat('dd/MM/yy')
                                                     .format(_temp!)
                                                     .toString();
@@ -249,31 +271,45 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                           );
                         });
                   },
-                  child: _birthDate.text == ''
+                  child: _birthDateController.text == ''
                       ? Text('Data de Nascimento')
-                      : Text(_birthDate.text)),
-              ListTile(
-                leading: Text('Sexo:'),
-                title: DropdownButton(
-                  items: sexOptions,
-                  value: _sexController.text.isEmpty
-                      ? 'MASCULINO'
-                      : _sexController.text,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _sexController.text = newValue!;
-                    });
-                  },
-                ),
-              ),
+                      : Text(_birthDateController.text)),
+              RadioListTile<int>(
+                  secondary: Icon(Icons.male),
+                  value: 1,
+                  title: Text('Masculino'),
+                  groupValue: _groupValueSex,
+                  onChanged: (newValue) => setState(() {
+                        _groupValueSex = newValue!;
+                        _sexController.text = 'MASCULINO';
+                      })),
+              RadioListTile<int>(
+                  secondary: Icon(Icons.female),
+                  value: 2,
+                  title: Text('Feminino'),
+                  groupValue: _groupValueSex,
+                  onChanged: (newValue) => setState(() {
+                        _groupValueSex = newValue!;
+                        _sexController.text = 'FEMININO';
+                      })),
+              RadioListTile<int>(
+                  secondary: Icon(Icons.question_mark),
+                  value: 3,
+                  title: Text('Outro'),
+                  groupValue: _groupValueSex,
+                  onChanged: (newValue) =>
+                      setState(() => _groupValueSex = newValue!)),
               Visibility(
-                  visible: _sexController.text == 'OUTRO' ? true : false,
+                  visible: _groupValueSex == 3 ? true : false,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: TextField(
+                      textCapitalization: TextCapitalization.characters,
+                      textInputAction: TextInputAction.next,
                       controller: _sexController,
                       decoration: kTextFieldGeneralDecoration.copyWith(
-                          hintText: 'Orientação Sexual'),
+                          hintText: 'Orientação Sexual',
+                          labelText: 'Orientação Sexual'),
                     ),
                   )),
               Divider(height: 5),
