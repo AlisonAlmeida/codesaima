@@ -72,6 +72,22 @@ const List<DropdownMenuItem<String>> dropdownCities = [
   DropdownMenuItem(child: Text('SÃO LUIZ'), value: 'SÃO LUIZ'),
   DropdownMenuItem(child: Text('UIRAMUTÃ'), value: 'UIRAMUTÃ'),
 ];
+const List<DropdownMenuItem<String>> civilState = [
+  DropdownMenuItem(child: Text('SOLTEIRO(A)'), value: 'SOLTEIRO(A)'),
+  DropdownMenuItem(child: Text('DIVORCIADO(A)'), value: 'DIVORCIADO(A)'),
+  DropdownMenuItem(child: Text('VIÚVO(A)'), value: 'VIÚVO(A)'),
+  DropdownMenuItem(
+      child: Text('UNIÃO ESTÁVEL/OUTROS'), value: 'UNIÃO ESTÁVEL/OUTROS'),
+  DropdownMenuItem(
+      child: Text('CASADO(A) SEPARAÇÃO TOTAL DE BENS'),
+      value: 'CASADO(A) SEPARAÇÃO TOTAL DE BENS'),
+  DropdownMenuItem(
+      child: Text('CASADO(A) COMUNHÃO PARCIAL DE BENS'),
+      value: 'CASADO(A) COMUNHÃO PARCIAL DE BENS'),
+  DropdownMenuItem(
+      child: Text('CASADO(A) COMUNHÃO TOTAL DE BENS'),
+      value: 'CASADO(A) COMUNHÃO TOTAL DE BENS'),
+];
 
 showGeneralProgressIndicator(BuildContext context, String message) {
   AlertDialog alert = AlertDialog(

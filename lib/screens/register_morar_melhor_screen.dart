@@ -35,19 +35,13 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _nameController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _sexController = TextEditingController();
-  final _cepController = TextEditingController();
-  final _ruaController = TextEditingController();
-  final _bairroController = TextEditingController();
-  final _numeroController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _ufAddressController = TextEditingController();
-  final _cidadeController = TextEditingController();
-  final _complementoController = TextEditingController();
   final _nacionalityController = TextEditingController();
   final _ufNaturalityController = TextEditingController();
   final _cityNaturalityController = TextEditingController();
   final _mothersNameController = TextEditingController();
   final _fathersNameController = TextEditingController();
+  final _telefoneController = TextEditingController();
+
   final _tipeOfDocumentController = TextEditingController();
   final _numberDocumentController = TextEditingController();
   final _issueDocumentController = TextEditingController();
@@ -56,6 +50,15 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _pisNisPasepController = TextEditingController();
   final _cpfController = TextEditingController();
   final _professionController = TextEditingController();
+  final _cepController = TextEditingController();
+  final _ruaController = TextEditingController();
+  final _bairroController = TextEditingController();
+  final _numeroController = TextEditingController();
+
+  final _ufAddressController = TextEditingController();
+  final _cidadeController = TextEditingController();
+  final _complementoController = TextEditingController();
+
   final _maritalStatusController = TextEditingController();
 
   SocialNetworks _socialNetworks = SocialNetworks();
@@ -78,6 +81,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _nameController.text = _person.name;
       _birthDateController.text = _person.birthDate;
 
+//_sexController    <=
       if (_person.sex == 'MASCULINO') {
         _groupValueSex = 1;
         _sexController.text = 'MASCULINO';
@@ -91,6 +95,16 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _mothersNameController.text = _person.mothersName;
       _fathersNameController.text = _person.fathersName;
       _telefoneController.text = _person.phone;
+      _socialNetworks = _person.socialNetworks!;
+      _tipeOfDocumentController.text = _person.tipeOfDocument;
+      _numberDocumentController.text = _person.numberDocument;
+      _issueDocumentController.text = _person.issueDocument;
+      _ufDocumentController.text = _person.ufDocument;
+      _dateIssueDocumentController.text = _person.dateIssueDocument;
+      _pisNisPasepController.text = _person.pisNisPasep;
+      _cpfController.text = _person.cpf;
+      _professionController.text = _person.profession;
+
       _cepController.text = _person.address!.cep;
       _bairroController.text = _person.address!.bairro;
       _numeroController.text = _person.address!.numero;
@@ -98,9 +112,78 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _cidadeController.text = _person.address!.localidade;
       _ruaController.text = _person.address!.logradouro;
       _complementoController.text = _person.address!.complemento;
-      _socialNetworks = _person.socialNetworks!;
     }
     super.initState();
+  }
+
+  addPerson() async {
+    _address = Address(
+        cep: _cepController.text,
+        uf: _ufAddressController.text.toUpperCase(),
+        localidade: _cidadeController.text.toUpperCase(),
+        logradouro: _ruaController.text.toUpperCase(),
+        bairro: _bairroController.text.toUpperCase(),
+        numero: _numeroController.text,
+        complemento: _complementoController.text.toUpperCase());
+
+    _person = RegisterMorarMelhor(
+      address: _address,
+      birthDate: _birthDateController.text.toUpperCase(),
+      sex: _sexController.text.toUpperCase(),
+      name: _nameController.text.toUpperCase(),
+      mothersName: _mothersNameController.text.toUpperCase(),
+      fathersName: _fathersNameController.text.toUpperCase(),
+      phone: _telefoneController.text,
+      socialNetworks: _socialNetworks,
+      tipeOfDocument: _tipeOfDocumentController.text.toUpperCase(),
+      numberDocument: _numberDocumentController.text.toUpperCase(),
+      issueDocument: _issueDocumentController.text.toUpperCase(),
+      ufDocument: _ufDocumentController.text.toUpperCase(),
+      dateIssueDocument: _dateIssueDocumentController.text.toUpperCase(),
+      pisNisPasep: _pisNisPasepController.text.toUpperCase(),
+      cpf: _cpfController.text.toUpperCase(),
+      profession: _professionController.text.toUpperCase(),
+    );
+    _ufAddressController.text = 'RR';
+    clearFields();
+
+    await _completePersonListBox.add(_person);
+
+    Navigator.pop(context, _person);
+  }
+
+  updatePerson() async {
+    _address = Address(
+        cep: _cepController.text,
+        uf: _ufAddressController.text.toUpperCase(),
+        localidade: _cidadeController.text.toUpperCase(),
+        logradouro: _ruaController.text.toUpperCase(),
+        bairro: _bairroController.text.toUpperCase(),
+        numero: _numeroController.text,
+        complemento: _complementoController.text.toUpperCase());
+
+    _person = RegisterMorarMelhor(
+      address: _address,
+      birthDate: _birthDateController.text.toUpperCase(),
+      sex: _sexController.text.toUpperCase(),
+      name: _nameController.text.toUpperCase(),
+      mothersName: _mothersNameController.text.toUpperCase(),
+      fathersName: _fathersNameController.text.toUpperCase(),
+      phone: _telefoneController.text,
+      socialNetworks: _socialNetworks,
+      tipeOfDocument: _tipeOfDocumentController.text.toUpperCase(),
+      numberDocument: _numberDocumentController.text.toUpperCase(),
+      issueDocument: _issueDocumentController.text.toUpperCase(),
+      ufDocument: _ufDocumentController.text.toUpperCase(),
+      dateIssueDocument: _dateIssueDocumentController.text.toUpperCase(),
+      pisNisPasep: _pisNisPasepController.text.toUpperCase(),
+      cpf: _cpfController.text.toUpperCase(),
+      profession: _professionController.text.toUpperCase(),
+    );
+
+    await _completePersonListBox.put(widget.personIndex, _person);
+
+    Navigator.pop(context, widget.personIndex);
   }
 
   void getCep() async {
@@ -129,58 +212,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
     Navigator.pop(context);
   }
 
-  addPerson() async {
-    _address = Address(
-        cep: _cepController.text,
-        uf: _ufAddressController.text.toUpperCase(),
-        localidade: _cidadeController.text.toUpperCase(),
-        logradouro: _ruaController.text.toUpperCase(),
-        bairro: _bairroController.text.toUpperCase(),
-        numero: _numeroController.text,
-        complemento: _complementoController.text.toUpperCase());
-
-    _person = RegisterMorarMelhor(
-        address: _address,
-        birthDate: _birthDateController.text.toUpperCase(),
-        sex: _sexController.text.toUpperCase(),
-        name: _nameController.text.toUpperCase(),
-        mothersName: _mothersNameController.text.toUpperCase(),
-        fathersName: _fathersNameController.text.toUpperCase(),
-        phone: _telefoneController.text,
-        socialNetworks: _socialNetworks);
-    _ufAddressController.text = 'RR';
-    clearFields();
-
-    await _completePersonListBox.add(_person);
-
-    Navigator.pop(context, _person);
-  }
-
-  updatePerson() async {
-    _address = Address(
-        cep: _cepController.text,
-        uf: _ufAddressController.text.toUpperCase(),
-        localidade: _cidadeController.text.toUpperCase(),
-        logradouro: _ruaController.text.toUpperCase(),
-        bairro: _bairroController.text.toUpperCase(),
-        numero: _numeroController.text,
-        complemento: _complementoController.text.toUpperCase());
-
-    _person = RegisterMorarMelhor(
-        name: _nameController.text.toUpperCase(),
-        birthDate: _birthDateController.text.toUpperCase(),
-        sex: _sexController.text.toUpperCase(),
-        mothersName: _mothersNameController.text.toUpperCase(),
-        fathersName: _fathersNameController.text.toUpperCase(),
-        address: _address,
-        phone: _telefoneController.text,
-        socialNetworks: _socialNetworks);
-
-    await _completePersonListBox.put(widget.personIndex, _person);
-
-    Navigator.pop(context, widget.personIndex);
-  }
-
   clearFields() {
     setState(() {
       _nameController.clear();
@@ -204,6 +235,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
 
   _stepBack() {
     setState(() => _currentStep > 0 ? _currentStep-- : null);
+    print(_currentStep);
   }
 
   _stepTapped(int newStep) {
@@ -220,6 +252,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               Divider(height: 5),
               CompletNameWidget(nameController: _nameController),
               Divider(height: 5),
+              Text('Data de nascimento:'),
               ElevatedButton(
                   onPressed: () async {
                     DateTime? _temp;
@@ -272,7 +305,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                         });
                   },
                   child: _birthDateController.text == ''
-                      ? Text('Data de Nascimento')
+                      ? Text('Selecione')
                       : Text(_birthDateController.text)),
               RadioListTile<int>(
                   secondary: Icon(Icons.male),
@@ -386,6 +419,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
           title: Text('Contato'),
           content: Column(
             children: [
+              Divider(height: 5),
               PhoneWidget(telefoneController: _telefoneController),
               Divider(height: 5),
               Row(
@@ -409,6 +443,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
           title: Text('Documentação'),
           content: Column(
             children: [
+              Divider(height: 5),
               TextFormField(
                 textCapitalization: TextCapitalization.characters,
                 textInputAction: TextInputAction.next,
@@ -422,8 +457,11 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               TextFormField(
                 textCapitalization: TextCapitalization.characters,
                 textInputAction: TextInputAction.next,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 controller: _numberDocumentController,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.number,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                     labelText: 'Nº / Série do documento',
                     hintText: 'Nº / Série do documento'),
@@ -446,8 +484,12 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   Flexible(
                       flex: 2,
                       child: TextField(
+                        maxLength: 2,
+                        textCapitalization: TextCapitalization.characters,
+                        textInputAction: TextInputAction.next,
                         controller: _ufDocumentController,
                         decoration: kTextFieldGeneralDecoration.copyWith(
+                          counterText: '',
                           labelText: 'UF',
                           hintText: 'UF',
                         ),
@@ -455,15 +497,69 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 ],
               ),
               Divider(height: 5),
-              TextField(
-                controller: _dateIssueDocumentController,
-                decoration: kTextFieldGeneralDecoration.copyWith(
-                  labelText: 'Data de expedição',
-                  hintText: 'Data de expedição',
-                ),
-              ),
+              Text('Data de expedição:'),
+              ElevatedButton(
+                  onPressed: () async {
+                    DateTime? _temp;
+                    _temp = await showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('Cancelar')),
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          try {
+                                            _dateIssueDocumentController.text =
+                                                DateFormat('dd/MM/yy')
+                                                    .format(_temp!)
+                                                    .toString();
+                                          } catch (e) {
+                                            var snackBar = SnackBar(
+                                                content: Text(
+                                                    'Selecione uma data!'));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
+                                        });
+
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('OK'))
+                                ],
+                              ),
+                              Expanded(
+                                  child: CupertinoDatePicker(
+                                      maximumYear: DateTime.now().year,
+                                      minimumYear: 1900,
+                                      initialDateTime: DateTime(2000),
+                                      mode: CupertinoDatePickerMode.date,
+                                      dateOrder: DatePickerDateOrder.dmy,
+                                      onDateTimeChanged: (changed) {
+                                        _temp = changed;
+                                      })),
+                            ],
+                          );
+                        });
+                  },
+                  child: _dateIssueDocumentController.text == ''
+                      ? Text('Selecione')
+                      : Text(_dateIssueDocumentController.text)),
               Divider(height: 5),
               TextField(
+                textCapitalization: TextCapitalization.characters,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 controller: _pisNisPasepController,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                   labelText: 'Nº PIS/NIS/PASEP',
@@ -472,6 +568,13 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               ),
               Divider(height: 5),
               TextField(
+                textCapitalization: TextCapitalization.characters,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  TextInputMask(mask: '999.999.999-99')
+                ],
                 controller: _cpfController,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                   labelText: 'CPF',
@@ -483,6 +586,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 onEditingComplete: () => _stepContinue(),
                 textInputAction: TextInputAction.done,
                 controller: _professionController,
+                textCapitalization: TextCapitalization.characters,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                   labelText: 'Profissão',
                   hintText: 'Profissão',
@@ -558,20 +662,38 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               ],
             ),
             Divider(height: 5),
-            ComplementWidget(complementoController: _complementoController),
-            Divider(height: 5),
             TextField(
-              onEditingComplete: () => _stepContinue(),
-              textInputAction: TextInputAction.done,
-              controller: _maritalStatusController,
-              decoration: kTextFieldGeneralDecoration.copyWith(
-                labelText: 'Estado Civil',
-                hintText: 'Estado Civil',
-              ),
-            ),
+                textCapitalization: TextCapitalization.characters,
+                onEditingComplete: () => _stepContinue(),
+                textInputAction: TextInputAction.done,
+                controller: _complementoController,
+                decoration: kTextFieldGeneralDecoration.copyWith(
+                  labelText: 'Complemento',
+                  hintText: 'Complemento',
+                ))
           ],
         ),
-      ),
+      ), //TODO verificar se ta salvando a partir daqui
+      Step(
+          isActive: true,
+          title: Text('Informações Complementares'),
+          content: Column(
+            children: [
+              DropdownButtonFormField(
+                isExpanded: true,
+                decoration: kTextFieldGeneralDecoration,
+                items: civilState,
+                value: _maritalStatusController.text.isEmpty
+                    ? 'SOLTEIRO(A)'
+                    : _maritalStatusController.text,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _maritalStatusController.text = newValue!;
+                  });
+                },
+              ),
+            ],
+          ))
     ];
 
     return _steps;
@@ -740,28 +862,6 @@ REFERENCE OF DATETIME
   }
 }
 
-class ComplementWidget extends StatelessWidget {
-  const ComplementWidget({
-    Key? key,
-    required TextEditingController complementoController,
-  })  : _complementoController = complementoController,
-        super(key: key);
-
-  final TextEditingController _complementoController;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-        textCapitalization: TextCapitalization.characters,
-        textInputAction: TextInputAction.next,
-        controller: _complementoController,
-        decoration: kTextFieldGeneralDecoration.copyWith(
-          labelText: 'Complemento',
-          hintText: 'Complemento',
-        ));
-  }
-}
-
 class NumberWidget extends StatelessWidget {
   const NumberWidget({
     Key? key,
@@ -778,6 +878,7 @@ class NumberWidget extends StatelessWidget {
       child: TextField(
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         controller: _numeroController,
+        textInputAction: TextInputAction.next,
         keyboardType: TextInputType.number,
         decoration: kTextFieldGeneralDecoration.copyWith(
             labelText: 'Número', hintText: 'Número'),

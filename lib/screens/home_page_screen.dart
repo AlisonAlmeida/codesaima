@@ -28,17 +28,9 @@ class _HomePageState extends State<HomePage> {
             Card(
               elevation: 2,
               child: ListTile(
-                  leading: Icon(Icons.person_search),
-                  title: Text('Lista de cidadãos cadastrados para pesquisas'),
-                  trailing: Icon(Icons.arrow_forward),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ListOfPeople(
-                                  fromResearch: false,
-                                )));
-                  }),
+                  leading: Icon(Icons.exit_to_app),
+                  title: Text('Delogar'),
+                  onTap: () {}),
             ),
           ],
         ),
@@ -46,34 +38,43 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Image.asset(kPathMainLogoCodesaima, height: 30),
       ),
-      body: Center(
-        child: GridView.count(
-          padding: EdgeInsets.all(10),
-          crossAxisSpacing: 10,
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          children: [
-            CentralButton(
-                title: 'Morar Melhor',
-                img: kPathLogoMorarMelhor,
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MorarMelhorScreen(),
-                    ))),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            opacity: 900,
+            image: AssetImage(kPathEdificeCodesaimaBackground),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: GridView.count(
+            padding: EdgeInsets.all(10),
+            crossAxisSpacing: 10,
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            children: [
+              CentralButton(
+                  title: 'Morar Melhor',
+                  img: kPathLogoMorarMelhor,
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MorarMelhorScreen(),
+                      ))),
 
-            /*
-            CentralButton(
-                title: 'Governo de Roraima',
-                img: kPathLogoGovRoraimaPreta,
-                onTap: () {}),
-            CentralButton(
-                title: 'Aqui Tem Dono',
-                img: kPathLogoAquiTemDono,
-                onTap: () {}),
+              /*
+              CentralButton(
+                  title: 'Governo de Roraima',
+                  img: kPathLogoGovRoraimaPreta,
+                  onTap: () {}),
+              CentralButton(
+                  title: 'Aqui Tem Dono',
+                  img: kPathLogoAquiTemDono,
+                  onTap: () {}),
 
-               */
-          ],
+                 */
+            ],
+          ),
         ),
       ),
     );
