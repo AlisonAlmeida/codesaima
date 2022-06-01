@@ -12,36 +12,37 @@ part 'register_person_morar_melhor_model.g.dart';
 
 @HiveType(typeId: 2)
 class RegisterMorarMelhor {
-  RegisterMorarMelhor(
-      {this.howMuchTimeLiveRoraima = '',
-      this.howMuchTimeLiveHome = '',
-      this.observations = '',
-      this.singleMother,
-      this.familiarCash = 0,
-      this.origemUF = '',
-      this.personSpouse,
-      this.origenCity = '',
-      this.maritalStatus = '',
-      this.educationLevel = '',
-      this.individualCash = 0.0,
-      this.birthDate = '',
-      this.sex = '',
-      this.nacionality = '',
-      this.mothersName = '',
-      this.fathersName = '',
-      this.tipeOfDocument = '',
-      this.numberDocument = '',
-      this.issueDocument = '',
-      this.ufDocument = '',
-      this.dateIssueDocument = '',
-      this.pisNisPasep = '',
-      this.cpf = '',
-      this.profession = '',
-      this.name = '',
-      this.phone = '',
-      this.socialNetworks,
-      this.address,
-      this.residentFamiliar});
+  RegisterMorarMelhor({
+    this.name = '',
+    this.birthDate = '',
+    this.sex = '',
+    this.nacionality = '',
+    this.origemUF = '',
+    this.origenCity = '',
+    this.mothersName = '',
+    this.fathersName = '',
+    this.phone = '',
+    this.socialNetworks,
+    this.typeOfDocument = '',
+    this.numberDocument = '',
+    this.issueDocument = '',
+    this.ufDocument = '',
+    this.dateIssueDocument = '',
+    this.pisNisPasep = '',
+    this.cpf = '',
+    this.profession = '',
+    this.address,
+    this.educationLevel = '',
+    this.individualCash = 0.0,
+    this.familiarCash = 0,
+    this.residentFamiliar,
+    this.howMuchTimeLiveRoraima = '',
+    this.howMuchTimeLiveHome = '',
+    this.observations = '',
+    this.singleMother,
+    this.personSpouse,
+    this.maritalStatus = '',
+  });
 
   @HiveField(0)
   final String name;
@@ -71,7 +72,7 @@ class RegisterMorarMelhor {
   final String fathersName;
 
   @HiveField(9)
-  final String tipeOfDocument; //RG, CNH, CTPS, RNM, etc
+  final String typeOfDocument; //RG, CNH, CTPS, RNM, etc
 
   @HiveField(10)
   final String numberDocument;
@@ -141,7 +142,7 @@ class RegisterMorarMelhor {
         nacionality: json['nacionality'],
         mothersName: json['mothersName'],
         fathersName: json['fathersName'],
-        tipeOfDocument: json['tipeOfDocument'],
+        typeOfDocument: json['typeOfDocument'],
         numberDocument: json['numberDocument'],
         issueDocument: json['issueDocument'],
         ufDocument: json['ufDocument'],
@@ -174,7 +175,7 @@ class RegisterMorarMelhor {
       'nacionality': nacionality,
       'mothersName': mothersName,
       'fathersName': fathersName,
-      'tipeOfDocument': tipeOfDocument,
+      'typeOfDocument': typeOfDocument,
       'numberDocument': numberDocument,
       'issueDocument': issueDocument,
       'ufDocument': ufDocument,

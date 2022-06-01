@@ -72,21 +72,26 @@ const List<DropdownMenuItem<String>> dropdownCities = [
   DropdownMenuItem(child: Text('SÃO LUIZ'), value: 'SÃO LUIZ'),
   DropdownMenuItem(child: Text('UIRAMUTÃ'), value: 'UIRAMUTÃ'),
 ];
-const List<DropdownMenuItem<String>> civilState = [
-  DropdownMenuItem(child: Text('SOLTEIRO(A)'), value: 'SOLTEIRO(A)'),
-  DropdownMenuItem(child: Text('DIVORCIADO(A)'), value: 'DIVORCIADO(A)'),
-  DropdownMenuItem(child: Text('VIÚVO(A)'), value: 'VIÚVO(A)'),
-  DropdownMenuItem(
-      child: Text('UNIÃO ESTÁVEL/OUTROS'), value: 'UNIÃO ESTÁVEL/OUTROS'),
-  DropdownMenuItem(
-      child: Text('CASADO(A) SEPARAÇÃO TOTAL DE BENS'),
-      value: 'CASADO(A) SEPARAÇÃO TOTAL DE BENS'),
-  DropdownMenuItem(
-      child: Text('CASADO(A) COMUNHÃO PARCIAL DE BENS'),
-      value: 'CASADO(A) COMUNHÃO PARCIAL DE BENS'),
-  DropdownMenuItem(
-      child: Text('CASADO(A) COMUNHÃO TOTAL DE BENS'),
-      value: 'CASADO(A) COMUNHÃO TOTAL DE BENS'),
+const List<String> civilStateList = [
+  'SOLTEIRO(A)',
+  'DIVORCIADO(A)',
+  'VIÚVO(A)',
+  'UNIÃO ESTÁVEL/OUTROS',
+  'CASADO(A) SEPARAÇÃO TOTAL DE BENS',
+  'CASADO(A) COMUNHÃO PARCIAL DE BENS',
+  'CASADO(A) COMUNHÃO TOTAL DE BENS',
+];
+
+const List<String> educationLevelList = [
+  'FUNDAMENTAL 1 COMPLETO',
+  'FUNDAMENTAL 1 INCOMPLETO',
+  'FUNDAMENTAL 2 COMPLETO',
+  'FUNDAMENTAL 2 INCOMPLETO',
+  'ENSINO MÉDIO COMPLETO',
+  'ENSINO MÉDIO INCOMPLETO',
+  'ENSINO SUPERIOR COMPLETO',
+  'ENSINO SUPERIOR INCOMPLETO',
+  'ANALFABETO'
 ];
 
 showGeneralProgressIndicator(BuildContext context, String message) {

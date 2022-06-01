@@ -7,7 +7,7 @@ class ResidentFamiliar {
     this.name = '',
     this.birthDate,
     this.cpf = '',
-    this.kinship = '',
+    this.kinship = '', //parentesco
     this.deficient,
   });
   @HiveField(0)
@@ -20,7 +20,7 @@ class ResidentFamiliar {
   final String cpf;
 
   @HiveField(3)
-  final String kinship;
+  final String kinship; //parentesco
 
   @HiveField(4)
   final bool? deficient;

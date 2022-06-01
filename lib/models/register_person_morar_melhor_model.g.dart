@@ -33,7 +33,7 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       nacionality: fields[6] as String,
       mothersName: fields[7] as String,
       fathersName: fields[8] as String,
-      tipeOfDocument: fields[9] as String,
+      typeOfDocument: fields[9] as String,
       numberDocument: fields[10] as String,
       issueDocument: fields[11] as String,
       ufDocument: fields[12] as String,
@@ -72,7 +72,7 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       ..writeByte(8)
       ..write(obj.fathersName)
       ..writeByte(9)
-      ..write(obj.tipeOfDocument)
+      ..write(obj.typeOfDocument)
       ..writeByte(10)
       ..write(obj.numberDocument)
       ..writeByte(11)
