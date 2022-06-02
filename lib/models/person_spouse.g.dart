@@ -18,7 +18,7 @@ class PersonSpouseAdapter extends TypeAdapter<PersonSpouse> {
     };
     return PersonSpouse(
       name: fields[0] as String,
-      birthDate: fields[1] as DateTime?,
+      birthDate: fields[1] as String,
       sex: fields[2] as String,
       nacionality: fields[3] as String,
       origenUF: fields[4] as String,
@@ -33,7 +33,7 @@ class PersonSpouseAdapter extends TypeAdapter<PersonSpouse> {
       profession: fields[13] as String,
       phoneNumber: fields[14] as String,
       educationLevel: fields[15] as String,
-      individualCash: fields[16] as double,
+      individualCash: fields[16] as String,
     );
   }
 

@@ -208,12 +208,12 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     });
   }
 
-  @override
+  /** @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     widget.controller.dispose();
     super.dispose();
-  }
+  } */
 
   ListView _listViewBuilder(context) {
     if (itemsFound == false) {

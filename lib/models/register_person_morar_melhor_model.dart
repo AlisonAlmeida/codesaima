@@ -17,8 +17,8 @@ class RegisterMorarMelhor {
     this.birthDate = '',
     this.sex = '',
     this.nacionality = '',
-    this.origemUF = '',
-    this.origenCity = '',
+    this.originUF = '',
+    this.originCity = '',
     this.mothersName = '',
     this.fathersName = '',
     this.phone = '',
@@ -33,8 +33,8 @@ class RegisterMorarMelhor {
     this.profession = '',
     this.address,
     this.educationLevel = '',
-    this.individualCash = 0.0,
-    this.familiarCash = 0,
+    this.individualCash = '',
+    this.familiarCash = '',
     this.residentFamiliar,
     this.howMuchTimeLiveRoraima = '',
     this.howMuchTimeLiveHome = '',
@@ -102,19 +102,19 @@ class RegisterMorarMelhor {
   final String educationLevel;
 
   @HiveField(19)
-  final double individualCash;
+  final String individualCash;
 
   @HiveField(20)
   final PersonSpouse? personSpouse;
 
   @HiveField(21)
-  final String origemUF;
+  final String originUF;
 
   @HiveField(22)
-  final String origenCity;
+  final String originCity;
 
   @HiveField(23)
-  final double familiarCash;
+  final String familiarCash;
 
   @HiveField(24)
   final List<ResidentFamiliar>? residentFamiliar;
@@ -154,8 +154,8 @@ class RegisterMorarMelhor {
         educationLevel: json['educationLevel'],
         individualCash: json['individualCash'],
         personSpouse: json['personSpouse'],
-        origemUF: json['origenUF'],
-        origenCity: json['origenCity'],
+        originUF: json['origenUF'],
+        originCity: json['origenCity'],
         familiarCash: json['familiarCash'],
         residentFamiliar: json['residentFamiliar'],
         howMuchTimeLiveRoraima: json['howMuchTimeLiveRoraima'],
@@ -187,8 +187,8 @@ class RegisterMorarMelhor {
       'educationLevel': educationLevel,
       'individualCash': individualCash,
       'personSpouse': PersonSpouse,
-      'origemUF': origemUF,
-      'origenCity': origenCity,
+      'originUF': originUF,
+      'originCity': originCity,
       'familiarCash': familiarCash,
       'residentFamiliar': ResidentFamiliar,
       'howMuchTimeLiveRoraima': howMuchTimeLiveRoraima,
