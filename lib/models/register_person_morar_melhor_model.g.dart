@@ -21,11 +21,11 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       birthDate: fields[4] as String,
       sex: fields[5] as String,
       nacionality: fields[6] as String,
-      origemUF: fields[21] as String,
-      origenCity: fields[22] as String,
+      originUF: fields[21] as String,
+      originCity: fields[22] as String,
       mothersName: fields[7] as String,
       fathersName: fields[8] as String,
-      phone: fields[1] as String,
+      phoneList: (fields[1] as List?)?.cast<String>(),
       socialNetworks: fields[2] as SocialNetworks?,
       typeOfDocument: fields[9] as String,
       numberDocument: fields[10] as String,
@@ -56,7 +56,7 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.phone)
+      ..write(obj.phoneList)
       ..writeByte(2)
       ..write(obj.socialNetworks)
       ..writeByte(3)
@@ -96,9 +96,9 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       ..writeByte(20)
       ..write(obj.personSpouse)
       ..writeByte(21)
-      ..write(obj.origemUF)
+      ..write(obj.originUF)
       ..writeByte(22)
-      ..write(obj.origenCity)
+      ..write(obj.originCity)
       ..writeByte(23)
       ..write(obj.familiarCash)
       ..writeByte(24)

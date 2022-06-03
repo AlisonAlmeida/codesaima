@@ -10,7 +10,7 @@ class PersonSpouse {
     this.sex = '',
     this.nacionality = '',
     this.originUF = '',
-    this.origenCity = '',
+    this.originCity = '',
     this.mothersName = '',
     this.numberDocument = '',
     this.issueDocument = '',
@@ -40,7 +40,7 @@ class PersonSpouse {
   final String originUF;
 
   @HiveField(5)
-  final String origenCity;
+  final String originCity;
 
   @HiveField(6)
   final String mothersName;
@@ -91,7 +91,7 @@ class PersonSpouse {
         educationLevel: json['educationLevel'],
         individualCash: json['individualCash'],
         originUF: json['originUF'],
-        origenCity: json['origenCity'],
+        originCity: json['originCity'],
       );
 
   Map<String, dynamic> toMap() {
@@ -111,8 +111,8 @@ class PersonSpouse {
       'educationLevel': educationLevel,
       'individualCash': individualCash,
       'personSpouse': PersonSpouse,
-      'origemUF': originUF,
-      'origenCity': origenCity,
+      'originUF': originUF,
+      'originCity': originCity,
     };
   }
 }

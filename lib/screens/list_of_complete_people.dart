@@ -97,7 +97,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(children: [Icon(Icons.phone), Text(_person.phone)]),
+                Row(children: [Icon(Icons.phone), Text(_person.phoneList![0])]),
                 Row(children: [
                   Icon(Icons.room),
                   Flexible(child: Text(_person.address!.logradouro))

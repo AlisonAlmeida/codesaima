@@ -21,7 +21,7 @@ class RegisterMorarMelhor {
     this.originCity = '',
     this.mothersName = '',
     this.fathersName = '',
-    this.phone = '',
+    this.phoneList,
     this.socialNetworks,
     this.typeOfDocument = '',
     this.numberDocument = '',
@@ -48,7 +48,7 @@ class RegisterMorarMelhor {
   final String name;
 
   @HiveField(1)
-  final String phone;
+  final List<String>? phoneList;
 
   @HiveField(2)
   final SocialNetworks? socialNetworks;
@@ -134,7 +134,7 @@ class RegisterMorarMelhor {
   factory RegisterMorarMelhor.fromMap(Map<String, dynamic> json) =>
       RegisterMorarMelhor(
         name: json['name'],
-        phone: json['phone'],
+        phoneList: json['phoneList'],
         socialNetworks: json['socialNetworks'],
         address: json['address'],
         birthDate: json['birthDate'],
@@ -155,7 +155,7 @@ class RegisterMorarMelhor {
         individualCash: json['individualCash'],
         personSpouse: json['personSpouse'],
         originUF: json['origenUF'],
-        originCity: json['origenCity'],
+        originCity: json['originCity'],
         familiarCash: json['familiarCash'],
         residentFamiliar: json['residentFamiliar'],
         howMuchTimeLiveRoraima: json['howMuchTimeLiveRoraima'],
@@ -167,7 +167,7 @@ class RegisterMorarMelhor {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'phone': phone,
+      'phoneList': phoneList,
       'socialNetworks': SocialNetworks,
       'address': Address,
       'birthDate': birthDate,
@@ -197,12 +197,4 @@ class RegisterMorarMelhor {
       'singleMother': singleMother,
     };
   }
-/**
- *@override
-  String toString() {
-    return 'Nome: $name, Telefone: $phone, Social Media: $socialNetworks, Endereço: ${address.toString()}';
-  } 
- * 
- */
-
 }

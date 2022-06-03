@@ -21,8 +21,8 @@ class PersonSpouseAdapter extends TypeAdapter<PersonSpouse> {
       birthDate: fields[1] as String,
       sex: fields[2] as String,
       nacionality: fields[3] as String,
-      origenUF: fields[4] as String,
-      origenCity: fields[5] as String,
+      originUF: fields[4] as String,
+      originCity: fields[5] as String,
       mothersName: fields[6] as String,
       numberDocument: fields[7] as String,
       issueDocument: fields[8] as String,
@@ -50,9 +50,9 @@ class PersonSpouseAdapter extends TypeAdapter<PersonSpouse> {
       ..writeByte(3)
       ..write(obj.nacionality)
       ..writeByte(4)
-      ..write(obj.origenUF)
+      ..write(obj.originUF)
       ..writeByte(5)
-      ..write(obj.origenCity)
+      ..write(obj.originCity)
       ..writeByte(6)
       ..write(obj.mothersName)
       ..writeByte(7)

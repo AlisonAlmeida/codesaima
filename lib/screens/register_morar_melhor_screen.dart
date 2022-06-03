@@ -41,8 +41,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _cityNaturalityController = TextEditingController();
   final _mothersNameController = TextEditingController();
   final _fathersNameController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _tipeOfDocumentController = TextEditingController();
+  final _tipeDocumentController = TextEditingController();
   final _numberDocumentController = TextEditingController();
   final _issueDocumentController = TextEditingController();
   final _ufDocumentController = TextEditingController();
@@ -51,17 +50,20 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _cpfController = TextEditingController();
   final _professionController = TextEditingController();
   final _cepController = TextEditingController();
-  final _ruaController = TextEditingController();
-  final _bairroController = TextEditingController();
-  final _numeroController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _numberHouseController = TextEditingController();
   final _ufAddressController = TextEditingController();
-  final _cidadeController = TextEditingController();
-  final _complementoController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _complementAdressController = TextEditingController();
+  final List<TextEditingController> _phoneControllerList = [];
+  final List<Widget> _phoneWidgetList = [];
+  final _phoneController0 = TextEditingController();
+  final _phoneController1 = TextEditingController();
   final _maritalStatusController = TextEditingController();
   final _educationLevelController = TextEditingController();
   final _individualCashController = TextEditingController();
   final _familiarCashController = TextEditingController();
-
   final _deficientNameController = TextEditingController();
   final _deficientCIDController = TextEditingController();
 
@@ -81,6 +83,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
     _ufNaturalityController.text = 'RR';
     _cityNaturalityController.text = 'BOA VISTA';
     _socialNetworks.clear();
+    _phoneControllerList.addAll([_phoneController0, _phoneController1]);
 
     if (widget.hasPersonData) {
       _person = _completePersonListBox.get(widget.personIndex);
@@ -107,9 +110,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _nacionalityController.text = _person.nacionality;
       _mothersNameController.text = _person.mothersName;
       _fathersNameController.text = _person.fathersName;
-      _telefoneController.text = _person.phone;
+
       _socialNetworks = _person.socialNetworks!;
-      _tipeOfDocumentController.text = _person.typeOfDocument;
+      _tipeDocumentController.text = _person.typeOfDocument;
       _numberDocumentController.text = _person.numberDocument;
       _issueDocumentController.text = _person.issueDocument;
       _ufDocumentController.text = _person.ufDocument;
@@ -117,14 +120,13 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _pisNisPasepController.text = _person.pisNisPasep;
       _cpfController.text = _person.cpf;
       _professionController.text = _person.profession;
-
       _cepController.text = _person.address!.cep;
-      _bairroController.text = _person.address!.bairro;
-      _numeroController.text = _person.address!.numero;
+      _districtController.text = _person.address!.bairro;
+      _numberHouseController.text = _person.address!.numero;
       _ufAddressController.text = _person.address!.uf;
-      _cidadeController.text = _person.address!.localidade;
-      _ruaController.text = _person.address!.logradouro;
-      _complementoController.text = _person.address!.complemento;
+      _cityController.text = _person.address!.localidade;
+      _streetController.text = _person.address!.logradouro;
+      _complementAdressController.text = _person.address!.complemento;
       _maritalStatusController.text = _person.maritalStatus;
       _educationLevelController.text = _person.educationLevel;
       _individualCashController.text = _person.individualCash;
@@ -137,15 +139,15 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
     super.initState();
   }
 
-  addPerson() async {
+  addOrUpdatePerson() async {
     _address = Address(
         cep: _cepController.text,
         uf: _ufAddressController.text.toUpperCase(),
-        localidade: _cidadeController.text.toUpperCase(),
-        logradouro: _ruaController.text.toUpperCase(),
-        bairro: _bairroController.text.toUpperCase(),
-        numero: _numeroController.text,
-        complemento: _complementoController.text.toUpperCase());
+        localidade: _cityController.text.toUpperCase(),
+        logradouro: _streetController.text.toUpperCase(),
+        bairro: _districtController.text.toUpperCase(),
+        numero: _numberHouseController.text,
+        complemento: _complementAdressController.text.toUpperCase());
 
     _person = RegisterMorarMelhor(
       address: _address,
@@ -155,9 +157,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       nacionality: _nacionalityController.text.toUpperCase(),
       mothersName: _mothersNameController.text.toUpperCase(),
       fathersName: _fathersNameController.text.toUpperCase(),
-      phone: _telefoneController.text,
+      //phoneList: _phoneWidgetList,
       socialNetworks: _socialNetworks,
-      typeOfDocument: _tipeOfDocumentController.text.toUpperCase(),
+      typeOfDocument: _tipeDocumentController.text.toUpperCase(),
       numberDocument: _numberDocumentController.text.toUpperCase(),
       issueDocument: _issueDocumentController.text.toUpperCase(),
       ufDocument: _ufDocumentController.text.toUpperCase(),
@@ -170,49 +172,10 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       individualCash: _individualCashController.text.toUpperCase(),
       familiarCash: _familiarCashController.text.toUpperCase(),
     );
-
-    clearFields();
-
-    await _completePersonListBox.add(_person);
-
-    Navigator.pop(context, _person);
-  }
-
-  updatePerson() async {
-    _address = Address(
-        cep: _cepController.text,
-        uf: _ufAddressController.text.toUpperCase(),
-        localidade: _cidadeController.text.toUpperCase(),
-        logradouro: _ruaController.text.toUpperCase(),
-        bairro: _bairroController.text.toUpperCase(),
-        numero: _numeroController.text,
-        complemento: _complementoController.text.toUpperCase());
-
-    _person = RegisterMorarMelhor(
-      address: _address,
-      birthDate: _birthDateController.text.toUpperCase(),
-      sex: _sexController.text.toUpperCase(),
-      name: _nameController.text.toUpperCase(),
-      nacionality: _nacionalityController.text.toUpperCase(),
-      mothersName: _mothersNameController.text.toUpperCase(),
-      fathersName: _fathersNameController.text.toUpperCase(),
-      phone: _telefoneController.text,
-      socialNetworks: _socialNetworks,
-      typeOfDocument: _tipeOfDocumentController.text.toUpperCase(),
-      numberDocument: _numberDocumentController.text.toUpperCase(),
-      issueDocument: _issueDocumentController.text.toUpperCase(),
-      ufDocument: _ufDocumentController.text.toUpperCase(),
-      dateIssueDocument: _dateIssueDocumentController.text.toUpperCase(),
-      pisNisPasep: _pisNisPasepController.text.toUpperCase(),
-      cpf: _cpfController.text.toUpperCase(),
-      profession: _professionController.text.toUpperCase(),
-      maritalStatus: _maritalStatusController.text.toUpperCase(),
-      educationLevel: _educationLevelController.text.toUpperCase(),
-      individualCash: _individualCashController.text.toUpperCase(),
-      familiarCash: _familiarCashController.text.toUpperCase(),
-    );
-
-    await _completePersonListBox.put(widget.personIndex, _person);
+    widget.hasPersonData
+        ? //update
+        await _completePersonListBox.put(widget.personIndex, _person)
+        : await _completePersonListBox.add(_person); //add
 
     Navigator.pop(context, widget.personIndex);
   }
@@ -229,9 +192,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       setState(() {
         if (_address.uf == 'RR') {
           _ufAddressController.text = 'RR';
-          _cidadeController.text = _address.localidade.toUpperCase();
-          _bairroController.text = _address.bairro.toUpperCase();
-          _ruaController.text = _address.logradouro.toUpperCase();
+          _cityController.text = _address.localidade.toUpperCase();
+          _districtController.text = _address.bairro.toUpperCase();
+          _streetController.text = _address.logradouro.toUpperCase();
         }
       });
     } catch (e) {
@@ -241,21 +204,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     Navigator.pop(context);
-  }
-
-  clearFields() {
-    setState(() {
-      _nameController.clear();
-      _groupValueSex = 0;
-      _birthDateController.clear();
-      _cepController.clear();
-      _ruaController.clear();
-      _bairroController.clear();
-      _numeroController.clear();
-      _telefoneController.clear();
-      _cidadeController.clear();
-      _complementoController.clear();
-    });
   }
 
   _stepContinue() {
@@ -459,7 +407,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               TextFormField(
                 textCapitalization: TextCapitalization.characters,
                 textInputAction: TextInputAction.next,
-                controller: _tipeOfDocumentController,
+                controller: _tipeDocumentController,
                 keyboardType: TextInputType.name,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                     labelText: 'Tipo de Documento',
@@ -645,12 +593,12 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                     child: DropdownButtonFormField(
                       decoration: kTextFieldGeneralDecoration,
                       items: dropdownCities,
-                      value: _cidadeController.text.isEmpty
+                      value: _cityController.text.isEmpty
                           ? 'BOA VISTA'
-                          : _cidadeController.text,
+                          : _cityController.text,
                       onChanged: (String? newValue) {
                         setState(() {
-                          _cidadeController.text = newValue!;
+                          _cityController.text = newValue!;
                         });
                       },
                     ),
@@ -658,13 +606,13 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 ],
               ),
               Divider(height: 5),
-              StreetWidget(ruaController: _ruaController),
+              StreetWidget(ruaController: _streetController),
               Divider(height: 5),
               Row(
                 children: [
-                  BairroWidget(bairroController: _bairroController),
+                  BairroWidget(bairroController: _districtController),
                   Spacer(),
-                  NumberWidget(numeroController: _numeroController),
+                  NumberWidget(numeroController: _numberHouseController),
                 ],
               ),
               Divider(height: 5),
@@ -672,13 +620,18 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   textCapitalization: TextCapitalization.characters,
                   onEditingComplete: () => _stepContinue(),
                   textInputAction: TextInputAction.done,
-                  controller: _complementoController,
+                  controller: _complementAdressController,
                   decoration: kTextFieldGeneralDecoration.copyWith(
                     labelText: 'Complemento',
                     hintText: 'Complemento',
                   )),
-              Divider(height: 5),
-              PhoneWidget(telefoneController: _telefoneController),
+              Divider(height: 5), //TODO
+
+              Builder(builder: (context) {
+                return Column(
+                  children: _phoneWidgetList,
+                );
+              }),
               Divider(height: 5),
               Row(
                 children: [
@@ -899,7 +852,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               TextFormField(
                 textCapitalization: TextCapitalization.characters,
                 textInputAction: TextInputAction.next,
-                controller: _tipeOfDocumentController,
+                controller: _tipeDocumentController,
                 keyboardType: TextInputType.name,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                     labelText: 'Tipo de Documento',
@@ -1045,7 +998,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 ),
               ),
               Divider(height: 5),
-              PhoneWidget(telefoneController: _telefoneController),
+              //PhoneWidget(telefoneController: _telefoneController),
             ],
           )),
       Step(
@@ -1119,7 +1072,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 steps: _buildSteps(),
               ),
               Row(
-                children: buildOptionButtons(),
+                children: _buildOptionButtons(),
               )
             ],
           ),
@@ -1175,7 +1128,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
     return list;
   }
 
-  List<Widget> buildOptionButtons() {
+  List<Widget> _buildOptionButtons() {
     final List<Widget> list = [];
     if (widget.hasPersonData) {
       //build button updateButton
@@ -1193,7 +1146,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
           child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(primary: Colors.green[700]),
               onPressed: () {
-                updatePerson();
+                addOrUpdatePerson();
               },
               icon: Icon(Icons.save, color: Colors.white),
               label: Text('Atualizar', style: TextStyle(color: Colors.white))),
@@ -1215,7 +1168,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
           child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(primary: Colors.green[700]),
               onPressed: () {
-                addPerson();
+                addOrUpdatePerson();
               },
               icon: Icon(Icons.save, color: Colors.white),
               label: Text('Salvar', style: TextStyle(color: Colors.white))),
@@ -1274,20 +1227,30 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
           );
         });
   }
-}
 
-Widget buildList() {
-  return Text('data');
+//TODO como e feito
+  void _addOrRemoveTextField(bool add, int) {
+    setState(() {
+      if (add) {
+        final controller = TextEditingController();
+        final field = PhoneWidget(telefoneController: controller);
+        _phoneControllerList.add(controller);
+        _phoneWidgetList.add(field);
+      } else {
+        _phoneControllerList.remove(_phoneControllerList.last);
+      }
+    });
+  }
 }
 
 class NumberWidget extends StatelessWidget {
   const NumberWidget({
     Key? key,
     required TextEditingController numeroController,
-  })  : _numeroController = numeroController,
+  })  : _numberHouseController = numeroController,
         super(key: key);
 
-  final TextEditingController _numeroController;
+  final TextEditingController _numberHouseController;
 
   @override
   Widget build(BuildContext context) {
@@ -1295,7 +1258,7 @@ class NumberWidget extends StatelessWidget {
       flex: 6,
       child: TextField(
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        controller: _numeroController,
+        controller: _numberHouseController,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.number,
         decoration: kTextFieldGeneralDecoration.copyWith(
@@ -1309,10 +1272,10 @@ class BairroWidget extends StatelessWidget {
   const BairroWidget({
     Key? key,
     required TextEditingController bairroController,
-  })  : _bairroController = bairroController,
+  })  : _districtController = bairroController,
         super(key: key);
 
-  final TextEditingController _bairroController;
+  final TextEditingController _districtController;
 
   @override
   Widget build(BuildContext context) {
@@ -1321,7 +1284,7 @@ class BairroWidget extends StatelessWidget {
       child: TextField(
           textCapitalization: TextCapitalization.characters,
           textInputAction: TextInputAction.next,
-          controller: _bairroController,
+          controller: _districtController,
           decoration: kTextFieldGeneralDecoration.copyWith(
             labelText: 'Bairro',
             hintText: 'Bairro',
@@ -1334,17 +1297,17 @@ class StreetWidget extends StatelessWidget {
   const StreetWidget({
     Key? key,
     required TextEditingController ruaController,
-  })  : _ruaController = ruaController,
+  })  : _streetController = ruaController,
         super(key: key);
 
-  final TextEditingController _ruaController;
+  final TextEditingController _streetController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       textCapitalization: TextCapitalization.characters,
       textInputAction: TextInputAction.next,
-      controller: _ruaController,
+      controller: _streetController,
       keyboardType: TextInputType.multiline,
       maxLines: null,
       decoration: kTextFieldGeneralDecoration.copyWith(
@@ -1395,22 +1358,29 @@ class PhoneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      textInputAction: TextInputAction.next,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        TextInputMask(mask: '(99)9 9999-9999')
-      ],
-      keyboardType: TextInputType.number,
-      controller: _telefoneController,
-      decoration: kTextFieldGeneralDecoration.copyWith(
-        labelText: 'Telefone',
-        hintText: '(95)98765-4321',
-        prefixIcon: Padding(
-          padding: EdgeInsets.all(5),
-          child: Icon(Icons.phone),
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            textInputAction: TextInputAction.next,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              TextInputMask(mask: '(99)9 9999-9999')
+            ],
+            keyboardType: TextInputType.number,
+            controller: _telefoneController,
+            decoration: kTextFieldGeneralDecoration.copyWith(
+              labelText: 'Telefone',
+              hintText: '(95)98765-4321',
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(5),
+                child: Icon(Icons.phone),
+              ),
+            ),
+          ),
         ),
-      ),
+        ElevatedButton(onPressed: () {}, child: Icon(Icons.add))
+      ],
     );
   }
 }
