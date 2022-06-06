@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 const String kAppName = 'Codesaima';
-const String kAddressBox = 'address';
-const String kSocialNetworksBox = 'socialNetworks';
+const String kAddressBox = 'Address';
+const String kSocialNetworksBox = 'SocialNetworks';
 const String kSimplePersonBox = 'BoxRegisterSearch';
 const String kCompletePersonBox = 'BoxRegisterMorarMelhor';
+const String kPersonSpouseBox = 'BoxPersonSpouse';
 
 const String kPathMainLogoCodesaima = 'lib/assets/images/logo_codesaima.png';
 const String kPathMainLogoCodesaimaBranca =

@@ -89,6 +89,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     List<Widget> _list = [];
     _completePersonListBox.toMap().forEach((key, _person) {
       _person as RegisterMorarMelhor;
+
       _list.add(
         Card(
           margin: EdgeInsets.all(10),
@@ -97,7 +98,10 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(children: [Icon(Icons.phone), Text(_person.phoneList![0])]),
+                Row(children: [
+                  Icon(Icons.phone),
+                  Text(_person.phoneList!.first)
+                ]),
                 Row(children: [
                   Icon(Icons.room),
                   Flexible(child: Text(_person.address!.logradouro))
@@ -150,7 +154,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     return _listOfPeople;
   }
 
-  showAlertDialog(context, RegisterMorarMelhor RegisterMorarMelhor, int index) {
+  showAlertDialog(context, RegisterMorarMelhor registerMorarMelhor, int index) {
     // set up the buttons
 
     Widget cancelButton = TextButton(
@@ -169,7 +173,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(RegisterMorarMelhor.name),
+      title: Text(registerMorarMelhor.name),
       content: Text("Confirma a exclusão do cadastro?"),
       actions: [
         cancelButton,

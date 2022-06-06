@@ -7,6 +7,7 @@ import 'package:codesaima/core/cep_network.dart';
 import 'package:codesaima/models/person_spouse.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/models/social_networks.dart';
+import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,14 +57,30 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _ufAddressController = TextEditingController();
   final _cityController = TextEditingController();
   final _complementAdressController = TextEditingController();
-  final List<TextEditingController> _phoneControllerList = [];
-  final List<Widget> _phoneWidgetList = [];
   final _phoneController0 = TextEditingController();
   final _phoneController1 = TextEditingController();
   final _maritalStatusController = TextEditingController();
   final _educationLevelController = TextEditingController();
   final _individualCashController = TextEditingController();
   final _familiarCashController = TextEditingController();
+  final _spouseNameController = TextEditingController();
+  final _spouseBirthController = TextEditingController();
+  final _spouseSexController = TextEditingController();
+  final _spouseNacionalityController = TextEditingController();
+  final _spouseUfNaturalityController = TextEditingController();
+  final _spouseCityNaturalityController = TextEditingController();
+  final _spouseMothersNameController = TextEditingController();
+  final _spouseNumberDocumentController = TextEditingController();
+  final _spouseIssueDocumentController = TextEditingController();
+  final _spouseUfDocumentController = TextEditingController();
+  final _spouseDateIssueDocumentController = TextEditingController();
+  final _spousePisNisPasepController = TextEditingController();
+  final _spouseCpfController = TextEditingController();
+  final _spouseProfessionController = TextEditingController();
+  final _spousePhoneController = TextEditingController();
+  final _spouseEducationLevelController = TextEditingController();
+  final _spouseIndividualCashController = TextEditingController();
+
   final _deficientNameController = TextEditingController();
   final _deficientCIDController = TextEditingController();
 
@@ -74,6 +91,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   int _currentStep = 0;
   List<Step> _steps = [];
   int _groupValueSex = 0;
+  int _spouseGroupValueSex = 0;
   bool _hasSpouse = false;
 
   @override
@@ -83,7 +101,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
     _ufNaturalityController.text = 'RR';
     _cityNaturalityController.text = 'BOA VISTA';
     _socialNetworks.clear();
-    _phoneControllerList.addAll([_phoneController0, _phoneController1]);
 
     if (widget.hasPersonData) {
       _person = _completePersonListBox.get(widget.personIndex);
@@ -110,8 +127,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _nacionalityController.text = _person.nacionality;
       _mothersNameController.text = _person.mothersName;
       _fathersNameController.text = _person.fathersName;
-
       _socialNetworks = _person.socialNetworks!;
+      _phoneController0.text = _person.phoneList!.first;
+      _phoneController1.text = _person.phoneList!.last;
       _tipeDocumentController.text = _person.typeOfDocument;
       _numberDocumentController.text = _person.numberDocument;
       _issueDocumentController.text = _person.issueDocument;
@@ -133,13 +151,68 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _familiarCashController.text = _person.familiarCash;
 
       if (_hasSpouse) {
-        _personSpouse.birthDate = _person.personSpouse!.birthDate;
+        //_sexController    <=
+        if (_person.personSpouse!.sex == 'MASCULINO') {
+          _spouseGroupValueSex = 1;
+          _spouseSexController.text = 'MASCULINO';
+        } else if (_person.personSpouse!.sex == 'FEMININO') {
+          _spouseGroupValueSex = 2;
+          _spouseSexController.text = 'FEMININO';
+        } else {
+          _spouseSexController.text = _person.personSpouse!.sex;
+          _spouseGroupValueSex = 3;
+        }
+        _spouseNameController.text = _person.personSpouse!.name;
+        _spouseSexController.text = _person.personSpouse!.sex;
+        _spouseNacionalityController.text = _person.personSpouse!.nacionality;
+        _spouseUfNaturalityController.text = _person.personSpouse!.originUF;
+        _spouseCityNaturalityController.text = _person.personSpouse!.originCity;
+        _spouseMothersNameController.text = _person.personSpouse!.mothersName;
+        _spouseNumberDocumentController.text =
+            _person.personSpouse!.numberDocument;
+        _spouseIssueDocumentController.text =
+            _person.personSpouse!.issueDocument;
+        _spouseUfDocumentController.text = _person.personSpouse!.ufDocument;
+        _spouseDateIssueDocumentController.text =
+            _person.personSpouse!.dateIssueDocument;
+        _spousePisNisPasepController.text = _person.personSpouse!.pisNisPasep;
+        _spouseCpfController.text = _person.personSpouse!.cpf;
+        _spouseProfessionController.text = _person.personSpouse!.profession;
+        _spousePhoneController.text = _person.personSpouse!.phoneNumber;
+        _spouseEducationLevelController.text =
+            _person.personSpouse!.educationLevel;
+        _spouseIndividualCashController.text =
+            _person.personSpouse!.individualCash;
       }
     }
     super.initState();
   }
 
   addOrUpdatePerson() async {
+    List<String> _listPhoneNumber = [];
+    _listPhoneNumber.addAll([_phoneController0.text, _phoneController1.text]);
+    if (_hasSpouse) {
+      _personSpouse = PersonSpouse(
+        name: _spouseNameController.text,
+        birthDate: _spouseBirthController.text,
+        sex: _spouseSexController.text,
+        nacionality: _spouseNacionalityController.text,
+        originUF: _spouseUfNaturalityController.text,
+        originCity: _spouseCityNaturalityController.text,
+        mothersName: _spouseMothersNameController.text,
+        numberDocument: _spouseNumberDocumentController.text,
+        issueDocument: _spouseIssueDocumentController.text,
+        ufDocument: _spouseUfDocumentController.text,
+        dateIssueDocument: _spouseDateIssueDocumentController.text,
+        pisNisPasep: _spousePisNisPasepController.text,
+        cpf: _spouseCpfController.text,
+        profession: _spouseProfessionController.text,
+        phoneNumber: _spousePhoneController.text,
+        educationLevel: _spouseEducationLevelController.text,
+        individualCash: _spouseIndividualCashController.text,
+      );
+    }
+
     _address = Address(
         cep: _cepController.text,
         uf: _ufAddressController.text.toUpperCase(),
@@ -157,7 +230,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       nacionality: _nacionalityController.text.toUpperCase(),
       mothersName: _mothersNameController.text.toUpperCase(),
       fathersName: _fathersNameController.text.toUpperCase(),
-      //phoneList: _phoneWidgetList,
+      phoneList: _listPhoneNumber,
       socialNetworks: _socialNetworks,
       typeOfDocument: _tipeDocumentController.text.toUpperCase(),
       numberDocument: _numberDocumentController.text.toUpperCase(),
@@ -171,6 +244,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       educationLevel: _educationLevelController.text.toUpperCase(),
       individualCash: _individualCashController.text.toUpperCase(),
       familiarCash: _familiarCashController.text.toUpperCase(),
+      personSpouse: _personSpouse,
     );
     widget.hasPersonData
         ? //update
@@ -625,13 +699,10 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                     labelText: 'Complemento',
                     hintText: 'Complemento',
                   )),
-              Divider(height: 5), //TODO
-
-              Builder(builder: (context) {
-                return Column(
-                  children: _phoneWidgetList,
-                );
-              }),
+              Divider(height: 5),
+              PhoneWidget(telefoneController: _phoneController0),
+              Divider(height: 5),
+              PhoneWidget(telefoneController: _phoneController1),
               Divider(height: 5),
               Row(
                 children: [
@@ -701,7 +772,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
           content: Column(
             children: [
               Divider(height: 5),
-              CompletNameWidget(nameController: _nameController),
+              CompletNameWidget(nameController: _spouseNameController),
               Divider(height: 5),
               Text('Data de nascimento:'),
               ElevatedButton(
@@ -723,7 +794,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                                       onPressed: () {
                                         setState(() {
                                           try {
-                                            _birthDateController.text =
+                                            _spouseBirthController.text =
                                                 DateFormat('dd/MM/yy')
                                                     .format(_temp!)
                                                     .toString();
@@ -755,46 +826,44 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                           );
                         });
                   },
-                  child: _birthDateController.text == ''
+                  child: _spouseBirthController.text == ''
                       ? Text('Selecione')
-                      : Text(_birthDateController.text)),
+                      : Text(_spouseBirthController.text)),
+              Divider(height: 5),
               RadioListTile<int>(
                   secondary: Icon(Icons.male),
                   value: 1,
                   title: Text('Masculino'),
-                  groupValue: _groupValueSex,
+                  groupValue: _spouseGroupValueSex,
                   onChanged: (newValue) => setState(() {
-                        _groupValueSex = newValue!;
-                        _sexController.text = 'MASCULINO';
+                        _spouseGroupValueSex = newValue!;
+                        _spouseSexController.text = 'MASCULINO';
                       })),
               RadioListTile<int>(
                   secondary: Icon(Icons.female),
                   value: 2,
                   title: Text('Feminino'),
-                  groupValue: _groupValueSex,
+                  groupValue: _spouseGroupValueSex,
                   onChanged: (newValue) => setState(() {
-                        _groupValueSex = newValue!;
-                        _sexController.text = 'FEMININO';
+                        _spouseGroupValueSex = newValue!;
+                        _spouseSexController.text = 'FEMININO';
                       })),
               RadioListTile<int>(
                   secondary: Icon(Icons.question_mark),
                   value: 3,
                   title: Text('Outro'),
-                  groupValue: _groupValueSex,
+                  groupValue: _spouseGroupValueSex,
                   onChanged: (newValue) =>
-                      setState(() => _groupValueSex = newValue!)),
+                      setState(() => _spouseGroupValueSex = newValue!)),
               Visibility(
-                  visible: _groupValueSex == 3 ? true : false,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: TextField(
-                      textCapitalization: TextCapitalization.characters,
-                      textInputAction: TextInputAction.next,
-                      controller: _sexController,
-                      decoration: kTextFieldGeneralDecoration.copyWith(
-                          hintText: 'Orientação Sexual',
-                          labelText: 'Orientação Sexual'),
-                    ),
+                  visible: _spouseGroupValueSex == 3 ? true : false,
+                  child: TextField(
+                    textCapitalization: TextCapitalization.characters,
+                    textInputAction: TextInputAction.next,
+                    controller: _spouseSexController,
+                    decoration: kTextFieldGeneralDecoration.copyWith(
+                        hintText: 'Orientação Sexual',
+                        labelText: 'Orientação Sexual'),
                   )),
               Divider(height: 5),
               TextFieldSearch(
@@ -802,7 +871,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 minStringLength: 3,
                 label: 'País-Nacionalidade',
                 initialList: listCountries,
-                controller: _nacionalityController,
+                controller: _spouseNacionalityController,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                     hintText: 'País-Nacionalidade',
                     labelText: 'País-Nacionalidade'),
@@ -813,7 +882,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   Expanded(
                     flex: 2,
                     child: TextField(
-                      controller: _ufNaturalityController,
+                      controller: _spouseUfNaturalityController,
                       decoration: kTextFieldGeneralDecoration.copyWith(
                         labelText: 'UF',
                         hintText: 'UF',
@@ -826,7 +895,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   Flexible(
                       flex: 10,
                       child: TextField(
-                        controller: _cityNaturalityController,
+                        controller: _spouseCityNaturalityController,
                         decoration: kTextFieldGeneralDecoration.copyWith(
                           labelText: 'Cidade de Nascimento',
                           hintText: 'Cidade de Nascimento',
@@ -838,25 +907,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               TextFormField(
                 textCapitalization: TextCapitalization.characters,
                 textInputAction: TextInputAction.next,
-                controller: _mothersNameController,
-                keyboardType: TextInputType.name,
+                controller: _spouseMothersNameController,
                 decoration: kTextFieldGeneralDecoration.copyWith(
-                    labelText: 'Nome da Mãe',
-                    hintText: 'Nome do Mãe',
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(Icons.person),
-                    )),
-              ),
-              Divider(height: 5),
-              TextFormField(
-                textCapitalization: TextCapitalization.characters,
-                textInputAction: TextInputAction.next,
-                controller: _tipeDocumentController,
-                keyboardType: TextInputType.name,
-                decoration: kTextFieldGeneralDecoration.copyWith(
-                    labelText: 'Tipo de Documento',
-                    hintText: 'RG, CNH, CTPS, RNM, etc'),
+                    labelText: 'Nome da mãe', hintText: 'Nome da mãe'),
               ),
               Divider(height: 5),
               TextFormField(
@@ -865,7 +918,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                controller: _numberDocumentController,
+                controller: _spouseNumberDocumentController,
                 keyboardType: TextInputType.number,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                     labelText: 'Nº / Série do documento',
@@ -877,7 +930,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   Expanded(
                     flex: 5,
                     child: TextField(
-                      controller: _issueDocumentController,
+                      controller: _spouseIssueDocumentController,
                       decoration: kTextFieldGeneralDecoration.copyWith(
                         labelText: 'Órgão emissor',
                         hintText: 'Órgão emissor',
@@ -892,7 +945,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                         maxLength: 2,
                         textCapitalization: TextCapitalization.characters,
                         textInputAction: TextInputAction.next,
-                        controller: _ufDocumentController,
+                        controller: _spouseUfDocumentController,
                         decoration: kTextFieldGeneralDecoration.copyWith(
                           counterText: '',
                           labelText: 'UF',
@@ -922,7 +975,8 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                                       onPressed: () {
                                         setState(() {
                                           try {
-                                            _dateIssueDocumentController.text =
+                                            _spouseDateIssueDocumentController
+                                                    .text =
                                                 DateFormat('dd/MM/yy')
                                                     .format(_temp!)
                                                     .toString();
@@ -954,9 +1008,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                           );
                         });
                   },
-                  child: _dateIssueDocumentController.text == ''
+                  child: _spouseDateIssueDocumentController.text == ''
                       ? Text('Selecione')
-                      : Text(_dateIssueDocumentController.text)),
+                      : Text(_spouseDateIssueDocumentController.text)),
               Divider(height: 5),
               TextField(
                 textCapitalization: TextCapitalization.characters,
@@ -965,7 +1019,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                controller: _pisNisPasepController,
+                controller: _spousePisNisPasepController,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                   labelText: 'Nº PIS/NIS/PASEP',
                   hintText: 'Nº PIS/NIS/PASEP',
@@ -980,7 +1034,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   FilteringTextInputFormatter.digitsOnly,
                   TextInputMask(mask: '999.999.999-99')
                 ],
-                controller: _cpfController,
+                controller: _spouseCpfController,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                   labelText: 'CPF',
                   hintText: 'CPF',
@@ -990,7 +1044,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               TextField(
                 onEditingComplete: () => _stepContinue(),
                 textInputAction: TextInputAction.done,
-                controller: _professionController,
+                controller: _spouseProfessionController,
                 textCapitalization: TextCapitalization.characters,
                 decoration: kTextFieldGeneralDecoration.copyWith(
                   labelText: 'Profissão',
@@ -998,7 +1052,30 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 ),
               ),
               Divider(height: 5),
-              //PhoneWidget(telefoneController: _telefoneController),
+              PhoneWidget(telefoneController: _spousePhoneController),
+              Divider(height: 5),
+              Text('Grau de Instrução:'),
+              ElevatedButton(
+                  onPressed: _displaySpouseEducationLevelDialog,
+                  child: _spouseEducationLevelController.text == ''
+                      ? Text('Selecione')
+                      : Text(_spouseEducationLevelController.text)),
+              TextField(
+                inputFormatters: [
+                  TextInputMask(
+                    mask: ['R!\$! !999,99', 'R!\$! 999.999,99'],
+                    placeholder: '0',
+                    maxPlaceHolders: 3,
+                    reverse: true,
+                  )
+                ],
+                controller: _spouseIndividualCashController,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                decoration: kTextFieldGeneralDecoration.copyWith(
+                    labelText: 'Renda Individual',
+                    hintText: 'Renda Individual'),
+              ),
             ],
           )),
       Step(
@@ -1228,18 +1305,26 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         });
   }
 
-//TODO como e feito
-  void _addOrRemoveTextField(bool add, int) {
-    setState(() {
-      if (add) {
-        final controller = TextEditingController();
-        final field = PhoneWidget(telefoneController: controller);
-        _phoneControllerList.add(controller);
-        _phoneWidgetList.add(field);
-      } else {
-        _phoneControllerList.remove(_phoneControllerList.last);
-      }
-    });
+  _displaySpouseEducationLevelDialog() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return ListView.builder(
+            itemCount: educationLevelList.length,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                setState(() => _spouseEducationLevelController.text =
+                    educationLevelList[index]);
+                Navigator.pop(context);
+              },
+              child: Card(
+                child: ListTile(
+                  title: Text(educationLevelList[index].toString()),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
 
@@ -1347,59 +1432,21 @@ class UfWidget extends StatelessWidget {
   }
 }
 
-class PhoneWidget extends StatelessWidget {
-  const PhoneWidget({
-    Key? key,
-    required TextEditingController telefoneController,
-  })  : _telefoneController = telefoneController,
-        super(key: key);
-
-  final TextEditingController _telefoneController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            textInputAction: TextInputAction.next,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              TextInputMask(mask: '(99)9 9999-9999')
-            ],
-            keyboardType: TextInputType.number,
-            controller: _telefoneController,
-            decoration: kTextFieldGeneralDecoration.copyWith(
-              labelText: 'Telefone',
-              hintText: '(95)98765-4321',
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(5),
-                child: Icon(Icons.phone),
-              ),
-            ),
-          ),
-        ),
-        ElevatedButton(onPressed: () {}, child: Icon(Icons.add))
-      ],
-    );
-  }
-}
-
 class CompletNameWidget extends StatelessWidget {
   const CompletNameWidget({
     Key? key,
     required TextEditingController nameController,
-  })  : _nameController = nameController,
+  })  : _spouseNameController = nameController,
         super(key: key);
 
-  final TextEditingController _nameController;
+  final TextEditingController _spouseNameController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       textCapitalization: TextCapitalization.characters,
       textInputAction: TextInputAction.next,
-      controller: _nameController,
+      controller: _spouseNameController,
       keyboardType: TextInputType.name,
       decoration: kTextFieldGeneralDecoration.copyWith(
           labelText: 'Nome',
