@@ -22,6 +22,12 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
+                currentAccountPicture: CircleAvatar(
+                  child: Icon(
+                    Icons.person,
+                    size: 50,
+                  ),
+                ),
                 accountEmail: Text('email Usuario'),
                 accountName: Text('Usuario')),
             Card(

@@ -55,6 +55,8 @@ final kMorarMelhorThemeData = ThemeData(
   primarySwatch: Colors.orange,
 );
 
+enum Gender { male, female, other }
+
 const List<DropdownMenuItem<String>> dropdownCities = [
   DropdownMenuItem(child: Text('AMAJARI'), value: 'AMAJARI'),
   DropdownMenuItem(child: Text('ALTO ALEGRE'), value: 'ALTO ALEGRE'),
