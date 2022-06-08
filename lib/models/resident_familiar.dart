@@ -5,7 +5,7 @@ part 'resident_familiar.g.dart';
 class ResidentFamiliar {
   ResidentFamiliar({
     this.name = '',
-    this.birthDate,
+    this.birthDate = '',
     this.cpf = '',
     this.kinship = '', //parentesco
     this.deficient,
@@ -14,7 +14,7 @@ class ResidentFamiliar {
   final String name;
 
   @HiveField(1)
-  final DateTime? birthDate;
+  final String birthDate;
 
   @HiveField(2)
   final String cpf;

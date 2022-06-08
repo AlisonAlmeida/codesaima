@@ -7,8 +7,10 @@ import 'package:codesaima/consts.dart';
 import 'package:codesaima/core/textfield_search.dart';
 import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/core/cep_network.dart';
+import 'package:codesaima/models/deficient_person_model.dart';
 import 'package:codesaima/models/person_spouse.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
+import 'package:codesaima/models/resident_familiar.dart';
 import 'package:codesaima/models/social_networks.dart';
 import 'package:codesaima/screens/crud_simple_person_screen.dart';
 import 'package:easy_mask/easy_mask.dart';
@@ -17,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-//import 'package:pattern_formatter/date_formatter.dart';
 
 class RegisterMorarMelhorScreen extends StatefulWidget {
   RegisterMorarMelhorScreen({
@@ -89,6 +90,12 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _spouseIndividualCashController = TextEditingController();
   final _deficientNameController = TextEditingController();
   final _deficientCIDController = TextEditingController();
+  final List<ResidentFamiliar> _residentFamiliarList = [];
+  final List<TextEditingController> _residentFamiliarName = [];
+  final List<TextEditingController> _residentFamiliarBirthDate = [];
+  final List<TextEditingController> _residentFamiliarCPF = [];
+  final List<TextEditingController> _residentFamiliarKinship = [];
+  final List<bool> _residentFamiliarDeficient = [];
 
   SocialNetworks _socialNetworks = SocialNetworks();
   Address _address = Address();
@@ -99,6 +106,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   bool _hasSpouse = false;
   int _currentTabIndex = 0;
   bool? _singleMother = false;
+  DeficientPerson _deficientPerson = DeficientPerson();
 
   final PageController _pageController =
       PageController(initialPage: 0, keepPage: false, viewportFraction: 1);
@@ -121,6 +129,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
 
       _nameController.text = _person.name;
       _birthDateController.text = _person.birthDate;
+      _singleMother = _person.singleMother;
 
 //_sexController    <=
       if (_person.sex == 'MASCULINO') {
@@ -156,9 +165,14 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _complementAdressController.text = _person.address!.complemento;
       _maritalStatusController.text = _person.maritalStatus;
       _educationLevelController.text = _person.educationLevel;
-
+      _timeLiveRoraimaYearController.text = _person.timeLiveRoraimaYear;
+      _timeLiveRoraimaMonthController.text = _person.timeLiveRoraimaMonth;
+      _timeLiveHomeYearController.text = _person.timeLiveHomeYear;
+      _timeLiveHomeMonthController.text = _person.timeLiveHomeMonth;
       _individualCashController.text = _person.individualCash;
       _familiarCashController.text = _person.familiarCash;
+      _deficientNameController.text = _person.deficientPerson!.name;
+      _deficientCIDController.text = _person.deficientPerson!.cid;
 
       if (_hasSpouse) {
         //_sexController    <=
@@ -215,22 +229,26 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   addOrUpdatePerson() async {
     List<String> _listPhoneNumber = [];
     _listPhoneNumber.addAll([_phoneController0.text, _phoneController1.text]);
+    _deficientPerson = DeficientPerson(
+      name: _deficientNameController.text.toUpperCase(),
+      cid: _deficientCIDController.text.toUpperCase(),
+    );
 
     _personSpouse = PersonSpouse(
-      name: _spouseNameController.text,
+      name: _spouseNameController.text.toUpperCase(),
       birthDate: _spouseBirthDateController.text,
       sex: _spouseSexController.text,
-      nacionality: _spouseNacionalityController.text,
-      originUF: _spouseUfNaturalityController.text,
-      originCity: _spouseCityNaturalityController.text,
-      mothersName: _spouseMothersNameController.text,
+      nacionality: _spouseNacionalityController.text.toUpperCase(),
+      originUF: _spouseUfNaturalityController.text.toUpperCase(),
+      originCity: _spouseCityNaturalityController.text.toUpperCase(),
+      mothersName: _spouseMothersNameController.text.toUpperCase(),
       numberDocument: _spouseNumberDocumentController.text,
-      issueDocument: _spouseIssueDocumentController.text,
-      ufDocument: _spouseUfDocumentController.text,
-      dateIssueDocument: _spouseDateIssueDocumentController.text,
+      issueDocument: _spouseIssueDocumentController.text.toUpperCase(),
+      ufDocument: _spouseUfDocumentController.text.toUpperCase(),
+      dateIssueDocument: _spouseDateIssueDocumentController.text.toUpperCase(),
       pisNisPasep: _spousePisNisPasepController.text,
       cpf: _spouseCpfController.text,
-      profession: _spouseProfessionController.text,
+      profession: _spouseProfessionController.text.toUpperCase(),
       phoneNumber: _spousePhoneController.text,
       educationLevel: _spouseEducationLevelController.text,
       individualCash: _spouseIndividualCashController.text,
@@ -246,29 +264,35 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         complemento: _complementAdressController.text.toUpperCase());
 
     _person = RegisterMorarMelhor(
-      address: _address,
-      birthDate: _birthDateController.text.toUpperCase(),
-      sex: _sexController.text.toUpperCase(),
-      name: _nameController.text.toUpperCase(),
-      nacionality: _nacionalityController.text.toUpperCase(),
-      mothersName: _mothersNameController.text.toUpperCase(),
-      fathersName: _fathersNameController.text.toUpperCase(),
-      phoneList: _listPhoneNumber,
-      socialNetworks: _socialNetworks,
-      typeOfDocument: _tipeDocumentController.text.toUpperCase(),
-      numberDocument: _numberDocumentController.text.toUpperCase(),
-      issueDocument: _issueDocumentController.text.toUpperCase(),
-      ufDocument: _ufDocumentController.text.toUpperCase(),
-      dateIssueDocument: _dateIssueDocumentController.text.toUpperCase(),
-      pisNisPasep: _pisNisPasepController.text.toUpperCase(),
-      cpf: _cpfController.text.toUpperCase(),
-      profession: _professionController.text.toUpperCase(),
-      maritalStatus: _maritalStatusController.text.toUpperCase(),
-      educationLevel: _educationLevelController.text.toUpperCase(),
-      individualCash: _individualCashController.text.toUpperCase(),
-      familiarCash: _familiarCashController.text.toUpperCase(),
-      personSpouse: _personSpouse,
-    );
+        address: _address,
+        birthDate: _birthDateController.text.toUpperCase(),
+        sex: _sexController.text.toUpperCase(),
+        name: _nameController.text.toUpperCase(),
+        nacionality: _nacionalityController.text.toUpperCase(),
+        mothersName: _mothersNameController.text.toUpperCase(),
+        fathersName: _fathersNameController.text.toUpperCase(),
+        phoneList: _listPhoneNumber,
+        socialNetworks: _socialNetworks,
+        typeOfDocument: _tipeDocumentController.text.toUpperCase(),
+        numberDocument: _numberDocumentController.text.toUpperCase(),
+        issueDocument: _issueDocumentController.text.toUpperCase(),
+        ufDocument: _ufDocumentController.text.toUpperCase(),
+        dateIssueDocument: _dateIssueDocumentController.text.toUpperCase(),
+        pisNisPasep: _pisNisPasepController.text.toUpperCase(),
+        cpf: _cpfController.text.toUpperCase(),
+        profession: _professionController.text.toUpperCase(),
+        maritalStatus: _maritalStatusController.text.toUpperCase(),
+        educationLevel: _educationLevelController.text.toUpperCase(),
+        individualCash: _individualCashController.text.toUpperCase(),
+        familiarCash: _familiarCashController.text.toUpperCase(),
+        personSpouse: _personSpouse,
+        timeLiveRoraimaYear: _timeLiveRoraimaYearController.text.toUpperCase(),
+        timeLiveRoraimaMonth:
+            _timeLiveRoraimaMonthController.text.toUpperCase(),
+        timeLiveHomeYear: _timeLiveHomeYearController.text.toUpperCase(),
+        timeLiveHomeMonth: _timeLiveHomeMonthController.text.toUpperCase(),
+        singleMother: _singleMother,
+        deficientPerson: _deficientPerson);
     widget.hasPersonData
         ? //update
         await _completePersonListBox.put(widget.personIndex, _person)
@@ -1294,33 +1318,14 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text('Pessoa com Deficiência no Grupo Familiar',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      Divider(height: 5),
-                      TextField(
-                          textCapitalization: TextCapitalization.characters,
-                          textInputAction: TextInputAction.next,
-                          controller: _deficientNameController,
-                          decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                            labelText: 'Nome da pessoa com deficiência',
-                            hintText: 'Nome da pessoa com deficiência',
-                          )),
-                      Divider(height: 5),
-                      TextField(
-                          textCapitalization: TextCapitalization.characters,
-                          textInputAction: TextInputAction.done,
-                          controller: _deficientCIDController,
-                          decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                            labelText: 'CID do Deficiente',
-                            hintText: 'CID do Deficiente',
-                          )),
-                    ],
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildListResidentFamiliar(),
+                    Flexible(
+                        child: ElevatedButton(
+                            onPressed: () {}, child: Icon(Icons.add)))
+                  ],
                 ),
               ],
             )),
@@ -1483,6 +1488,33 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
             ),
           );
         });
+  }
+
+  Widget _buildListResidentFamiliar() {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: Container(
+          decoration: BoxDecoration(border: Border.all()),
+          child: Column(
+            children: [
+              TextField(
+                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                      hintText: 'Nome', labelText: 'Nome')),
+              Divider(height: 5),
+              TextField(
+                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                      hintText: 'CPF', labelText: 'CPF')),
+              Divider(height: 5),
+              TextField(
+                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                      hintText: 'Parentesco', labelText: 'Parentesco')),
+              Divider(height: 5),
+              TextField(
+                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                      hintText: 'PCD', labelText: 'PCD')),
+            ],
+          )),
+    );
   }
 }
 

@@ -18,7 +18,7 @@ class ResidentFamiliarAdapter extends TypeAdapter<ResidentFamiliar> {
     };
     return ResidentFamiliar(
       name: fields[0] as String,
-      birthDate: fields[1] as DateTime?,
+      birthDate: fields[1] as String,
       cpf: fields[2] as String,
       kinship: fields[3] as String,
       deficient: fields[4] as bool?,

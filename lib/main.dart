@@ -2,6 +2,7 @@
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/address_model.dart';
+import 'package:codesaima/models/deficient_person_model.dart';
 import 'package:codesaima/models/person_spouse.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/models/simple_person_model.dart';
@@ -16,6 +17,8 @@ Future main() async {
 
   Hive.registerAdapter(AddressAdapter());
   await Hive.openBox<Address>(kAddressBox);
+  Hive.registerAdapter(DeficientPersonAdapter());
+  await Hive.openBox<DeficientPerson>(kDeficientPersonBox);
   Hive.registerAdapter(SocialNetworksAdapter());
   await Hive.openBox<SocialNetworks>(kSocialNetworksBox);
   Hive.registerAdapter(SimplePersonAdapter());

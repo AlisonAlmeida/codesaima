@@ -17,26 +17,19 @@ class DeficientPersonAdapter extends TypeAdapter<DeficientPerson> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DeficientPerson(
-      deficientPersonCID: fields[5] as String,
+      name: fields[0] as String,
+      cid: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, DeficientPerson obj) {
     writer
-      ..writeByte(6)
-      ..writeByte(5)
-      ..write(obj.deficientPersonCID)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.birthDate)
-      ..writeByte(2)
-      ..write(obj.cpf)
-      ..writeByte(3)
-      ..write(obj.kinship)
-      ..writeByte(4)
-      ..write(obj.deficient);
+      ..write(obj.cid);
   }
 
   @override

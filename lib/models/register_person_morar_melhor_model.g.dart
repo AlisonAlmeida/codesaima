@@ -48,13 +48,14 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       singleMother: fields[30] as bool?,
       personSpouse: fields[20] as PersonSpouse?,
       maritalStatus: fields[17] as String,
+      deficientPerson: fields[31] as DeficientPerson?,
     );
   }
 
   @override
   void write(BinaryWriter writer, RegisterMorarMelhor obj) {
     writer
-      ..writeByte(31)
+      ..writeByte(32)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -116,7 +117,9 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       ..writeByte(29)
       ..write(obj.observations)
       ..writeByte(30)
-      ..write(obj.singleMother);
+      ..write(obj.singleMother)
+      ..writeByte(31)
+      ..write(obj.deficientPerson);
   }
 
   @override
