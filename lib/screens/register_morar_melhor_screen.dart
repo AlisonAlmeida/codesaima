@@ -1321,10 +1321,36 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildListResidentFamiliar(),
+                    _buildResidentFamiliarList(),
                     Flexible(
                         child: ElevatedButton(
-                            onPressed: () {}, child: Icon(Icons.add)))
+                            child: Icon(Icons.add),
+                            onPressed: () {
+                              final TextEditingController name =
+                                  TextEditingController();
+                              final TextEditingController birthDate =
+                                  TextEditingController();
+                              final TextEditingController cpf =
+                                  TextEditingController();
+                              final TextEditingController kinship =
+                                  TextEditingController();
+                              _residentFamiliarName.add(name);
+                              _residentFamiliarBirthDate.add(birthDate);
+                              _residentFamiliarCPF.add(cpf);
+                              _residentFamiliarKinship.add(kinship);
+                              final ResidentFamiliar residentFamiliar =
+                                  ResidentFamiliar(
+                                      name: name.text,
+                                      birthDate: birthDate.text,
+                                      cpf: cpf.text,
+                                      deficient: true,
+                                      kinship: kinship.text);
+
+                              _residentFamiliarList.add(residentFamiliar);
+                              for (var element in _residentFamiliarList) {
+                                print(element.name);
+                              }
+                            }))
                   ],
                 ),
               ],
@@ -1490,17 +1516,22 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         });
   }
 
-  Widget _buildListResidentFamiliar() {
+  Widget _buildResidentFamiliarList() {
     return Padding(
       padding: EdgeInsets.all(5),
       child: Container(
           decoration: BoxDecoration(border: Border.all()),
           child: Column(
-            children: [
+            children: []
+
+            /*
+              [
               TextField(
                   decoration: kTextFieldDecorationMorarMelhor.copyWith(
                       hintText: 'Nome', labelText: 'Nome')),
               Divider(height: 5),
+              Text('Data de nascimento:'),
+              ElevatedButton(onPressed: () {}, child: Text('Selecione')),
               TextField(
                   decoration: kTextFieldDecorationMorarMelhor.copyWith(
                       hintText: 'CPF', labelText: 'CPF')),
@@ -1512,7 +1543,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               TextField(
                   decoration: kTextFieldDecorationMorarMelhor.copyWith(
                       hintText: 'PCD', labelText: 'PCD')),
-            ],
+]
+                      */
+            ,
           )),
     );
   }
