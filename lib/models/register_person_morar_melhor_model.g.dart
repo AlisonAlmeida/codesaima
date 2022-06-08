@@ -40,10 +40,12 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       individualCash: fields[19] as String,
       familiarCash: fields[23] as String,
       residentFamiliar: (fields[24] as List?)?.cast<ResidentFamiliar>(),
-      howMuchTimeLiveRoraima: fields[25] as String,
-      howMuchTimeLiveHome: fields[26] as String,
-      observations: fields[27] as String,
-      singleMother: fields[28] as bool?,
+      timeLiveRoraimaYear: fields[25] as String,
+      timeLiveRoraimaMonth: fields[26] as String,
+      timeLiveHomeYear: fields[27] as String,
+      timeLiveHomeMonth: fields[28] as String,
+      observations: fields[29] as String,
+      singleMother: fields[30] as bool?,
       personSpouse: fields[20] as PersonSpouse?,
       maritalStatus: fields[17] as String,
     );
@@ -52,7 +54,7 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
   @override
   void write(BinaryWriter writer, RegisterMorarMelhor obj) {
     writer
-      ..writeByte(29)
+      ..writeByte(31)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -104,12 +106,16 @@ class RegisterMorarMelhorAdapter extends TypeAdapter<RegisterMorarMelhor> {
       ..writeByte(24)
       ..write(obj.residentFamiliar)
       ..writeByte(25)
-      ..write(obj.howMuchTimeLiveRoraima)
+      ..write(obj.timeLiveRoraimaYear)
       ..writeByte(26)
-      ..write(obj.howMuchTimeLiveHome)
+      ..write(obj.timeLiveRoraimaMonth)
       ..writeByte(27)
-      ..write(obj.observations)
+      ..write(obj.timeLiveHomeYear)
       ..writeByte(28)
+      ..write(obj.timeLiveHomeMonth)
+      ..writeByte(29)
+      ..write(obj.observations)
+      ..writeByte(30)
       ..write(obj.singleMother);
   }
 

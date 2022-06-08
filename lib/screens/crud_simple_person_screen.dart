@@ -539,7 +539,7 @@ class PhoneWidget extends StatelessWidget {
       ],
       keyboardType: TextInputType.number,
       controller: _telefoneController,
-      decoration: kTextFieldGeneralDecoration.copyWith(
+      decoration: kTextFieldDecorationMorarMelhor.copyWith(
         labelText: 'Telefone',
         hintText: '(95)98765-4321',
         prefixIcon: Padding(
@@ -567,7 +567,7 @@ class CompletNameWidget extends StatelessWidget {
       textInputAction: TextInputAction.next,
       controller: _nameController,
       keyboardType: TextInputType.name,
-      decoration: kTextFieldGeneralDecoration.copyWith(
+      decoration: kTextFieldDecorationMorarMelhor.copyWith(
           labelText: 'Nome',
           hintText: 'Nome Completo',
           prefixIcon: Padding(

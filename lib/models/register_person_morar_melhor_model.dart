@@ -36,8 +36,10 @@ class RegisterMorarMelhor {
     this.individualCash = '',
     this.familiarCash = '',
     this.residentFamiliar,
-    this.howMuchTimeLiveRoraima = '',
-    this.howMuchTimeLiveHome = '',
+    this.timeLiveRoraimaYear = '',
+    this.timeLiveRoraimaMonth = '',
+    this.timeLiveHomeYear = '',
+    this.timeLiveHomeMonth = '',
     this.observations = '',
     this.singleMother,
     this.personSpouse,
@@ -120,15 +122,21 @@ class RegisterMorarMelhor {
   final List<ResidentFamiliar>? residentFamiliar;
 
   @HiveField(25)
-  final String howMuchTimeLiveRoraima;
+  final String timeLiveRoraimaYear;
 
   @HiveField(26)
-  final String howMuchTimeLiveHome;
+  final String timeLiveRoraimaMonth;
 
   @HiveField(27)
-  final String observations;
+  final String timeLiveHomeYear;
 
   @HiveField(28)
+  final String timeLiveHomeMonth;
+
+  @HiveField(29)
+  final String observations;
+
+  @HiveField(30)
   final bool? singleMother;
 
   factory RegisterMorarMelhor.fromMap(Map<String, dynamic> json) =>
@@ -158,8 +166,10 @@ class RegisterMorarMelhor {
         originCity: json['originCity'],
         familiarCash: json['familiarCash'],
         residentFamiliar: json['residentFamiliar'],
-        howMuchTimeLiveRoraima: json['howMuchTimeLiveRoraima'],
-        howMuchTimeLiveHome: json['howMuchTimeLiveHome'],
+        timeLiveRoraimaYear: json['timeLiveRoraimaYear'],
+        timeLiveRoraimaMonth: json['timeLiveRoraimaMonth'],
+        timeLiveHomeYear: json['timeLiveHomeYear'],
+        timeLiveHomeMonth: json['timeLiveHomeYear'],
         observations: json['observations'],
         singleMother: json['singleMother'],
       );
@@ -191,8 +201,10 @@ class RegisterMorarMelhor {
       'originCity': originCity,
       'familiarCash': familiarCash,
       'residentFamiliar': ResidentFamiliar,
-      'howMuchTimeLiveRoraima': howMuchTimeLiveRoraima,
-      'howMuchTimeLiveHome': howMuchTimeLiveHome,
+      'timeLiveRoraimaYear': timeLiveRoraimaYear,
+      'timeLiveRoraimaMonth': timeLiveRoraimaMonth,
+      'timeLiveHomeYear': timeLiveHomeYear,
+      'timeLiveHomeMonth': timeLiveHomeMonth,
       'observations': observations,
       'singleMother': singleMother,
     };
