@@ -7,6 +7,7 @@ const String kSimplePersonBox = 'BoxRegisterSearch';
 const String kCompletePersonBox = 'BoxRegisterMorarMelhor';
 const String kPersonSpouseBox = 'BoxPersonSpouse';
 const String kDeficientPersonBox = 'BoxDeficientPerson';
+const String kResidentFamiliarBox = 'BoxResidentFamiliar';
 
 const String kPathMainLogoCodesaima = 'lib/assets/images/logo_codesaima.png';
 const String kPathMainLogoCodesaimaBranca =

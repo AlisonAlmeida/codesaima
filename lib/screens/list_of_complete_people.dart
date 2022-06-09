@@ -66,7 +66,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                   })),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                fixedSize: Size(MediaQuery.of(context).size.width, 70),
+                fixedSize: Size(MediaQuery.of(context).size.width - 10, 70),
                 primary: kMorarMelhorThemeData.backgroundColor),
             child: Icon(
               Icons.person_add,

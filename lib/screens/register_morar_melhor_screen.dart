@@ -38,6 +38,7 @@ class RegisterMorarMelhorScreen extends StatefulWidget {
 
 class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   late final Box _completePersonListBox;
+  late final Box _listResidentFamiliarBox;
   final _nameController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _sexController = TextEditingController();
@@ -107,6 +108,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   int _currentTabIndex = 0;
   bool? _singleMother = false;
   DeficientPerson _deficientPerson = DeficientPerson();
+  ScrollController _scrollResidentFamiliarController = ScrollController();
 
   final PageController _pageController =
       PageController(initialPage: 0, keepPage: false, viewportFraction: 1);
@@ -114,6 +116,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   @override
   void initState() {
     _completePersonListBox = Hive.box<RegisterMorarMelhor>(kCompletePersonBox);
+    _listResidentFamiliarBox = Hive.box<ResidentFamiliar>(kResidentFamiliarBox);
     _nacionalityController.text = 'BRASIL';
     _ufNaturalityController.text = 'RR';
     _cityNaturalityController.text = 'BOA VISTA';
@@ -1321,36 +1324,47 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _buildResidentFamiliarList(),
-                    Flexible(
-                        child: ElevatedButton(
-                            child: Icon(Icons.add),
-                            onPressed: () {
-                              final TextEditingController name =
-                                  TextEditingController();
-                              final TextEditingController birthDate =
-                                  TextEditingController();
-                              final TextEditingController cpf =
-                                  TextEditingController();
-                              final TextEditingController kinship =
-                                  TextEditingController();
-                              _residentFamiliarName.add(name);
-                              _residentFamiliarBirthDate.add(birthDate);
-                              _residentFamiliarCPF.add(cpf);
-                              _residentFamiliarKinship.add(kinship);
-                              final ResidentFamiliar residentFamiliar =
-                                  ResidentFamiliar(
-                                      name: name.text,
-                                      birthDate: birthDate.text,
-                                      cpf: cpf.text,
-                                      deficient: true,
-                                      kinship: kinship.text);
+                    ElevatedButton(
+                        child: Text('Adicione Mais um Camarada'),
+                        onPressed: () {
+                          setState(() {
+                            final TextEditingController name =
+                                TextEditingController();
+                            final TextEditingController birthDate =
+                                TextEditingController();
+                            final TextEditingController cpf =
+                                TextEditingController();
+                            final TextEditingController kinship =
+                                TextEditingController();
+                            _residentFamiliarName.add(name);
+                            _residentFamiliarBirthDate.add(birthDate);
+                            _residentFamiliarCPF.add(cpf);
+                            _residentFamiliarKinship.add(kinship);
+                            final ResidentFamiliar residentFamiliar =
+                                ResidentFamiliar(
+                                    name: name.text,
+                                    birthDate: birthDate.text,
+                                    cpf: cpf.text,
+                                    deficient: false,
+                                    kinship: kinship.text);
 
-                              _residentFamiliarList.add(residentFamiliar);
-                              for (var element in _residentFamiliarList) {
-                                print(element.name);
-                              }
-                            }))
+                            _residentFamiliarList.add(residentFamiliar);
+                            double v = _residentFamiliarList.length.toDouble();
+                            _scrollResidentFamiliarController.jumpTo(10);
+                            print('V: $v');
+                          });
+                        }),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollResidentFamiliarController,
+                        itemCount: _residentFamiliarList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: _buldListResidentFamiliar(),
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               ],
@@ -1516,38 +1530,31 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         });
   }
 
-  Widget _buildResidentFamiliarList() {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: Container(
-          decoration: BoxDecoration(border: Border.all()),
-          child: Column(
-            children: []
+//TODO
+  List<Widget> _buldListResidentFamiliar() {
+    List<Widget> _list = [];
 
-            /*
-              [
-              TextField(
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                      hintText: 'Nome', labelText: 'Nome')),
-              Divider(height: 5),
-              Text('Data de nascimento:'),
-              ElevatedButton(onPressed: () {}, child: Text('Selecione')),
-              TextField(
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                      hintText: 'CPF', labelText: 'CPF')),
-              Divider(height: 5),
-              TextField(
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                      hintText: 'Parentesco', labelText: 'Parentesco')),
-              Divider(height: 5),
-              TextField(
-                  decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                      hintText: 'PCD', labelText: 'PCD')),
-]
-                      */
-            ,
-          )),
-    );
+    for (var element in _residentFamiliarList.reversed) {
+      _list.add(Container(
+        decoration: BoxDecoration(border: Border.all()),
+        child: Column(
+          children: [
+            TextField(
+              decoration:
+                  kTextFieldDecorationMorarMelhor.copyWith(hintText: 'Nome'),
+            ),
+            Divider(height: 5),
+            TextField(
+              decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                  hintText: 'Parentesco'),
+            ),
+            Divider(height: 5),
+          ],
+        ),
+      ));
+    }
+
+    return _list;
   }
 }
 
