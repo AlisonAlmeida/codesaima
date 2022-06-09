@@ -1325,33 +1325,37 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ElevatedButton(
-                        child: Text('Adicione Mais um Camarada'),
+                        child: _residentFamiliarList.isEmpty
+                            ? Text('Adicione um familiar')
+                            : Text('Adicione mais familiar'),
                         onPressed: () {
                           setState(() {
-                            final TextEditingController name =
-                                TextEditingController();
-                            final TextEditingController birthDate =
-                                TextEditingController();
-                            final TextEditingController cpf =
-                                TextEditingController();
-                            final TextEditingController kinship =
-                                TextEditingController();
-                            _residentFamiliarName.add(name);
-                            _residentFamiliarBirthDate.add(birthDate);
-                            _residentFamiliarCPF.add(cpf);
-                            _residentFamiliarKinship.add(kinship);
-                            final ResidentFamiliar residentFamiliar =
-                                ResidentFamiliar(
-                                    name: name.text,
-                                    birthDate: birthDate.text,
-                                    cpf: cpf.text,
-                                    deficient: false,
-                                    kinship: kinship.text);
-
-                            _residentFamiliarList.add(residentFamiliar);
-                            double v = _residentFamiliarList.length.toDouble();
-                            _scrollResidentFamiliarController.jumpTo(10);
-                            print('V: $v');
+                            if (_residentFamiliarList.length > 9) {
+                              print('maior que 10 infiliz');
+                              //TODO infeliz
+                            } else {
+                              final TextEditingController nameController =
+                                  TextEditingController();
+                              final TextEditingController birthDateController =
+                                  TextEditingController();
+                              final TextEditingController cpfController =
+                                  TextEditingController();
+                              final TextEditingController kinshipController =
+                                  TextEditingController();
+                              _residentFamiliarName.add(nameController);
+                              _residentFamiliarBirthDate
+                                  .add(birthDateController);
+                              _residentFamiliarCPF.add(cpfController);
+                              _residentFamiliarKinship.add(kinshipController);
+                              final ResidentFamiliar residentFamiliar =
+                                  ResidentFamiliar(
+                                      name: nameController.text,
+                                      birthDate: birthDateController.text,
+                                      cpf: cpfController.text,
+                                      deficient: false,
+                                      kinship: kinshipController.text);
+                              _residentFamiliarList.add(residentFamiliar);
+                            }
                           });
                         }),
                     Expanded(
@@ -1359,9 +1363,15 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                         controller: _scrollResidentFamiliarController,
                         itemCount: _residentFamiliarList.length,
                         itemBuilder: (context, index) {
-                          return Column(
-                            children: _buldListResidentFamiliar(),
-                          );
+                          int revesedIndex =
+                              _residentFamiliarList.length - index;
+                          return Column(children: [
+                            Text('Familiar ${revesedIndex}'),
+                            TextField(
+                              decoration: kTextFieldDecorationMorarMelhor
+                                  .copyWith(hintText: 'Nome'),
+                            )
+                          ]);
                         },
                       ),
                     )
@@ -1528,33 +1538,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
             ),
           );
         });
-  }
-
-//TODO
-  List<Widget> _buldListResidentFamiliar() {
-    List<Widget> _list = [];
-
-    for (var element in _residentFamiliarList.reversed) {
-      _list.add(Container(
-        decoration: BoxDecoration(border: Border.all()),
-        child: Column(
-          children: [
-            TextField(
-              decoration:
-                  kTextFieldDecorationMorarMelhor.copyWith(hintText: 'Nome'),
-            ),
-            Divider(height: 5),
-            TextField(
-              decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                  hintText: 'Parentesco'),
-            ),
-            Divider(height: 5),
-          ],
-        ),
-      ));
-    }
-
-    return _list;
   }
 }
 
