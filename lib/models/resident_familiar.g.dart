@@ -21,7 +21,7 @@ class ResidentFamiliarAdapter extends TypeAdapter<ResidentFamiliar> {
       birthDate: fields[1] as String,
       cpf: fields[2] as String,
       kinship: fields[3] as String,
-      deficient: fields[4] as bool?,
+      deficient: fields[4] as String?,
     );
   }
 

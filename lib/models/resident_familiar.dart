@@ -11,17 +11,16 @@ class ResidentFamiliar {
     this.deficient,
   });
   @HiveField(0)
-  final String name;
+  String name;
 
   @HiveField(1)
-  final String birthDate;
-
+  String birthDate;
   @HiveField(2)
-  final String cpf;
+  String cpf;
 
   @HiveField(3)
-  final String kinship; //parentesco
+  String kinship; //parentesco
 
   @HiveField(4)
-  final bool? deficient;
+  String? deficient;
 }
