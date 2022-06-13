@@ -21,6 +21,8 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../models/edifice_information_model.dart';
+
 class RegisterMorarMelhorScreen extends StatefulWidget {
   RegisterMorarMelhorScreen({
     Key? key,
@@ -39,7 +41,7 @@ class RegisterMorarMelhorScreen extends StatefulWidget {
 
 class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   late final Box _completePersonListBox;
-  late final Box _listResidentFamiliarBox;
+
   final _nameController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _sexController = TextEditingController();
@@ -73,6 +75,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   final _timeLiveHomeMonthController = TextEditingController();
   final _individualCashController = TextEditingController();
   final _familiarCashController = TextEditingController();
+  final _generalObservations = TextEditingController();
   final _spouseNameController = TextEditingController();
   final _spouseBirthDateController = TextEditingController();
   final _spouseSexController = TextEditingController();
@@ -104,19 +107,30 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   Address _address = Address();
   RegisterMorarMelhor _person = RegisterMorarMelhor();
   PersonSpouse _personSpouse = PersonSpouse();
+  EdificeInformation _edificeInformation = EdificeInformation();
   Gender _groupValueSex = Gender.male;
   Gender _spouseGroupValueSex = Gender.male;
   bool _hasSpouse = false;
   int _currentTabIndex = 0;
   bool? _singleMother = false;
   DeficientPerson _deficientPerson = DeficientPerson();
+  final ScrollController _familiarScrollController = ScrollController();
+
   String _groupKindResidence = '';
   String _groupLocalizationResidence = '';
   String _groupSupplyWaterSystem = '';
+  String _groupKindConstruction = '';
+
   String _groupkindFloor = '';
   String _groupGarbageCollection = '';
   String _groupElectricalNetwork = '';
   String _groupSewerage = ''; //SISTEMA DE ESGOTO
+  String _groupHasInternalBathroom = '';
+  String _groupResidenceSituation = '';
+  final _numberFamiliesLiveResidence = TextEditingController();
+  final _numberResidentFamiliarLiveResidence = TextEditingController();
+  final _numberRoomResidence = TextEditingController();
+  final _reformNeed = TextEditingController();
 
   final PageController _pageController =
       PageController(initialPage: 0, keepPage: false, viewportFraction: 1);
@@ -184,6 +198,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       _familiarCashController.text = _person.familiarCash;
       _deficientNameController.text = _person.deficientPerson!.name;
       _deficientCIDController.text = _person.deficientPerson!.cid;
+      _generalObservations.text = _person.observations;
 
       if (_hasSpouse) {
         //_sexController    <=
@@ -253,6 +268,25 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         _residentFamiliarDeficientList[i] =
             _person.residentFamiliar![i].deficient as String;
       }
+      _groupKindResidence = _person.edificeInformation!.kindResidence;
+      _groupLocalizationResidence =
+          _person.edificeInformation!.localizationResidence;
+      _groupResidenceSituation = _person.edificeInformation!.residenceSituation;
+      _groupSupplyWaterSystem = _person.edificeInformation!.supplyWaterSystem;
+      _groupKindConstruction = _person.edificeInformation!.kindConstruction;
+      _groupkindFloor = _person.edificeInformation!.kindFloor;
+      _groupGarbageCollection = _person.edificeInformation!.garbageCollection;
+      _groupElectricalNetwork = _person.edificeInformation!.electricalNetwork;
+      _groupSewerage = _person.edificeInformation!.sewerage;
+      _groupHasInternalBathroom =
+          _person.edificeInformation!.hasInternalBathroom;
+      _numberFamiliesLiveResidence.text =
+          _person.edificeInformation!.numberFamiliesLiveResidence;
+      _numberResidentFamiliarLiveResidence.text =
+          _person.edificeInformation!.numberResidentFamiliarLiveResidence;
+      _numberRoomResidence.text =
+          _person.edificeInformation!.numberRoomResidence;
+      _reformNeed.text = _person.edificeInformation!.reformNeed;
     }
     super.initState();
   }
@@ -290,6 +324,23 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
       name: _deficientNameController.text.toUpperCase(),
       cid: _deficientCIDController.text.toUpperCase(),
     );
+
+    _edificeInformation = EdificeInformation(
+        kindResidence: _groupKindResidence,
+        localizationResidence: _groupLocalizationResidence,
+        residenceSituation: _groupResidenceSituation,
+        supplyWaterSystem: _groupSupplyWaterSystem,
+        kindConstruction: _groupKindConstruction,
+        kindFloor: _groupkindFloor,
+        garbageCollection: _groupGarbageCollection,
+        electricalNetwork: _groupElectricalNetwork,
+        sewerage: _groupSewerage,
+        hasInternalBathroom: _groupHasInternalBathroom,
+        numberFamiliesLiveResidence: _numberFamiliesLiveResidence.text,
+        numberResidentFamiliarLiveResidence:
+            _numberResidentFamiliarLiveResidence.text,
+        numberRoomResidence: _numberRoomResidence.text,
+        reformNeed: _reformNeed.text);
 
     _personSpouse = PersonSpouse(
       name: _spouseNameController.text.toUpperCase(),
@@ -350,7 +401,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         timeLiveHomeMonth: _timeLiveHomeMonthController.text.toUpperCase(),
         singleMother: _singleMother,
         deficientPerson: _deficientPerson,
-        residentFamiliar: residentFamiliarList);
+        residentFamiliar: residentFamiliarList,
+        edificeInformation: _edificeInformation,
+        observations: _generalObservations.text.toUpperCase());
 
     widget.hasPersonData
         ? //update
@@ -976,7 +1029,16 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                       decoration: kTextFieldDecorationMorarMelhor.copyWith(
                           labelText: 'Renda Familiar',
                           hintText: 'Renda Familiar'),
-                    )
+                    ),
+                    Text('Observações Gerais'),
+                    TextField(
+                        maxLines: 5,
+                        minLines: 5,
+                        controller: _generalObservations,
+                        textInputAction: TextInputAction.newline,
+                        decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                          labelText: 'Observações Gerais',
+                        ))
                   ],
                 ),
                 ListView(
@@ -1327,6 +1389,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                     ),
                   ],
                 ),
+
                 ListView(
                   children: [
                     Text('Pessoa com Deficiência no Grupo Familiar',
@@ -1398,10 +1461,17 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                                   deficient: '',
                                   kinship: ''));
                             }
+                            _familiarScrollController.jumpTo(
+                                _familiarScrollController
+                                        .position.maxScrollExtent +
+                                    1000);
                           });
                         }),
                     Expanded(
                       child: ListView.builder(
+                        controller: _familiarScrollController,
+                        shrinkWrap: false,
+                        reverse: true,
                         itemCount: residentFamiliarList.length,
                         itemBuilder: (context, index) {
                           return Container(
@@ -1561,22 +1631,26 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold)),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         radioTitleList: ['PRÓPRIA', 'ALUGADA', 'CEDIDA'],
                         mainTitle: 'Tipo do Imóvel',
-                        groupValueSex: _groupKindResidence,
+                        groupValue: _groupKindResidence,
                         function: (v) => setState(() {
                               _groupKindResidence = v!;
                             })),
                     RadioResidenceChoice(
                         radioTitleList: ['URBANA', 'RURAL'],
                         mainTitle: 'Localização do Imóvel',
-                        groupValueSex: _groupLocalizationResidence,
+                        groupValue: _groupLocalizationResidence,
                         function: (v) => setState(() {
                               _groupLocalizationResidence = v!;
                             })),
-                    Divider(height: 5),
+                    RadioResidenceChoice(
+                        radioTitleList: ['1', '2', '3', '4'],
+                        mainTitle:
+                            'Situação da Moradia (USADO SOMENTE NA VISITA)',
+                        groupValue: _groupResidenceSituation,
+                        function: (v) {}),
                     RadioResidenceChoice(
                         radioTitleList: [
                           'REDE GERAL',
@@ -1584,20 +1658,18 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                           'CISTERNA',
                           'OUTROS'
                         ],
-                        mainTitle: 'Qual Sistema de Abastecimento do Imóvel?',
-                        groupValueSex: _groupSupplyWaterSystem,
+                        mainTitle: 'Qual Sistema de Abastecimento de Água?',
+                        groupValue: _groupSupplyWaterSystem,
                         function: (v) => setState(() {
                               _groupSupplyWaterSystem = v!;
                             })),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         radioTitleList: ['ALVENARIA', 'MADEIRA', 'MISTA'],
                         mainTitle: 'Tipo de Construção',
-                        groupValueSex: _groupSupplyWaterSystem,
+                        groupValue: _groupKindConstruction,
                         function: (v) => setState(() {
-                              _groupSupplyWaterSystem = v!;
+                              _groupKindConstruction = v!;
                             })),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         radioTitleList: [
                           'TERRA',
@@ -1606,77 +1678,86 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                           'MADEIRA'
                         ],
                         mainTitle: 'Tipo do Piso da Residência',
-                        groupValueSex: _groupkindFloor,
+                        groupValue: _groupkindFloor,
                         function: (v) => setState(() {
                               _groupkindFloor = v!;
                             })),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         mainTitle: 'Coleta de Lixo',
                         radioTitleList: ['SIM', 'NÃO'],
-                        groupValueSex: _groupGarbageCollection,
+                        groupValue: _groupGarbageCollection,
                         function: (v) => setState(() {
                               _groupGarbageCollection = v!;
                             })),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         mainTitle: 'Rede Elétrica',
                         radioTitleList: ['SIM', 'NÃO'],
-                        groupValueSex: _groupElectricalNetwork,
+                        groupValue: _groupElectricalNetwork,
                         function: (v) => setState(() {
                               _groupElectricalNetwork = v!;
                             })),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         mainTitle: 'Sistema de Esgoto',
                         radioTitleList: ['TRATADA', 'FOSSA SÉPTICA', 'VALA'],
-                        groupValueSex: _groupSewerage,
+                        groupValue: _groupSewerage,
                         function: (v) => setState(() {
                               _groupSewerage = v!;
                             })),
-                    Divider(height: 5),
                     RadioResidenceChoice(
                         mainTitle: 'Possui Banheiro Interno?',
                         radioTitleList: ['SIM', 'NÃO'],
-                        groupValueSex: _groupSewerage,
+                        groupValue: _groupHasInternalBathroom,
                         function: (v) => setState(() {
-                              _groupSewerage = v!;
+                              _groupHasInternalBathroom = v!;
                             })),
-                    Divider(height: 5),
-                    Text('Quantas famílias residem no imóvel?',
+                    Text('Quantas Famílias Residem no Imóvel?',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     TextField(
+                        controller: _numberFamiliesLiveResidence,
                         keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                           TextInputMask(mask: '999')
                         ],
                         decoration: kTextFieldDecorationMorarMelhor),
-                    Divider(height: 5),
                     Text('Número de Familiares no Domicílio',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     TextField(
+                        controller: _numberResidentFamiliarLiveResidence,
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                           TextInputMask(mask: '999')
                         ],
                         decoration: kTextFieldDecorationMorarMelhor),
-                    Divider(height: 5),
                     Text('Número de Cômodos no Domicílio',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     TextField(
+                        controller: _numberRoomResidence,
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
                           TextInputMask(mask: '999')
                         ],
+                        decoration: kTextFieldDecorationMorarMelhor),
+                    Text('Quais Necessidades de Reforma Precisa:',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    TextField(
+                        maxLines: 5,
+                        minLines: 5,
+                        controller: _reformNeed,
+                        textInputAction: TextInputAction.newline,
                         decoration: kTextFieldDecorationMorarMelhor),
                   ],
                 ),
@@ -1693,9 +1774,9 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               }),
           bottomNavigationBar: BottomNavigationBar(
               iconSize: 35,
-              showSelectedLabels: false,
+              showSelectedLabels: true,
               enableFeedback: true,
-              showUnselectedLabels: false,
+              showUnselectedLabels: true,
               type: BottomNavigationBarType.fixed,
               backgroundColor: kMorarMelhorThemeData.backgroundColor,
               currentIndex: _currentTabIndex,
@@ -1703,14 +1784,16 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
               unselectedItemColor: Colors.black,
               onTap: _onTabTapped,
               items: [
-                BottomNavigationBarItem(label: '', icon: Icon(Icons.person)),
-                BottomNavigationBarItem(label: '', icon: Icon(Icons.group)),
                 BottomNavigationBarItem(
-                    label: '', icon: Icon(Icons.accessible)),
+                    label: 'Cadastro', icon: Icon(Icons.person)),
                 BottomNavigationBarItem(
-                    label: '', icon: Icon(Icons.family_restroom)),
-                BottomNavigationBarItem(label: '', icon: Icon(Icons.info)),
-                BottomNavigationBarItem(label: '', icon: Icon(Icons.house)),
+                    label: 'Cônjuge', icon: Icon(Icons.group)),
+                BottomNavigationBarItem(
+                    label: 'Deficiênte', icon: Icon(Icons.accessible)),
+                BottomNavigationBarItem(
+                    label: 'Familiares', icon: Icon(Icons.family_restroom)),
+                BottomNavigationBarItem(
+                    label: 'Imóvel', icon: Icon(Icons.house)),
               ])),
     );
   }

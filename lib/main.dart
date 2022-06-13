@@ -12,6 +12,7 @@ import 'package:codesaima/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'models/edifice_information_model.dart';
 
 Future main() async {
   await Hive.initFlutter();
@@ -28,6 +29,9 @@ Future main() async {
   await Hive.openBox<PersonSpouseAdapter>(kPersonSpouseBox);
   Hive.registerAdapter(ResidentFamiliarAdapter());
   await Hive.openBox<ResidentFamiliar>(kResidentFamiliarBox);
+  Hive.registerAdapter(EdificeInformationAdapter());
+  await Hive.openBox<EdificeInformation>(kEdificeInformationBox);
+
   Hive.registerAdapter(RegisterMorarMelhorAdapter());
   await Hive.openBox<RegisterMorarMelhor>(kCompletePersonBox);
 

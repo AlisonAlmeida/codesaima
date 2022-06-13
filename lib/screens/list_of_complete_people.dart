@@ -1,11 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
+import 'package:codesaima/screens/pdf_screen.dart';
 import 'package:codesaima/screens/register_morar_melhor_screen.dart';
-import 'package:codesaima/screens/search_screens/qualitative_research_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:share_plus/share_plus.dart';
 
 class ListOfCompletePeople extends StatefulWidget {
   const ListOfCompletePeople({Key? key, required this.fromResearch})
@@ -23,7 +29,38 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
   @override
   void initState() {
     _completePersonListBox = Hive.box<RegisterMorarMelhor>(kCompletePersonBox);
+
     super.initState();
+  }
+
+  _createPDF() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String appDocPath = appDocDir.path;
+
+    final pdf = pw.Document(author: 'Codesaima', title: 'Titulo');
+
+    pdf.addPage(pw.MultiPage(
+      build: (context) {
+        return [pw.Center()];
+      },
+    ));
+
+    final file = File('$appDocPath/example.pdf');
+    await file.writeAsBytes(await pdf.save());
+
+    try {
+      print(file.path);
+      await Share.share(file.path);
+    } catch (e) {
+      print(e);
+    }
+
+    /*
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return PDFVisualizer(pdfPath: file.path);
+      },
+    ));*/
   }
 
   @override
@@ -31,7 +68,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kMorarMelhorThemeData.backgroundColor,
-          title: Text('Cadastro Morar Melhor'),
+          title: Text('Inscrição'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -125,21 +162,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                       showAlertDialog(context, _person, key);
                     },
                     icon: Icon(Icons.delete)),
-                if (widget.fromResearch)
-                  IconButton(
-                      onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    QualitativeResearchMorarMelhorScreen(
-                                      personIndex: key,
-                                    ))),
-                          ),
-                      icon: CircleAvatar(
-                          backgroundColor:
-                              kMorarMelhorThemeData.backgroundColor,
-                          foregroundColor: Colors.white,
-                          child: Icon(Icons.print)))
+                IconButton(onPressed: _createPDF, icon: Icon(Icons.print))
               ],
             ),
           ),

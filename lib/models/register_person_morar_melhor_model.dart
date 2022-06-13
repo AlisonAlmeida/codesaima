@@ -1,4 +1,5 @@
 import 'package:codesaima/models/deficient_person_model.dart';
+import 'package:codesaima/models/edifice_information_model.dart';
 import 'package:codesaima/models/social_networks.dart';
 import 'package:codesaima/models/person_spouse.dart';
 import 'package:codesaima/models/resident_familiar.dart';
@@ -45,7 +46,8 @@ class RegisterMorarMelhor {
       this.singleMother,
       this.personSpouse,
       this.maritalStatus = '',
-      this.deficientPerson});
+      this.deficientPerson,
+      this.edificeInformation});
 
   @HiveField(0)
   final String name;
@@ -143,75 +145,6 @@ class RegisterMorarMelhor {
   @HiveField(31)
   final DeficientPerson? deficientPerson;
 
-  factory RegisterMorarMelhor.fromMap(Map<String, dynamic> json) =>
-      RegisterMorarMelhor(
-          name: json['name'],
-          phoneList: json['phoneList'],
-          socialNetworks: json['socialNetworks'],
-          address: json['address'],
-          birthDate: json['birthDate'],
-          sex: json['sex'],
-          nacionality: json['nacionality'],
-          mothersName: json['mothersName'],
-          fathersName: json['fathersName'],
-          typeOfDocument: json['typeOfDocument'],
-          numberDocument: json['numberDocument'],
-          issueDocument: json['issueDocument'],
-          ufDocument: json['ufDocument'],
-          dateIssueDocument: json['dateIssueDocument'],
-          pisNisPasep: json['pisNisPasep'],
-          cpf: json['cpf'],
-          profession: json['profession'],
-          maritalStatus: json['maritalStatus'],
-          educationLevel: json['educationLevel'],
-          individualCash: json['individualCash'],
-          personSpouse: json['personSpouse'],
-          originUF: json['origenUF'],
-          originCity: json['originCity'],
-          familiarCash: json['familiarCash'],
-          residentFamiliar: json['residentFamiliar'],
-          timeLiveRoraimaYear: json['timeLiveRoraimaYear'],
-          timeLiveRoraimaMonth: json['timeLiveRoraimaMonth'],
-          timeLiveHomeYear: json['timeLiveHomeYear'],
-          timeLiveHomeMonth: json['timeLiveHomeYear'],
-          observations: json['observations'],
-          singleMother: json['singleMother'],
-          deficientPerson: json['deficientPerson']);
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'phoneList': phoneList,
-      'socialNetworks': SocialNetworks,
-      'address': Address,
-      'birthDate': birthDate,
-      'sex': sex,
-      'nacionality': nacionality,
-      'mothersName': mothersName,
-      'fathersName': fathersName,
-      'typeOfDocument': typeOfDocument,
-      'numberDocument': numberDocument,
-      'issueDocument': issueDocument,
-      'ufDocument': ufDocument,
-      'dateIssueDocument': dateIssueDocument,
-      'pisNisPasep': pisNisPasep,
-      'cpf': cpf,
-      'profession': profession,
-      'maritalStatus': maritalStatus,
-      'educationLevel': educationLevel,
-      'individualCash': individualCash,
-      'personSpouse': PersonSpouse,
-      'originUF': originUF,
-      'originCity': originCity,
-      'familiarCash': familiarCash,
-      'residentFamiliar': ResidentFamiliar,
-      'timeLiveRoraimaYear': timeLiveRoraimaYear,
-      'timeLiveRoraimaMonth': timeLiveRoraimaMonth,
-      'timeLiveHomeYear': timeLiveHomeYear,
-      'timeLiveHomeMonth': timeLiveHomeMonth,
-      'observations': observations,
-      'singleMother': singleMother,
-      'deficientPerson': deficientPerson,
-    };
-  }
+  @HiveField(32)
+  final EdificeInformation? edificeInformation;
 }
