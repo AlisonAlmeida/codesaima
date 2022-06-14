@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/screens/pdf_screen.dart';
 import 'package:codesaima/screens/register_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -38,29 +40,29 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     final String appDocPath = appDocDir.path;
 
     final pdf = pw.Document(author: 'Codesaima', title: 'Titulo');
-
+    ByteData _bytes = await rootBundle.load(kPathLogoGovRoraimaPreta);
+    Uint8List logobytes = _bytes.buffer.asUint8List();
+    PdfImage _logoImage = PdfImage.file(pdf.document, bytes: logobytes);
     pdf.addPage(pw.MultiPage(
       build: (context) {
-        return [pw.Center()];
+        return [
+          pw.Column(children: [
+            pw.Row(children: [
+              pw.Container(
+                  // child:
+                  //    logobytes != null ? pw.Image(123) : pw.Container(),
+                  )
+            ])
+          ])
+        ];
       },
     ));
 
     final file = File('$appDocPath/example.pdf');
     await file.writeAsBytes(await pdf.save());
 
-    try {
-      print(file.path);
-      await Share.share(file.path);
-    } catch (e) {
-      print(e);
-    }
-
-    /*
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) {
-        return PDFVisualizer(pdfPath: file.path);
-      },
-    ));*/
+    Share.shareFiles(['$appDocPath/example.pdf'],
+        mimeTypes: ['application/pdf']);
   }
 
   @override

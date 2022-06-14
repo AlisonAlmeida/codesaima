@@ -16,7 +16,6 @@ import 'models/edifice_information_model.dart';
 
 Future main() async {
   await Hive.initFlutter();
-
   Hive.registerAdapter(AddressAdapter());
   await Hive.openBox<Address>(kAddressBox);
   Hive.registerAdapter(DeficientPersonAdapter());
@@ -31,7 +30,6 @@ Future main() async {
   await Hive.openBox<ResidentFamiliar>(kResidentFamiliarBox);
   Hive.registerAdapter(EdificeInformationAdapter());
   await Hive.openBox<EdificeInformation>(kEdificeInformationBox);
-
   Hive.registerAdapter(RegisterMorarMelhorAdapter());
   await Hive.openBox<RegisterMorarMelhor>(kCompletePersonBox);
 
