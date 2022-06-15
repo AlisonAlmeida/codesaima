@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-
 import '../models/edifice_information_model.dart';
 
 class RegisterMorarMelhorScreen extends StatefulWidget {

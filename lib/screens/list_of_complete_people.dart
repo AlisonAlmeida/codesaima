@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
-import 'package:codesaima/screens/pdf_screen.dart';
+import 'package:codesaima/screens/generate_pdf.dart';
 import 'package:codesaima/screens/register_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,34 +35,8 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     super.initState();
   }
 
-  _createPDF() async {
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String appDocPath = appDocDir.path;
-
-    final pdf = pw.Document(author: 'Codesaima', title: 'Titulo');
-    ByteData _bytes = await rootBundle.load(kPathLogoGovRoraimaPreta);
-    Uint8List logobytes = _bytes.buffer.asUint8List();
-    PdfImage _logoImage = PdfImage.file(pdf.document, bytes: logobytes);
-    pdf.addPage(pw.MultiPage(
-      build: (context) {
-        return [
-          pw.Column(children: [
-            pw.Row(children: [
-              pw.Container(
-                  // child:
-                  //    logobytes != null ? pw.Image(123) : pw.Container(),
-                  )
-            ])
-          ])
-        ];
-      },
-    ));
-
-    final file = File('$appDocPath/example.pdf');
-    await file.writeAsBytes(await pdf.save());
-
-    Share.shareFiles(['$appDocPath/example.pdf'],
-        mimeTypes: ['application/pdf']);
+  _createPDF(int personIndex) async {
+    await GeneratePDFMorarMelhor(personIndex: 0).generateDocument();
   }
 
   @override
@@ -164,7 +138,11 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
                       showAlertDialog(context, _person, key);
                     },
                     icon: Icon(Icons.delete)),
-                IconButton(onPressed: _createPDF, icon: Icon(Icons.print))
+                IconButton(
+                    onPressed: () async {
+                      await _createPDF(key);
+                    },
+                    icon: Icon(Icons.print))
               ],
             ),
           ),

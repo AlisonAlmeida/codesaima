@@ -4,6 +4,7 @@ import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/list_of_complete_people.dart';
 import 'package:codesaima/screens/list_of_simple_people.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
 
 class MorarMelhorScreen extends StatefulWidget {
   const MorarMelhorScreen({Key? key}) : super(key: key);
@@ -13,6 +14,16 @@ class MorarMelhorScreen extends StatefulWidget {
 }
 
 class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
+  @override
+  void initState() {
+    var x = PdfDocument();
+    print(x);
+
+    print(PdfFont.symbol(x));
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

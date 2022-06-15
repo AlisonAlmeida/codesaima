@@ -27,6 +27,8 @@ const String kPathLogoWhatsapp =
 const String kPathEdificeCodesaimaBackground =
     'lib/assets/images/edifice_codesaima_background.jpg';
 
+const String kFontOpenSans = 'lib/assets/fonts/opensans/OpenSans-Regular.ttf';
+
 final kTextFieldDecorationMorarMelhor = InputDecoration(
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
