@@ -43,6 +43,6 @@ class SocialNetworks {
 
   @override
   String toString() {
-    return 'facebook: $facebook, instagram: $instagram, youtube: $youtube, whatsapp: $whatsapp';
+    return 'FACEBOOK: $facebook, INSTAGRAM: $instagram, YOUTUBE: $youtube, WHATSAPP: $whatsapp';
   }
 }

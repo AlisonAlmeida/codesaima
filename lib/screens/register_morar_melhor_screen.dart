@@ -376,6 +376,8 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         sex: _sexController.text.toUpperCase(),
         name: _nameController.text.toUpperCase(),
         nacionality: _nacionalityController.text.toUpperCase(),
+        originCity: _cityNaturalityController.text.toUpperCase(),
+        originUF: _ufNaturalityController.text.toUpperCase(),
         mothersName: _mothersNameController.text.toUpperCase(),
         fathersName: _fathersNameController.text.toUpperCase(),
         phoneList: _listPhoneNumber,
@@ -656,7 +658,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                     ),
                     Divider(height: 5),
                     TextFormField(
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
                       textCapitalization: TextCapitalization.characters,
                       controller: _fathersNameController,
                       keyboardType: TextInputType.name,
@@ -812,7 +814,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                     ),
                     Divider(height: 5),
                     TextField(
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
                       controller: _professionController,
                       textCapitalization: TextCapitalization.characters,
                       decoration: kTextFieldDecorationMorarMelhor.copyWith(
@@ -1036,8 +1038,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                         controller: _generalObservations,
                         textInputAction: TextInputAction.newline,
                         decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                          labelText: 'Observações Gerais',
-                        ))
+                            hintText: 'Observações Gerais'))
                   ],
                 ),
                 ListView(
