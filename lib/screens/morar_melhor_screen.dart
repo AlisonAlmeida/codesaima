@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:codesaima/consts.dart';
-import 'package:codesaima/screens/list_of_complete_people.dart';
+import 'package:codesaima/screens/list_morar_melhor_register.dart';
 import 'package:codesaima/screens/list_of_simple_people.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
+
+import 'package:path_provider/path_provider.dart';
 
 class MorarMelhorScreen extends StatefulWidget {
   const MorarMelhorScreen({Key? key}) : super(key: key);
@@ -14,16 +17,6 @@ class MorarMelhorScreen extends StatefulWidget {
 }
 
 class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
-  @override
-  void initState() {
-    var x = PdfDocument();
-    print(x);
-
-    print(PdfFont.symbol(x));
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +44,7 @@ class _MorarMelhorScreenState extends State<MorarMelhorScreen> {
                             fromResearch: true,
                           )))),
           CustomListTileMorarMelhor(
-              icon: Icons.info, title: 'Informações', onTap: () {}),
+              icon: Icons.info, title: 'Informações', onTap: () async {}),
         ]));
   }
 }

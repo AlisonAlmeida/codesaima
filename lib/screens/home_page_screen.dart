@@ -3,17 +3,18 @@
 import 'package:codesaima/components/home_page_central_button.dart';
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/screens/morar_melhor_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +29,16 @@ class _HomePageState extends State<HomePage> {
                     size: 50,
                   ),
                 ),
-                accountEmail: Text('email Usuario'),
-                accountName: Text('Usuario')),
+                accountEmail: Text(user.email!),
+                accountName: Text(user.uid)),
             Card(
               elevation: 2,
               child: ListTile(
-                  leading: Icon(Icons.exit_to_app),
+                  leading: Icon(Icons.power_settings_new),
                   title: Text('Delogar'),
-                  onTap: () {}),
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                  }),
             ),
           ],
         ),

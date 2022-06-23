@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "579904745965",
+    "project_id": "codesaima-e47df",
+    "storage_bucket": "codesaima-e47df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579904745965:android:ff842eaba39bc0c9d237e4",
+        "android_client_info": {
+          "package_name": "br.gov.rr.codesaima"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579904745965-d764v5d7ft5m23ipn9qj3pvqtk1pepu5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAFyxaC-IPUWgf9Goegh_FOuHPHD7hiAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579904745965-d764v5d7ft5m23ipn9qj3pvqtk1pepu5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

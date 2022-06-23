@@ -8,6 +8,7 @@ import 'package:codesaima/screens/generate_pdf.dart';
 import 'package:codesaima/screens/register_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:excel/excel.dart';
 import 'package:share_plus/share_plus.dart';
@@ -31,10 +32,6 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     _completePersonListBox = Hive.box<RegisterMorarMelhor>(kCompletePersonBox);
 
     super.initState();
-  }
-
-  _createPDF(int personIndex) async {
-    await GeneratePDFMorarMelhor(personIndex: 0).generateDocument();
   }
 
   @override
@@ -113,45 +110,45 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
           margin: EdgeInsets.all(10),
           child: ListTile(
             title: Text(_person.name),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
-                  Icon(Icons.phone),
-                  Text(_person.phoneList!.first)
-                ]),
-                Row(children: [
-                  Icon(Icons.room),
-                  Flexible(child: Text(_person.address!.logradouro))
-                ])
-              ],
-            ),
-            trailing: Wrap(
-              children: [
-                IconButton(
-                    onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => RegisterMorarMelhorScreen(
-                                    hasPersonData: true,
-                                    personIndex: key,
-                                  ))),
-                        ),
-                    icon: Icon(Icons.edit)),
-                IconButton(
-                    onPressed: () async {
-                      showAlertDialog(context, _person, key);
-                    },
-                    icon: Icon(Icons.delete)),
-                IconButton(
-                    onPressed: () async {
-                      showGeneralProgressIndicator(context, 'Gerando PDF');
-                      await _createPDF(key);
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.print))
-              ],
-            ),
+            subtitle: Text(_person.cpf),
+            trailing: PopupMenuButton(
+                onSelected: (value) async {
+                  if (value == 1) {
+                    //edit person
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => RegisterMorarMelhorScreen(
+                                hasPersonData: true,
+                                personIndex: key,
+                              ))),
+                    );
+                  }
+                  if (value == 2) {
+                    //delete person
+                    await _showDeleteAlertDialog(context, _person, key);
+                  }
+
+                  if (value == 3) {
+                    _createPdf(key, _person);
+                  }
+                },
+                shape: OutlineInputBorder(),
+                color: Colors.orange[100],
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text('Editar'),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: Text('Deletar'),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: Text('Imprimir'),
+                      ),
+                    ]),
           ),
         ),
       );
@@ -164,7 +161,15 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
     return _listOfPeople;
   }
 
-  showAlertDialog(context, RegisterMorarMelhor registerMorarMelhor, int index) {
+  _createPdf(int personIndex, RegisterMorarMelhor person) async {
+    showGeneralProgressIndicator(context, 'Gerando PDF');
+    await Future.delayed(Duration(seconds: 1));
+    GeneratePDFMorarMelhor(personIndex: personIndex).generateDocument();
+    Navigator.pop(context);
+  }
+
+  _showDeleteAlertDialog(
+      context, RegisterMorarMelhor registerMorarMelhor, int index) {
     // set up the buttons
 
     Widget cancelButton = TextButton(

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field
 
 import 'package:codesaima/consts.dart';
+import 'package:codesaima/firebase_options.dart';
 import 'package:codesaima/models/address_model.dart';
 import 'package:codesaima/models/deficient_person_model.dart';
 import 'package:codesaima/models/person_spouse.dart';
@@ -13,8 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'models/edifice_information_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await Hive.initFlutter();
   Hive.registerAdapter(AddressAdapter());
   await Hive.openBox<Address>(kAddressBox);

@@ -24,6 +24,7 @@ dependencies:
   pdf: ^3.8.1
   share_plus: ^4.0.8
   excel: ^2.0.0-null-safety-3
+  firebase_auth: ^3.3.20
   
 dev_dependencies:
   flutter_test:

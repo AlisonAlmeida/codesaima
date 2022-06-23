@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_field, prefer_const_constructors_in_immutables, must_be_immutable
 
 import 'dart:async';
-
 import 'package:codesaima/components/radio_question_residence_choice.dart';
 import 'package:codesaima/components/radio_sex_choice.dart';
 import 'package:codesaima/consts.dart';
@@ -14,6 +13,7 @@ import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/models/resident_familiar.dart';
 import 'package:codesaima/models/social_networks.dart';
 import 'package:codesaima/screens/crud_simple_person_screen.dart';
+import 'package:codesaima/screens/generate_pdf.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +119,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
   String _groupLocalizationResidence = '';
   String _groupSupplyWaterSystem = '';
   String _groupKindConstruction = '';
-
   String _groupkindFloor = '';
   String _groupGarbageCollection = '';
   String _groupElectricalNetwork = '';
@@ -411,7 +410,7 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
         await _completePersonListBox.put(widget.personIndex, _person)
         : await _completePersonListBox.add(_person); //add
 
-    Navigator.pop(context, widget.personIndex);
+    Navigator.pop(context);
   }
 
   void getCep() async {

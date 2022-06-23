@@ -120,6 +120,23 @@ showGeneralProgressIndicator(BuildContext context, String message) {
   );
 }
 
+showGeneralAlertMessage(BuildContext context, String message) {
+  Widget okButton = ElevatedButton(
+      onPressed: () => Navigator.pop(context), child: const Text('OK'));
+  AlertDialog alert = AlertDialog(
+    content: Text(message),
+    actions: [okButton],
+  );
+
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 const List<String> listCountries = [
   'AFEGANISTÃO',
   'ÁFRICA DO SUL',

@@ -2,11 +2,9 @@ import 'dart:io';
 import 'package:codesaima/consts.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../models/register_person_morar_melhor_model.dart';
 
 class GeneratePDFMorarMelhor {
@@ -19,10 +17,10 @@ class GeneratePDFMorarMelhor {
     Box _completePersonListBox =
         Hive.box<RegisterMorarMelhor>(kCompletePersonBox);
 
-    RegisterMorarMelhor _person = _completePersonListBox.get(personIndex);
+    RegisterMorarMelhor _person = await _completePersonListBox.get(personIndex);
 
     final DateTime now = DateTime.now();
-    final String dateFormattedForFile = DateFormat('yyyy-MM-dd').format(now);
+
     final String dateFormattedForDocument =
         DateFormat.yMMMMEEEEd('pt').format(now);
     final pdf = Document();
@@ -718,20 +716,19 @@ class GeneratePDFMorarMelhor {
       },
     ));
 
-    return saveDocument(
-        name: '${_person.name}-$dateFormattedForFile', pdf: pdf);
+    return saveDocument(name: '${_person.name}-${_person.cpf}', pdf: pdf);
   }
 
   static Future<File> saveDocument({
     required String name,
     required Document pdf,
   }) async {
+    Directory directory = Directory('/storage/emulated/0/Download');
     final bytes = await pdf.save();
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$name.pdf');
-
+    final file = File('${directory.path}/$name.pdf');
     await file.writeAsBytes(bytes);
-    Share.shareFiles(['${dir.path}/$name.pdf'], mimeTypes: ['application/pdf']);
+    Share.shareFiles(['${directory.path}/$name.pdf'],
+        mimeTypes: ['application/pdf']);
     return file;
   }
 }
