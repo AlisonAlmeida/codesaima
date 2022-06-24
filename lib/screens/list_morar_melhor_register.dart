@@ -1,14 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
-
 import 'package:codesaima/consts.dart';
 import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/screens/generate_pdf.dart';
 import 'package:codesaima/screens/register_morar_melhor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:excel/excel.dart';
 import 'package:share_plus/share_plus.dart';
@@ -52,11 +50,17 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: kMorarMelhorThemeData.backgroundColor),
                   onPressed: () => exportAllRegistersExcel(),
-                  child: Text('Exportar todos os cadastros para excel')),
+                  child: Text('Exportar todos os cadastros para excel',
+                      style: TextStyle(color: Colors.white))),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: kMorarMelhorThemeData.backgroundColor),
                   onPressed: () => showAlertDeleteAllData(context),
-                  child: Text('Deletar todos os cadastros')),
+                  child: Text('Deletar todos os cadastros',
+                      style: TextStyle(color: Colors.white))),
             ],
           ),
         ),

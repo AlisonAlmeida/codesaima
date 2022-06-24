@@ -15,6 +15,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
+
+  @override
+  void initState() {
+    _changeDisplayName;
+    super.initState();
+  }
+
+  _changeDisplayName() async {
+    await user.updateDisplayName('Codesaima');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +40,9 @@ class _HomePageState extends State<HomePage> {
                     size: 50,
                   ),
                 ),
-                accountEmail: Text(user.email!),
-                accountName: Text(user.uid)),
+                accountEmail: Text(user.isAnonymous ? 'anônimo@' : user.email!),
+                accountName:
+                    Text(user.isAnonymous ? 'Anônimo' : user.displayName!)),
             Card(
               elevation: 2,
               child: ListTile(
@@ -69,18 +81,10 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(
                         builder: (context) => MorarMelhorScreen(),
                       ))),
-
-              /*
-              CentralButton(
-                  title: 'Governo de Roraima',
-                  img: kPathLogoGovRoraimaPreta,
-                  onTap: () {}),
               CentralButton(
                   title: 'Aqui Tem Dono',
                   img: kPathLogoAquiTemDono,
                   onTap: () {}),
-
-                 */
             ],
           ),
         ),

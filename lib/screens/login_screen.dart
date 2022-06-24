@@ -15,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,17 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 100,
               ),
-              TextButton(child: Text('Solicitar Acesso'), onPressed: () {})
+              TextButton(
+                  child: Text('Logar anonimamente'),
+                  onPressed: () async {
+                    try {
+                      final result = await _auth.signInAnonymously();
+                      final user = result.user;
+                      print(user);
+                    } catch (e) {
+                      print(e);
+                    }
+                  })
             ],
           ),
         ),

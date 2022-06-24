@@ -13,7 +13,6 @@ import 'package:codesaima/models/register_person_morar_melhor_model.dart';
 import 'package:codesaima/models/resident_familiar.dart';
 import 'package:codesaima/models/social_networks.dart';
 import 'package:codesaima/screens/crud_simple_person_screen.dart';
-import 'package:codesaima/screens/generate_pdf.dart';
 import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
