@@ -475,6 +475,21 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                             fontSize: 30, fontWeight: FontWeight.bold)),
                     Divider(height: 5),
                     CompletNameWidget(nameController: _nameController),
+                    Divider(height: 5),
+                    TextField(
+                      textCapitalization: TextCapitalization.characters,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TextInputMask(mask: '999.999.999-99')
+                      ],
+                      controller: _cpfController,
+                      decoration: kTextFieldDecorationMorarMelhor.copyWith(
+                        labelText: 'CPF',
+                        hintText: 'CPF',
+                      ),
+                    ),
                     Text('Mãe solteira?'),
                     RadioListTile<bool>(
                         title: Text('SIM'),
@@ -793,21 +808,6 @@ class _RegisterMorarMelhorScreen extends State<RegisterMorarMelhorScreen> {
                       decoration: kTextFieldDecorationMorarMelhor.copyWith(
                         labelText: 'Nº PIS/NIS/PASEP',
                         hintText: 'Nº PIS/NIS/PASEP',
-                      ),
-                    ),
-                    Divider(height: 5),
-                    TextField(
-                      textCapitalization: TextCapitalization.characters,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        TextInputMask(mask: '999.999.999-99')
-                      ],
-                      controller: _cpfController,
-                      decoration: kTextFieldDecorationMorarMelhor.copyWith(
-                        labelText: 'CPF',
-                        hintText: 'CPF',
                       ),
                     ),
                     Divider(height: 5),

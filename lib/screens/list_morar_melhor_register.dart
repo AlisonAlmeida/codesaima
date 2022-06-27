@@ -580,7 +580,7 @@ class _ListOfPeopleState extends State<ListOfCompletePeople> {
 
     final bytes =
         excel.save(fileName: 'CadastrosCompilados-$dateFormattedForFile.xlsx');
-    final dir = await getApplicationSupportDirectory();
+    Directory dir = await getApplicationSupportDirectory();
     final file =
         File('${dir.path}/CadastrosCompilados-$dateFormattedForFile.xlsx');
     await file.writeAsBytes(bytes!);

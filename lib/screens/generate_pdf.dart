@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:codesaima/consts.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -723,7 +724,7 @@ class GeneratePDFMorarMelhor {
     required String name,
     required Document pdf,
   }) async {
-    Directory directory = Directory('/storage/emulated/0/Download');
+    Directory directory = await getApplicationSupportDirectory();
     final bytes = await pdf.save();
     final file = File('${directory.path}/$name.pdf');
     await file.writeAsBytes(bytes);

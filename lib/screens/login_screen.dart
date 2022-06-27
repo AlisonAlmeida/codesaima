@@ -64,7 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.red, borderRadius: BorderRadius.circular(20)),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.red),
-                  onPressed: () => _loginButtonPressed(),
+                  onPressed: () async {
+                    await _auth.signInAnonymously();
+                  },
+
+                  // _loginButtonPressed(),
                   child: Text(
                     'Acessar',
                     style: TextStyle(color: Colors.white, fontSize: 25),
@@ -78,9 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text('Logar anonimamente'),
                   onPressed: () async {
                     try {
-                      final result = await _auth.signInAnonymously();
-                      final user = result.user;
-                      print(user);
+                      await _auth.signInAnonymously();
                     } catch (e) {
                       print(e);
                     }
